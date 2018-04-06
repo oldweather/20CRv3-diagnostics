@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Super-Typhoon Nancy (1961) video &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
+    <title>Hurricane carla (1961) video &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
     
     <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -27,7 +27,7 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="top" title="Tests and analyses of version 3 of the Twentieth Century Reanalysis" href="../index.html" />
     <link rel="up" title="Tropical Storms" href="tropical_storms.html" />
-    <link rel="prev" title="Super-Typhoon Nancy (1961)" href="Typhoon_Nancy.html" /> 
+    <link rel="prev" title="Hurricane Carla (1961)" href="Hurricane_Carla.html" /> 
   </head>
   <body role="document">
     <div class="header-wrapper" role="banner">
@@ -35,7 +35,7 @@
         <div class="headertitle"><a
           href="../index.html">20CRv3</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
-          <a href="Typhoon_Nancy.html" title="Super-Typhoon Nancy (1961)"
+          <a href="Hurricane_Carla.html" title="Hurricane Carla (1961)"
              accesskey="P">previous</a> |
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a>
@@ -51,16 +51,16 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="super-typhoon-nancy-1961-video">
-<h1>Super-Typhoon Nancy (1961) video<a class="headerlink" href="#super-typhoon-nancy-1961-video" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="hurricane-carla-1961-video">
+<h1>Hurricane carla (1961) video<a class="headerlink" href="#hurricane-carla-1961-video" title="Permalink to this headline">¶</a></h1>
  <center>
  <table><tr><td><center>
- <iframe src="https://player.vimeo.com/video/262362256?title=0&byline=0&portrait=0" width="795" height="448" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></center></td></tr>
+ <iframe src="https://player.vimeo.com/video/262971192?title=0&byline=0&portrait=0" width="795" height="448" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></center></td></tr>
  <tr><td><center>MSLP Contours for v2c (left) and v3 (right)</center></td></tr>
  </table>
  </center>
 
-The thin blue lines are mslp contours from each of 56 ensemble members (all members for v2c, the first 56 members for v3). The thicker black lines are contours of the ensemble mean. The yellow dots mark pressure observations assimilated while making the field shown. The red dots are the IBTRACS best-track observations for Typhoon Nancy (these were missing from the v2c observations database, but have been restored for v3).<div class="line-block">
+The thin blue lines are mslp contours from each of 56 ensemble members (all members for v2c, the first 56 members for v3). The thicker black lines are contours of the ensemble mean. The yellow dots mark pressure observations assimilated while making the field shown. The red dots are the IBTRACS best-track observations for `Hurricane Carla <https://en.wikipedia.org/wiki/Hurricane_Carla>`_.<div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>Download the data required:</p>
@@ -74,7 +74,7 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
 <p>Script to make an individual frame - takes year, month, day, and hour as command-line options:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
 
-<span class="c1"># Hong Kong region weather plot </span>
+<span class="c1"># US region weather plot </span>
 <span class="c1"># Compare pressures from 20CRV3 and 20CRV2c</span>
 <span class="c1"># Video version.</span>
 
@@ -133,7 +133,7 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
 <span class="n">canvas</span><span class="o">=</span><span class="n">FigureCanvas</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 
 <span class="c1"># UK-centred projection</span>
-<span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">RotatedPole</span><span class="p">(</span><span class="n">pole_longitude</span><span class="o">=</span><span class="mi">320</span><span class="p">,</span> <span class="n">pole_latitude</span><span class="o">=</span><span class="mi">56</span><span class="p">)</span>
+<span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">RotatedPole</span><span class="p">(</span><span class="n">pole_longitude</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">pole_latitude</span><span class="o">=</span><span class="mi">56</span><span class="p">)</span>
 <span class="n">scale</span><span class="o">=</span><span class="mi">30</span>
 <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">scale</span><span class="o">*-</span><span class="mi">1</span><span class="o">*</span><span class="n">aspect</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">scale</span><span class="o">*</span><span class="n">aspect</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">scale</span><span class="o">*-</span><span class="mi">1</span><span class="p">,</span><span class="n">scale</span><span class="p">]</span>
 
@@ -156,8 +156,8 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
 <span class="c1"># Add the observations from 2c</span>
 <span class="n">obs</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load_observations_fortime</span><span class="p">(</span><span class="n">dte</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
 <span class="n">wm</span><span class="o">.</span><span class="n">plot_obs</span><span class="p">(</span><span class="n">ax_2c</span><span class="p">,</span><span class="n">obs</span><span class="p">,</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
-<span class="c1"># Highlight the Nancy obs</span>
-<span class="n">obs_h</span><span class="o">=</span><span class="n">obs</span><span class="p">[</span><span class="n">obs</span><span class="o">.</span><span class="n">Name</span><span class="o">==</span><span class="s1">&#39;NANCY&#39;</span><span class="p">]</span>
+<span class="c1"># Highlight the Carla obs</span>
+<span class="n">obs_h</span><span class="o">=</span><span class="n">obs</span><span class="p">[</span><span class="n">obs</span><span class="o">.</span><span class="n">Name</span><span class="o">==</span><span class="s1">&#39;CARLA&#39;</span><span class="p">]</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">obs_h</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
     <span class="n">wm</span><span class="o">.</span><span class="n">plot_obs</span><span class="p">(</span><span class="n">ax_2c</span><span class="p">,</span><span class="n">obs_h</span><span class="p">,</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span>
                                              <span class="n">zorder</span><span class="o">=</span><span class="mf">12.6</span><span class="p">)</span>
@@ -196,8 +196,8 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
 <span class="c1"># Add the observations from v3</span>
 <span class="n">obs</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load_observations_fortime</span><span class="p">(</span><span class="n">dte</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">)</span>
 <span class="n">wm</span><span class="o">.</span><span class="n">plot_obs</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="n">obs</span><span class="p">,</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
-<span class="c1"># Highlight the Nancy obs</span>
-<span class="n">obs_h</span><span class="o">=</span><span class="n">obs</span><span class="p">[</span><span class="n">obs</span><span class="o">.</span><span class="n">Name</span><span class="o">==</span><span class="s1">&#39;NANCY&#39;</span><span class="p">]</span>
+<span class="c1"># Highlight the Carla obs</span>
+<span class="n">obs_h</span><span class="o">=</span><span class="n">obs</span><span class="p">[</span><span class="n">obs</span><span class="o">.</span><span class="n">Name</span><span class="o">==</span><span class="s1">&#39;CARLA&#39;</span><span class="p">]</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">obs_h</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
     <span class="n">wm</span><span class="o">.</span><span class="n">plot_obs</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="n">obs_h</span><span class="p">,</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span>
                                             <span class="n">zorder</span><span class="o">=</span><span class="mf">12.6</span><span class="p">)</span>
@@ -238,7 +238,7 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
               <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
 
 <span class="c1"># Output as png</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/V3vV2c_Typhoon_Nancy_</span><span class="si">%04d%02d%02d%02d%02d</span><span class="s1">.png&#39;</span> <span class="o">%</span> 
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/V3vV2c_Hurricane_Carla_</span><span class="si">%04d%02d%02d%02d%02d</span><span class="s1">.png&#39;</span> <span class="o">%</span> 
                <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">opdir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
                            <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">hour</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">hour</span><span class="o">%</span><span class="mi">1</span><span class="o">*</span><span class="mi">60</span><span class="p">)))</span>
 </pre></div>
@@ -259,13 +259,13 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">opdir</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">opdir</span><span class="p">)</span>
 
-<span class="n">start_day</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1961</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">end_day</span>  <span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1961</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span>
+<span class="n">start_day</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1961</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">end_day</span>  <span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1961</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span>
 
 <span class="c1"># Function to check if the job is already done for this timepoint</span>
 <span class="k">def</span> <span class="nf">is_done</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">):</span>
-    <span class="n">op_file_name</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/images/Typhoon_Nancy/&quot;</span> <span class="o">+</span>
-                  <span class="s2">&quot;V3vV2c_Typhoon_Nancy_</span><span class="si">%04d%02d%02d%02d%02d</span><span class="s2">.png&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
+    <span class="n">op_file_name</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/images/Hurricane_Carla/&quot;</span> <span class="o">+</span>
+                  <span class="s2">&quot;V3vV2c_Hurricane_Carla_</span><span class="si">%04d%02d%02d%02d%02d</span><span class="s2">.png&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
                             <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">),</span>
                             <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">hour</span><span class="p">),</span>
                                         <span class="nb">int</span><span class="p">(</span><span class="n">hour</span><span class="o">%</span><span class="mi">1</span><span class="o">*</span><span class="mi">60</span><span class="p">))</span>
@@ -281,7 +281,7 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
     <span class="k">while</span> <span class="n">max_new_jobs</span><span class="o">&gt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">current_day</span><span class="o">&lt;=</span><span class="n">end_day</span><span class="p">:</span>
         <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;multirun.slm&quot;</span><span class="p">,</span><span class="s2">&quot;w+&quot;</span><span class="p">)</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/ksh -l</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --output=</span><span class="si">%s</span><span class="s1">/Nancy_frame_</span><span class="si">%04d%02d%02d%02d</span><span class="s1">.out</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --output=</span><span class="si">%s</span><span class="s1">/Carla_frame_</span><span class="si">%04d%02d%02d%02d</span><span class="s1">.out</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span>
                    <span class="p">(</span><span class="n">opdir</span><span class="p">,</span>
                     <span class="n">current_day</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
                     <span class="n">current_day</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">hour</span><span class="p">))</span>
@@ -295,7 +295,7 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
             <span class="k">if</span> <span class="n">is_done</span><span class="p">(</span><span class="n">current_day</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
                            <span class="n">current_day</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">hour</span><span class="o">+</span><span class="n">fraction</span><span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="n">cmd</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;./Nancy_V3vV2c.py --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">+</span>
+            <span class="n">cmd</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;./Carla_V3vV2c.py --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">+</span>
                 <span class="s2">&quot; --day=</span><span class="si">%d</span><span class="s2"> --hour=</span><span class="si">%f</span><span class="s2"> &amp;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
                    <span class="n">current_day</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
                    <span class="n">current_day</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">hour</span><span class="o">+</span><span class="n">fraction</span><span class="p">)</span>
@@ -311,10 +311,10 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
 </pre></div>
 </div>
 <p>To turn the thousands of images into a movie, use <a class="reference external" href="http://www.ffmpeg.org">ffmpeg</a></p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>ffmpeg -r <span class="m">24</span> -pattern_type glob -i Typhoon_Nancy/<span class="se">\*</span>.png <span class="se">\</span>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>ffmpeg -r <span class="m">24</span> -pattern_type glob -i Hurricane_Carla/<span class="se">\*</span>.png <span class="se">\</span>
        -c:v libx264 -threads <span class="m">16</span> -preset slow -tune animation <span class="se">\</span>
        -profile:v high -level 4.2 -pix_fmt yuv420p -crf <span class="m">25</span> <span class="se">\</span>
-       -c:a copy Typhoon_Nancy.mp4
+       -c:a copy Hurricane_Carla.mp4
 </pre></div>
 </div>
 </div>
@@ -329,7 +329,9 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
           <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="tropical_storms.html">Tropical Storms</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="Typhoon_Nancy.html">Super-Typhoon Nancy (1961)</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Super-Typhoon Nancy (1961) video</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Typhoon_Nancy_video.html">Super-Typhoon Nancy (1961) video</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hurricane_Carla.html">Hurricane Carla (1961)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Hurricane carla (1961) video</a></li>
 </ul>
 </li>
 </ul>
@@ -352,14 +354,14 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
       <div class="footer">
         <div class="left">
           <div role="navigation" aria-label="related navigaton">
-            <a href="Typhoon_Nancy.html" title="Super-Typhoon Nancy (1961)"
+            <a href="Hurricane_Carla.html" title="Hurricane Carla (1961)"
               >previous</a> |
             <a href="../genindex.html" title="General Index"
               >index</a>
           </div>
           <div role="note" aria-label="source link">
               <br/>
-              <a href="../_sources/tropical-storms/Typhoon_Nancy_video.txt"
+              <a href="../_sources/tropical-storms/Hurricane_Carla_video.txt"
                 rel="nofollow">Show Source</a>
           </div>
         </div>
