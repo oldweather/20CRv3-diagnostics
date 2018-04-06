@@ -1,4 +1,4 @@
-# Hong Kong region weather plot 
+# US region weather plot 
 # Compare pressures from 20CRV3 and 20CRV2c
 
 import math
@@ -24,7 +24,7 @@ import Meteorographica.data.twcr as twcr
 year=1961
 month=9
 day=11
-hour=12
+hour=18
 dte=datetime.datetime(year,month,day,hour)
 
 # Landscape page
@@ -39,7 +39,7 @@ fig=Figure(figsize=(22,22/math.sqrt(2)),  # Width, Height (inches)
 canvas=FigureCanvas(fig)
 
 # US-centred projection
-projection=ccrs.RotatedPole(pole_longitude=320, pole_latitude=56)
+projection=ccrs.RotatedPole(pole_longitude=100, pole_latitude=56)
 scale=30
 extent=[scale*-1,scale,scale*-1*math.sqrt(2),scale*math.sqrt(2)]
 
@@ -62,8 +62,8 @@ land_img_3=ax_3.background_img(name='GreyT', resolution='low')
 # Add the observations from 2c
 obs=twcr.load_observations_fortime(dte,version='2c')
 wm.plot_obs(ax_2c,obs,radius=0.15)
-# Highlight the Nancy obs
-obs_h=obs[obs.Name=='NANCY']
+# Highlight the Carla obs
+obs_h=obs[obs.Name=='CARLA']
 if not obs_h.empty:
     wm.plot_obs(ax_2c,obs_h,radius=0.25,facecolor='red',
                                              zorder=12.6)
@@ -104,8 +104,8 @@ wm.plot_label(ax_2c,'20CR 2c',
 # Add the observations from v3
 obs=twcr.load_observations_fortime(dte,version='4.5.1')
 wm.plot_obs(ax_3,obs,radius=0.15)
-# Highlight the Nancy obs
-obs_h=obs[obs.Name=='NANCY']
+# Highlight the Carla obs
+obs_h=obs[obs.Name=='CARLA']
 if not obs_h.empty:
     wm.plot_obs(ax_3,obs_h,radius=0.25,facecolor='red',
                                             zorder=12.6)
@@ -147,5 +147,5 @@ wm.plot_label(ax_3,
               horizontalalignment='right')
 
 # Output as png
-fig.savefig('V3vV2c_Typhoon_Nancy_%04d%02d%02d%02d.png' % 
+fig.savefig('V3vV2c_Hurricane_Carla_%04d%02d%02d%02d.png' % 
                                   (year,month,day,hour))

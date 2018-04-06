@@ -1,22 +1,22 @@
-Visualising uncertainty: 20CR2c spaghetti contours & DWR data
-=============================================================
+Super-Typhoon Nancy (1961)
+==========================
 
-.. raw:: html
+.. figure:: ../../tropical-storms/Typhoon_Nancy_1961/V3vV2c_Typhoon_Nancy_1961091112.png
+   :width: 650px
+   :align: center
+   :figwidth: 700px
 
-    <center>
-    <table><tr><td><center>
-    <a href="https://github.com/oldweather/DWR/raw/master/analyses/scatter%2Bcontour/Scatter%2Bcontour_1901012218.png"><img src="https://github.com/oldweather/DWR/raw/master/analyses/scatter%2Bcontour/Scatter%2Bcontour_1901012218.png" width=795></a></center></td></tr>
-    <tr><td>MSLP spaghetti-contour plot for 20CR2c (left), and comparison with DWR obs at the station locations (right) for January 22nd, 1901 (at 6pm).</td></tr>
-    </table>
-    </center>
+   MSLP Contours for v2c (left) and v3 (right)
+
+   The thin blue lines are mslp contours from each of 56 ensemble members (all members for v2c, the first 56 members for v3). The thicker black lines are contours of the ensemble mean. The yellow dots mark pressure observations assimilated while making the field shown. The red dots are the IBTRACS best-track observations for `Typhoon Nancy <https://en.wikipedia.org/wiki/Typhoon_Nancy_(1961)>`_ (these were missing from the v2c observations database, but have been restored for v3).
 
 |
 
-Collect the reanalysis data (observations and prmsl ensemble from 20CR2c for 1901):
+Download the data required:
 
-.. literalinclude:: ../../../analyses/scatter+contour/get_data_20CR.py
+.. literalinclude:: ../../tropical-storms/Typhoon_Nancy_1961/get_data.py
 
-Script to make the figure:
+Make the figure:
 
-.. literalinclude:: ../../../analyses/scatter+contour/scatter+contour.py
+.. literalinclude:: ../../tropical-storms/Typhoon_Nancy_1961/Nancy_V3vV2c.py
 
