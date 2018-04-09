@@ -10,7 +10,7 @@ Super-Typhoon Nancy (1961) video
     </table>
     </center>
 
-   The thin blue lines are mslp contours from each of 56 ensemble members (all members for v2c, the first 56 members for v3). The thicker black lines are contours of the ensemble mean. The yellow dots mark pressure observations assimilated while making the field shown. The red dots are the IBTRACS best-track observations for Typhoon Nancy (these were missing from the v2c observations database, but have been restored for v3).
+The thin blue lines are mslp contours from each of 56 ensemble members (all members for v2c, the first 56 members for v3). The thicker black lines are contours of the ensemble mean. The yellow dots mark pressure observations assimilated while making the field shown. The red dots are the IBTRACS best-track observations for `Typhoon Nancy <https://en.wikipedia.org/wiki/Typhoon_Nancy_(1961)>`_ (these were missing from the v2c observations database, but have been restored for v3).
 
 |
 

@@ -1,7 +1,15 @@
 20CRv3 Diagnostics
 ==================
 
-This is a collection of diagnostics and case studies of the forthcoming version three of the Twentieth Century Reanalysis.
+How to get the version 3 data in a useable format:
+
+.. toctree::
+   :maxdepth: 1
+
+   extract_data/extract_data
+
+ 
+A collection of analyses done with the v3 data - they rely on data extracted as above, and the `Meteorographica analysis package <https://philip-brohan.github.io/Meteorographica/>`_.
 
 .. toctree::
    :maxdepth: 2
