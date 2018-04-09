@@ -1,4 +1,4 @@
-Hurricane carla (1961) video
+Hurricane Carla (1961) video
 ============================
 
 .. raw:: html
@@ -10,7 +10,7 @@ Hurricane carla (1961) video
     </table>
     </center>
 
-   The thin blue lines are mslp contours from each of 56 ensemble members (all members for v2c, the first 56 members for v3). The thicker black lines are contours of the ensemble mean. The yellow dots mark pressure observations assimilated while making the field shown. The red dots are the IBTRACS best-track observations for `Hurricane Carla <https://en.wikipedia.org/wiki/Hurricane_Carla>`_.
+The thin blue lines are mslp contours from each of 56 ensemble members (all members for v2c, the first 56 members for v3). The thicker black lines are contours of the ensemble mean. The yellow dots mark pressure observations assimilated while making the field shown. The red dots are the IBTRACS best-track observations for `Hurricane Carla <https://en.wikipedia.org/wiki/Hurricane_Carla>`_.
 
 |
 
