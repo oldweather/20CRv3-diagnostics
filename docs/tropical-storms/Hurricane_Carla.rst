@@ -1,6 +1,8 @@
 Hurricane Carla (1961)
 ======================
 
+.. seealso:: :doc:`Video version <Hurricane_Carla_video>`
+
 .. figure:: ../../tropical-storms/Hurricane_Carla_1961/V3vV2c_Hurricane_Carla_1961091118.png
    :width: 650px
    :align: center
