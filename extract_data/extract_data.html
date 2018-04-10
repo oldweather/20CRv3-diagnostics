@@ -55,7 +55,7 @@
             
   <div class="section" id="extracting-data-from-20crv3">
 <h1>Extracting data from 20CRv3<a class="headerlink" href="#extracting-data-from-20crv3" title="Permalink to this headline">¶</a></h1>
-<p>The 20CRv2c data are <a class="reference external" href="http://portal.nersc.gov/project/20C_Reanalysis/">available</a> as netCDF files, each containing 3- or 6-hourly data, for a single variable, for all ensemble members, for a year. I have <a class="reference external" href="https://philip-brohan.github.io/Meteorographica/">software that uses data in this format</a> so I aim to produce v3 data in a similar format. The main difference is that there is much more data from v3 (higher resolution, more ensemble members, always 3-hourly) so I make files for each month, not each year.</p>
+<p>The 20CRv2c data are <a class="reference external" href="http://portal.nersc.gov/project/20C_Reanalysis/">available</a> as netCDF files, each containing 3- or 6-hourly data, for a single variable, for all ensemble members, for a year. I have <a class="reference external" href="https://philip-brohan.github.io/Meteorographica/">software that uses data in this format</a>, so I aim to produce v3 data in a similar format. The main difference is that there is much more data from v3 (higher resolution, more ensemble members, always 3-hourly) so I make files for each month, not each year.</p>
 <p>v3 does not exist yet, we identify proto-v3 data by its <em>run number</em>. The two run numbers I&#8217;ve looked at so far are 451 and 452. Run numbers in the 400s are from the v3 model and this data extraction method should work for any of them.</p>
 <p>The data extraction process is in four steps:</p>
 <ol class="arabic simple">
@@ -95,7 +95,7 @@ module load nco
 </div>
 <div class="section" id="copy-to-my-own-scratch">
 <h2>Copy to my own $SCRATCH<a class="headerlink" href="#copy-to-my-own-scratch" title="Permalink to this headline">¶</a></h2>
-<p>If the data are in the grib2 tape archive, copy them to &#8216;$SCRATCH/20CR_working/ensda_1899/1903/10&#8217; (where 1899, 1903, and 10 are replaced by start year, validity year, and validity month. The <a class="reference internal" href="release_month_from_tape.html"><span class="doc">script to do this</span></a> is called as:</p>
+<p>If the data are in the grib2 tape archive, copy them to &#8216;$SCRATCH/20CR_working/ensda_1899/1903/10&#8217; (where 1899, 1903, and 10 are replaced by start year, validity year, and validity month). The <a class="reference internal" href="release_month_from_tape.html"><span class="doc">script to do this</span></a> is called as:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>v3_release/month_from_tape.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span>451
 </pre></div>
 </div>
@@ -134,7 +134,7 @@ module load nco
 </div>
 <div class="section" id="todo">
 <h2>ToDo<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h2>
-<p>These scripts work fine, but the process is fiddly and slow. An obvious improvement is to write a single script that automatically detects the data source, and then runs a sequence of jobs to do the extraction, working in parallel where possible. I failed at this, as running multiple extractions in parallel makes them <strong>very</strong> slow (possibly because of file-system contention). Some cunning will be necesary to produce an efficient script, and so far I have not bothered.</p>
+<p>These scripts work fine, but the process is fiddly and slow. An obvious improvement is to write a single script that automatically detects the data source, and then runs a sequence of jobs to do the extraction, working in parallel where possible. I failed at this, as running multiple extractions in parallel makes them <strong>very</strong> slow (possibly because of file-system contention). Some cunning will be necessary to produce an efficient script, and so far I have not bothered.</p>
 </div>
 </div>
 
@@ -150,6 +150,7 @@ module load nco
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../european_windstorms/european_windstorms.html">European windstorms</a></li>
 </ul>
 
           <div role="search">

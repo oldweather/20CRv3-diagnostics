@@ -25,9 +25,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="Tests and analyses of version 3 of the Twentieth Century Reanalysis" href="../index.html" />
-    <link rel="up" title="Tropical Storms" href="tropical_storms.html" />
-    <link rel="prev" title="Okeechobee Hurricane (1928)" href="Okeechobee_Hurricane.html" /> 
+    <link rel="top" title="Tests and analyses of version 3 of the Twentieth Century Reanalysis" href="../index.html" /> 
   </head>
   <body role="document">
     <div class="header-wrapper" role="banner">
@@ -35,8 +33,6 @@
         <div class="headertitle"><a
           href="../index.html">20CRv3</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
-          <a href="Okeechobee_Hurricane.html" title="Okeechobee Hurricane (1928)"
-             accesskey="P">previous</a> |
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a>
         </div>
@@ -59,6 +55,7 @@
 <tr><td><center>MSLP Contours for v2c (left) and v3 (right)</center></td></tr>
 </table>
 </center><p>The thin blue lines are mslp contours from each of 56 ensemble members (all members for v2c, the first 56 members for v3). The thicker black lines are contours of the ensemble mean. The yellow dots mark pressure observations assimilated while making the field shown. The red dots are the IBTRACS best-track observations for unnamed tropical storms - the southernmost is the <a class="reference external" href="https://en.wikipedia.org/wiki/1928_Okeechobee_hurricane">Okeechobee Hurricane</a>.</p>
+<p>As well as showing the storm, this video demonstrates an interesting difference between the uncertainties (ensemble spread) of the two versions: In v2c the ensemble narrows and broadens as the observations come and go, v3 does not show this effect.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -244,72 +241,6 @@
 </pre></div>
 </div>
 <p>To make the video, it is necessary to run the script above hundreds of times - giving an image for every 15-minute period. The best way to do this is system dependent - the script below does it on the Met Office SPICE cluster - it will need modification to run on any other system. (Could do this on a single PC, but it will take many hours).</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
-
-<span class="c1"># Make all the individual frames for a movie</span>
-<span class="c1">#  run the jobs on SPICE.</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">datetime</span>
-
-<span class="n">max_jobs_in_queue</span><span class="o">=</span><span class="mi">500</span>
-<span class="c1"># Where to put the output files</span>
-<span class="n">opdir</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/slurm_output&quot;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">)</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">opdir</span><span class="p">):</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">opdir</span><span class="p">)</span>
-
-<span class="n">start_day</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1928</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">end_day</span>  <span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1928</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span>
-
-<span class="c1"># Function to check if the job is already done for this timepoint</span>
-<span class="k">def</span> <span class="nf">is_done</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">):</span>
-    <span class="n">op_file_name</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/images/Hurricane_Okeechobee/&quot;</span> <span class="o">+</span>
-                  <span class="s2">&quot;V3vV2c_Okeechobee_</span><span class="si">%04d%02d%02d%02d%02d</span><span class="s2">.png&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
-                            <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">),</span>
-                            <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">hour</span><span class="p">),</span>
-                                        <span class="nb">int</span><span class="p">(</span><span class="n">hour</span><span class="o">%</span><span class="mi">1</span><span class="o">*</span><span class="mi">60</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">op_file_name</span><span class="p">):</span>
-        <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">return</span> <span class="kc">False</span>
-
-<span class="n">current_day</span><span class="o">=</span><span class="n">start_day</span>
-<span class="k">while</span> <span class="n">current_day</span><span class="o">&lt;=</span><span class="n">end_day</span><span class="p">:</span>
-    <span class="n">queued_jobs</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="s1">&#39;squeue --user hadpb&#39;</span><span class="p">,</span>
-                                         <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">max_new_jobs</span><span class="o">=</span><span class="n">max_jobs_in_queue</span><span class="o">-</span><span class="n">queued_jobs</span>
-    <span class="k">while</span> <span class="n">max_new_jobs</span><span class="o">&gt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">current_day</span><span class="o">&lt;=</span><span class="n">end_day</span><span class="p">:</span>
-        <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;multirun.slm&quot;</span><span class="p">,</span><span class="s2">&quot;w+&quot;</span><span class="p">)</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/ksh -l</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --output=</span><span class="si">%s</span><span class="s1">/Okeechobee_frame_</span><span class="si">%04d%02d%02d%02d</span><span class="s1">.out</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span>
-                   <span class="p">(</span><span class="n">opdir</span><span class="p">,</span>
-                    <span class="n">current_day</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
-                    <span class="n">current_day</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">hour</span><span class="p">))</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --qos=normal</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --ntasks=4</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --ntasks-per-core=1</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --mem=40000</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --time=10</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">count</span><span class="o">=</span><span class="mi">0</span>
-        <span class="k">for</span> <span class="n">fraction</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">25</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="o">.</span><span class="mi">75</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">is_done</span><span class="p">(</span><span class="n">current_day</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
-                           <span class="n">current_day</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">hour</span><span class="o">+</span><span class="n">fraction</span><span class="p">):</span>
-                <span class="k">continue</span>
-            <span class="n">cmd</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;./Okeechobee_V3vV2c.py --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">+</span>
-                <span class="s2">&quot; --day=</span><span class="si">%d</span><span class="s2"> --hour=</span><span class="si">%f</span><span class="s2"> &amp;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
-                   <span class="n">current_day</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
-                   <span class="n">current_day</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">hour</span><span class="o">+</span><span class="n">fraction</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
-            <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="o">+</span><span class="mi">1</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;wait</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="n">current_day</span><span class="o">=</span><span class="n">current_day</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">count</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
-            <span class="n">max_new_jobs</span><span class="o">=</span><span class="n">max_new_jobs</span><span class="o">-</span><span class="mi">1</span>
-            <span class="n">rc</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s1">&#39;sbatch multirun.slm&#39;</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="s1">&#39;multirun.slm&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
 <p>To turn the thousands of images into a movie, use <a class="reference external" href="http://www.ffmpeg.org">ffmpeg</a></p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>ffmpeg -r <span class="m">24</span> -pattern_type glob -i Hurricane_Okeechobee/<span class="se">\*</span>.png <span class="se">\</span>
        -c:v libx264 -threads <span class="m">16</span> -preset slow -tune animation <span class="se">\</span>
@@ -329,16 +260,9 @@
           <ul>
 <li class="toctree-l1"><a class="reference internal" href="../extract_data/extract_data.html">Extracting data from 20CRv3</a></li>
 </ul>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="tropical_storms.html">Tropical Storms</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="Typhoon_Nancy.html">Super-Typhoon Nancy (1961)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Typhoon_Nancy_video.html">Super-Typhoon Nancy (1961) video</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Hurricane_Carla.html">Hurricane Carla (1961)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Hurricane_Carla_video.html">Hurricane carla (1961) video</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Okeechobee_Hurricane.html">Okeechobee Hurricane (1928)</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Okeechobee Hurricane (1928) video</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tropical_storms.html">Tropical Storms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../european_windstorms/european_windstorms.html">European windstorms</a></li>
 </ul>
 
           <div role="search">
@@ -359,8 +283,6 @@
       <div class="footer">
         <div class="left">
           <div role="navigation" aria-label="related navigaton">
-            <a href="Okeechobee_Hurricane.html" title="Okeechobee Hurricane (1928)"
-              >previous</a> |
             <a href="../genindex.html" title="General Index"
               >index</a>
           </div>

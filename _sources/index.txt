@@ -15,6 +15,7 @@ A collection of analyses done with the v3 data - they rely on data extracted as 
    :maxdepth: 2
 
    tropical-storms/tropical_storms
+   european_windstorms/european_windstorms
 
 |
    
