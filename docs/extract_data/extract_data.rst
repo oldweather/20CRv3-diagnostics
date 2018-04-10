@@ -1,7 +1,7 @@
 Extracting data from 20CRv3
 ===========================
 
-The 20CRv2c data are `available <http://portal.nersc.gov/project/20C_Reanalysis/>`_ as netCDF files, each containing 3- or 6-hourly data, for a single variable, for all ensemble members, for a year. I have `software that uses data in this format <https://philip-brohan.github.io/Meteorographica/>`_ so I aim to produce v3 data in a similar format. The main difference is that there is much more data from v3 (higher resolution, more ensemble members, always 3-hourly) so I make files for each month, not each year.
+The 20CRv2c data are `available <http://portal.nersc.gov/project/20C_Reanalysis/>`_ as netCDF files, each containing 3- or 6-hourly data, for a single variable, for all ensemble members, for a year. I have `software that uses data in this format <https://philip-brohan.github.io/Meteorographica/>`_, so I aim to produce v3 data in a similar format. The main difference is that there is much more data from v3 (higher resolution, more ensemble members, always 3-hourly) so I make files for each month, not each year.
 
 v3 does not exist yet, we identify proto-v3 data by its *run number*. The two run numbers I've looked at so far are 451 and 452. Run numbers in the 400s are from the v3 model and this data extraction method should work for any of them.
 
@@ -50,7 +50,7 @@ In practice it's best to use these in reverse order: If the month you want is in
 Copy to my own $SCRATCH
 -----------------------
 
-If the data are in the grib2 tape archive, copy them to '$SCRATCH/20CR_working/ensda_1899/1903/10' (where 1899, 1903, and 10 are replaced by start year, validity year, and validity month. The :doc:`script to do this <release_month_from_tape>` is called as:
+If the data are in the grib2 tape archive, copy them to '$SCRATCH/20CR_working/ensda_1899/1903/10' (where 1899, 1903, and 10 are replaced by start year, validity year, and validity month). The :doc:`script to do this <release_month_from_tape>` is called as:
 
 .. code-block:: bash
 
@@ -109,4 +109,4 @@ These scripts only take a couple of minutes to run.
 ToDo
 ----
 
-These scripts work fine, but the process is fiddly and slow. An obvious improvement is to write a single script that automatically detects the data source, and then runs a sequence of jobs to do the extraction, working in parallel where possible. I failed at this, as running multiple extractions in parallel makes them **very** slow (possibly because of file-system contention). Some cunning will be necesary to produce an efficient script, and so far I have not bothered.
+These scripts work fine, but the process is fiddly and slow. An obvious improvement is to write a single script that automatically detects the data source, and then runs a sequence of jobs to do the extraction, working in parallel where possible. I failed at this, as running multiple extractions in parallel makes them **very** slow (possibly because of file-system contention). Some cunning will be necessary to produce an efficient script, and so far I have not bothered.
