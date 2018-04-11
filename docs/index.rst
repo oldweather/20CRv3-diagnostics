@@ -16,6 +16,7 @@ A collection of analyses done with the v3 data - they rely on data extracted as 
 
    tropical-storms/tropical_storms
    european_windstorms/european_windstorms
+   extreme_months/extreme_months
 
 |
    
