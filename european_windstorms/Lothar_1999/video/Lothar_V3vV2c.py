@@ -36,7 +36,7 @@ parser.add_argument("--day", help="Day of month",
 parser.add_argument("--hour", help="Time of day (0 to 23.99)",
                     type=float,required=True)
 parser.add_argument("--opdir", help="Directory for output files",
-                    default="%s/images/Lothars_brother" % \
+                    default="%s/images/Lothar" % \
                                            os.getenv('SCRATCH'),
                     type=str,required=False)
 args = parser.parse_args()
@@ -118,12 +118,12 @@ wm.plot_label(ax_2c,'20CR v2c',
 # V3 panel
 
 # Add the observations from 3
-obs=twcr.load_observations_fortime(dte,version='4.5.1')
+obs=twcr.load_observations_fortime(dte,version='4.5.2')
 wm.plot_obs(ax_3,obs,radius=0.1)
 
 # load the V3 pressures
 prmsl=twcr.load('prmsl',args.year,args.month,args.day,args.hour,
-                                version='4.5.1')
+                                version='4.5.2')
 
 # For each ensemble member, make a contour plot
 for m in range(1,57): # Same number as 2c
@@ -161,6 +161,6 @@ wm.plot_label(ax_3,
               horizontalalignment='right')
 
 # Output as png
-fig.savefig('%s/V3vV2c_Lothars_brother_%04d%02d%02d%02d%02d.png' % 
+fig.savefig('%s/V3vV2c_Lothar_%04d%02d%02d%02d%02d.png' % 
                (args.opdir,args.year,args.month,args.day,
                            int(args.hour),int(args.hour%1*60)))
