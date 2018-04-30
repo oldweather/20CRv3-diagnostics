@@ -1,38 +1,29 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>British Isles in October 1903 &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
-    
     <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="Tests and analyses of version 3 of the Twentieth Century Reanalysis" href="../index.html" /> 
-  </head>
-  <body role="document">
+    <link rel="prev" title="Extreme months" href="extreme_months.html" /> 
+  </head><body>
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
           href="../index.html">20CRv3</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="extreme_months.html" title="Extreme months"
+             accesskey="P">previous</a> |
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a>
         </div>
@@ -64,7 +55,7 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
 </div>
 <p>October 1903 was one of the wettest months in UK history.</p>
 <p>Download the data required:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">Meteorographica.data.twcr</span> <span class="k">as</span> <span class="nn">twcr</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">Meteorographica.data.twcr</span> <span class="k">as</span> <span class="nn">twcr</span>
 
 <span class="k">for</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;2c&#39;</span><span class="p">,</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">):</span>
     <span class="n">twcr</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;prmsl&#39;</span><span class="p">,</span><span class="mi">1903</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">)</span>
@@ -73,7 +64,7 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
 </pre></div>
 </div>
 <p>Make the figure:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># UK region weather plot </span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># UK region weather plot </span>
 <span class="c1"># Compare pressures from 20CRV3 and 20CRV2c</span>
 
 <span class="kn">import</span> <span class="nn">math</span>
@@ -232,10 +223,13 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
           <ul>
 <li class="toctree-l1"><a class="reference internal" href="../extract_data/extract_data.html">Extracting data from 20CRv3</a></li>
 </ul>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../european_windstorms/european_windstorms.html">European windstorms</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extreme_months.html">Extreme months</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="extreme_months.html">Extreme months</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">British Isles in October 1903</a></li>
+</ul>
+</li>
 </ul>
 
           <div role="search">
@@ -256,12 +250,14 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
       <div class="footer">
         <div class="left">
           <div role="navigation" aria-label="related navigaton">
+            <a href="extreme_months.html" title="Extreme months"
+              >previous</a> |
             <a href="../genindex.html" title="General Index"
               >index</a>
           </div>
           <div role="note" aria-label="source link">
               <br/>
-              <a href="../_sources/extreme_months/British_Isles_in_Oct_1903.txt"
+              <a href="../_sources/extreme_months/British_Isles_in_Oct_1903.rst.txt"
                 rel="nofollow">Show Source</a>
           </div>
         </div>
