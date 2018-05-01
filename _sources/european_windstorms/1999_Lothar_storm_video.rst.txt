@@ -18,7 +18,7 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
 
 Download the data required:
 
-.. literalinclude:: ../../european_windstorms/Ulysses_storm_1999/get_data.py
+.. literalinclude:: ../../european_windstorms/Lothar_1999/get_data.py
 
 Script to make an individual frame - takes year, month, day, and hour as command-line options:
 

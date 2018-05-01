@@ -1,5 +1,5 @@
-Lothar's brother (1876)
-=======================
+Lothar's brother (Marzorkan) of 1876
+====================================
 
 .. seealso:: :doc:`Video version <1876_Lothars_brother_video>`
 
