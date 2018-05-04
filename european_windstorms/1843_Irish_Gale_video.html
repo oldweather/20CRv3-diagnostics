@@ -1,0 +1,360 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Irish Gale of 1843 video &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">20CRv3</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="irish-gale-of-1843-video">
+<h1>Irish Gale of 1843 video<a class="headerlink" href="#irish-gale-of-1843-video" title="Permalink to this headline">¶</a></h1>
+<center>
+<table><tr><td><center>
+<iframe src="https://player.vimeo.com/video/268017533?title=0&byline=0&portrait=0" width="795" height="448" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></center></td></tr>
+<tr><td><center>MSLP Contours for v2c (left) and v3 (right)</center></td></tr>
+</table>
+</center><p>The thin blue lines are mslp contours from each of 56 ensemble members (all members for v2c, the first 56 members for v3). The thicker black lines are contours of the ensemble mean. The yellow dots mark pressure observations assimilated while making the field shown.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The 1843 Irish Gale is described in <a class="reference external" href="https://rmets.onlinelibrary.wiley.com/doi/full/10.1002/wea.20">Stephen Burt’s paper on Extreme British Isles depressions</a> and <a class="reference external" href="https://digital.nmla.metoffice.gov.uk/download/file/sdb:digitalFile|62c9b162-7a06-4575-9b85-12989d6ef05a">Symons Magazine in 1892 (page 164)</a>.</p>
+<p>Download the data required:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">Meteorographica.data.twcr</span> <span class="k">as</span> <span class="nn">twcr</span>
+
+<span class="n">twcr</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;prmsl&#39;</span><span class="p">,</span><span class="mi">1843</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">)</span>
+<span class="n">twcr</span><span class="o">.</span><span class="n">fetch_observations</span><span class="p">(</span><span class="mi">1843</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">)</span>
+
+<span class="c1"># 20CRv2c has no released data for 1843 - I&#39;ve used </span>
+<span class="c1">#  data from scout 3.5.4 instead, but this is not</span>
+<span class="c1">#  publically available.</span>
+</pre></div>
+</div>
+<p>Script to make an individual frame - takes year, month, day, and hour as command-line options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="c1"># UK region weather plot </span>
+<span class="c1"># Compare pressures from 20CRV3 and 20CRV2c</span>
+<span class="c1"># Video version.</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+
+<span class="kn">import</span> <span class="nn">iris</span>
+<span class="kn">import</span> <span class="nn">iris.analysis</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">from</span> <span class="nn">matplotlib.backends.backend_agg</span> <span class="k">import</span> \
+             <span class="n">FigureCanvasAgg</span> <span class="k">as</span> <span class="n">FigureCanvas</span>
+<span class="kn">from</span> <span class="nn">matplotlib.figure</span> <span class="k">import</span> <span class="n">Figure</span>
+
+<span class="kn">import</span> <span class="nn">cartopy</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+
+<span class="kn">import</span> <span class="nn">Meteorographica.weathermap</span> <span class="k">as</span> <span class="nn">wm</span>
+<span class="kn">import</span> <span class="nn">Meteorographica.data.twcr</span> <span class="k">as</span> <span class="nn">twcr</span>
+
+<span class="c1"># Get the datetime to plot from commandline arguments</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--year&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Year&quot;</span><span class="p">,</span>
+                    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--month&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Integer month&quot;</span><span class="p">,</span>
+                    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--day&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Day of month&quot;</span><span class="p">,</span>
+                    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--hour&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Time of day (0 to 23.99)&quot;</span><span class="p">,</span>
+                    <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--opdir&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Directory for output files&quot;</span><span class="p">,</span>
+                    <span class="n">default</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/images/Irish_Gale&quot;</span> <span class="o">%</span> \
+                                           <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">),</span>
+                    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span><span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">opdir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">opdir</span><span class="p">)</span>
+
+<span class="n">dte</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
+                      <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">hour</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">hour</span><span class="o">%</span><span class="mi">1</span><span class="o">*</span><span class="mi">60</span><span class="p">))</span>
+
+<span class="c1"># HD video size 1920x1080</span>
+<span class="n">aspect</span><span class="o">=</span><span class="mf">16.0</span><span class="o">/</span><span class="mf">9.0</span>
+<span class="n">fig</span><span class="o">=</span><span class="n">Figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">10.8</span><span class="o">*</span><span class="n">aspect</span><span class="p">,</span><span class="mf">10.8</span><span class="p">),</span>  <span class="c1"># Width, Height (inches)</span>
+           <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+           <span class="n">facecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.88</span><span class="p">,</span><span class="mf">0.88</span><span class="p">,</span><span class="mf">0.88</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
+           <span class="n">edgecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+           <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+           <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+           <span class="n">subplotpars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+           <span class="n">tight_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">canvas</span><span class="o">=</span><span class="n">FigureCanvas</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+
+<span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">RotatedPole</span><span class="p">(</span><span class="n">pole_longitude</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">pole_latitude</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+<span class="n">scale</span><span class="o">=</span><span class="mi">15</span>
+<span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">scale</span><span class="o">*-</span><span class="mi">1</span><span class="o">*</span><span class="n">aspect</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">scale</span><span class="o">*</span><span class="n">aspect</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">scale</span><span class="o">*-</span><span class="mi">1</span><span class="p">,</span><span class="n">scale</span><span class="p">]</span>
+
+<span class="c1"># Two side-by-side plots</span>
+<span class="n">ax_2c</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.485</span><span class="p">,</span><span class="mf">0.98</span><span class="p">],</span><span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">)</span>
+<span class="n">ax_2c</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">ax_2c</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">projection</span><span class="p">)</span>
+<span class="n">ax_3</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.505</span><span class="p">,</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.485</span><span class="p">,</span><span class="mf">0.98</span><span class="p">],</span><span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">)</span>
+<span class="n">ax_3</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">ax_3</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">projection</span><span class="p">)</span>
+
+<span class="c1"># Background, grid and land for both</span>
+<span class="n">ax_2c</span><span class="o">.</span><span class="n">background_patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">((</span><span class="mf">0.88</span><span class="p">,</span><span class="mf">0.88</span><span class="p">,</span><span class="mf">0.88</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">ax_3</span><span class="o">.</span><span class="n">background_patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">((</span><span class="mf">0.88</span><span class="p">,</span><span class="mf">0.88</span><span class="p">,</span><span class="mf">0.88</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">wm</span><span class="o">.</span><span class="n">add_grid</span><span class="p">(</span><span class="n">ax_2c</span><span class="p">)</span>
+<span class="n">wm</span><span class="o">.</span><span class="n">add_grid</span><span class="p">(</span><span class="n">ax_3</span><span class="p">)</span>
+<span class="n">land_img_2c</span><span class="o">=</span><span class="n">ax_2c</span><span class="o">.</span><span class="n">background_img</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;GreyT&#39;</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;low&#39;</span><span class="p">)</span>
+<span class="n">land_img_3</span><span class="o">=</span><span class="n">ax_3</span><span class="o">.</span><span class="n">background_img</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;GreyT&#39;</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;low&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add the observations from 2c</span>
+<span class="n">obs</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load_observations_fortime</span><span class="p">(</span><span class="n">dte</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
+<span class="n">wm</span><span class="o">.</span><span class="n">plot_obs</span><span class="p">(</span><span class="n">ax_2c</span><span class="p">,</span><span class="n">obs</span><span class="p">,</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># load the 2c pressures</span>
+<span class="n">prmsl</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;prmsl&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span>
+                                <span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
+
+<span class="c1"># For each ensemble member, make a contour plot</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">56</span><span class="p">):</span>
+    <span class="n">prmsl_e</span><span class="o">=</span><span class="n">prmsl</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">member</span><span class="o">=</span><span class="n">m</span><span class="p">))</span>
+    <span class="n">prmsl_e</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="n">prmsl_e</span><span class="o">.</span><span class="n">data</span><span class="o">/</span><span class="mi">100</span> <span class="c1"># To hPa</span>
+    <span class="n">CS</span><span class="o">=</span><span class="n">wm</span><span class="o">.</span><span class="n">plot_contour</span><span class="p">(</span><span class="n">ax_2c</span><span class="p">,</span><span class="n">prmsl_e</span><span class="p">,</span>
+                   <span class="n">levels</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">870</span><span class="p">,</span><span class="mi">1050</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span>
+                   <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+                   <span class="n">label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># Add the ensemble mean - with labels</span>
+<span class="n">prmsl_m</span><span class="o">=</span><span class="n">prmsl</span><span class="o">.</span><span class="n">collapsed</span><span class="p">(</span><span class="s1">&#39;member&#39;</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">MEAN</span><span class="p">)</span>
+<span class="n">prmsl_m</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="n">prmsl_m</span><span class="o">.</span><span class="n">data</span><span class="o">/</span><span class="mi">100</span> <span class="c1"># To hPa</span>
+<span class="n">prmsl_s</span><span class="o">=</span><span class="n">prmsl</span><span class="o">.</span><span class="n">collapsed</span><span class="p">(</span><span class="s1">&#39;member&#39;</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">STD_DEV</span><span class="p">)</span>
+<span class="n">prmsl_s</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="n">prmsl_s</span><span class="o">.</span><span class="n">data</span><span class="o">/</span><span class="mi">100</span>
+<span class="c1"># Mask out mean where uncertainties large</span>
+<span class="c1">#prmsl_m.data[numpy.where(prmsl_s.data&gt;3)]=numpy.nan</span>
+<span class="n">CS</span><span class="o">=</span><span class="n">wm</span><span class="o">.</span><span class="n">plot_contour</span><span class="p">(</span><span class="n">ax_2c</span><span class="p">,</span><span class="n">prmsl_m</span><span class="p">,</span>
+                   <span class="n">levels</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">870</span><span class="p">,</span><span class="mi">1050</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span>
+                   <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
+                   <span class="n">label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># 20CR2c label</span>
+<span class="n">wm</span><span class="o">.</span><span class="n">plot_label</span><span class="p">(</span><span class="n">ax_2c</span><span class="p">,</span><span class="s1">&#39;20CR scout 354&#39;</span><span class="p">,</span>
+                     <span class="n">facecolor</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">get_facecolor</span><span class="p">(),</span>
+                     <span class="n">x_fraction</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
+                     <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+<span class="c1"># V3 panel</span>
+
+<span class="c1"># Add the observations from 3</span>
+<span class="n">obs</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load_observations_fortime</span><span class="p">(</span><span class="n">dte</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">)</span>
+<span class="n">wm</span><span class="o">.</span><span class="n">plot_obs</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="n">obs</span><span class="p">,</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># load the V3 pressures</span>
+<span class="n">prmsl</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;prmsl&#39;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span>
+                                <span class="n">version</span><span class="o">=</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">)</span>
+
+<span class="c1"># For each ensemble member, make a contour plot</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">57</span><span class="p">):</span> <span class="c1"># Same number as 2c</span>
+    <span class="n">prmsl_e</span><span class="o">=</span><span class="n">prmsl</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">member</span><span class="o">=</span><span class="n">m</span><span class="p">))</span>
+    <span class="n">prmsl_e</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="n">prmsl_e</span><span class="o">.</span><span class="n">data</span><span class="o">/</span><span class="mi">100</span> <span class="c1"># To hPa</span>
+    <span class="n">CS</span><span class="o">=</span><span class="n">wm</span><span class="o">.</span><span class="n">plot_contour</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="n">prmsl_e</span><span class="p">,</span>
+                   <span class="n">levels</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">870</span><span class="p">,</span><span class="mi">1050</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span>
+                   <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+                   <span class="n">label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># Add the ensemble mean - with labels</span>
+<span class="n">prmsl_m</span><span class="o">=</span><span class="n">prmsl</span><span class="o">.</span><span class="n">collapsed</span><span class="p">(</span><span class="s1">&#39;member&#39;</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">MEAN</span><span class="p">)</span>
+<span class="n">prmsl_m</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="n">prmsl_m</span><span class="o">.</span><span class="n">data</span><span class="o">/</span><span class="mi">100</span> <span class="c1"># To hPa</span>
+<span class="n">prmsl_s</span><span class="o">=</span><span class="n">prmsl</span><span class="o">.</span><span class="n">collapsed</span><span class="p">(</span><span class="s1">&#39;member&#39;</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">STD_DEV</span><span class="p">)</span>
+<span class="n">prmsl_s</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="n">prmsl_s</span><span class="o">.</span><span class="n">data</span><span class="o">/</span><span class="mi">100</span>
+<span class="c1"># Mask out mean where uncertainties large</span>
+<span class="c1">#prmsl_m.data[numpy.where(prmsl_s.data&gt;3)]=numpy.nan</span>
+<span class="n">CS</span><span class="o">=</span><span class="n">wm</span><span class="o">.</span><span class="n">plot_contour</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="n">prmsl_m</span><span class="p">,</span>
+                   <span class="n">levels</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">870</span><span class="p">,</span><span class="mi">1050</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span>
+                   <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
+                   <span class="n">label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">wm</span><span class="o">.</span><span class="n">plot_label</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="s1">&#39;20CR v3&#39;</span><span class="p">,</span>
+                     <span class="n">facecolor</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">get_facecolor</span><span class="p">(),</span>
+                     <span class="n">x_fraction</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
+                     <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+<span class="n">wm</span><span class="o">.</span><span class="n">plot_label</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span>
+              <span class="p">(</span><span class="s1">&#39;</span><span class="si">%04d</span><span class="s1">-</span><span class="si">%02d</span><span class="s1">-</span><span class="si">%02d</span><span class="s1">:</span><span class="si">%02d</span><span class="s1">&#39;</span> <span class="o">%</span> 
+               <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">hour</span><span class="p">)),</span>
+              <span class="n">facecolor</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">get_facecolor</span><span class="p">(),</span>
+              <span class="n">x_fraction</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span>
+              <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+
+<span class="c1"># Output as png</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/V3vV2c_IG_</span><span class="si">%04d%02d%02d%02d%02d</span><span class="s1">.png&#39;</span> <span class="o">%</span> 
+               <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">opdir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
+                           <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">hour</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">hour</span><span class="o">%</span><span class="mi">1</span><span class="o">*</span><span class="mi">60</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>To make the video, it is necessary to run the script above hundreds of times - giving an image for every 15-minute period. The best way to do this is system dependent - the script below does it on the Met Office SPICE cluster - it will need modification to run on any other system. (Could do this on a single PC, but it will take many hours).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="c1"># Make all the individual frames for a movie</span>
+<span class="c1">#  run the jobs on SPICE.</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="n">max_jobs_in_queue</span><span class="o">=</span><span class="mi">500</span>
+<span class="c1"># Where to put the output files</span>
+<span class="n">opdir</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/slurm_output&quot;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">opdir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">opdir</span><span class="p">)</span>
+
+<span class="n">start_day</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1843</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">end_day</span>  <span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1843</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span>
+
+<span class="c1"># Function to check if the job is already done for this timepoint</span>
+<span class="k">def</span> <span class="nf">is_done</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">):</span>
+    <span class="n">op_file_name</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/images/Irish_Gale/&quot;</span> <span class="o">+</span>
+                  <span class="s2">&quot;V3vV2c_IG_</span><span class="si">%04d%02d%02d%02d%02d</span><span class="s2">.png&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
+                            <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">),</span>
+                            <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">hour</span><span class="p">),</span>
+                                        <span class="nb">int</span><span class="p">(</span><span class="n">hour</span><span class="o">%</span><span class="mi">1</span><span class="o">*</span><span class="mi">60</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">op_file_name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+<span class="n">current_day</span><span class="o">=</span><span class="n">start_day</span>
+<span class="k">while</span> <span class="n">current_day</span><span class="o">&lt;=</span><span class="n">end_day</span><span class="p">:</span>
+    <span class="n">queued_jobs</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="s1">&#39;squeue --user hadpb&#39;</span><span class="p">,</span>
+                                         <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">max_new_jobs</span><span class="o">=</span><span class="n">max_jobs_in_queue</span><span class="o">-</span><span class="n">queued_jobs</span>
+    <span class="k">while</span> <span class="n">max_new_jobs</span><span class="o">&gt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">current_day</span><span class="o">&lt;=</span><span class="n">end_day</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;multirun.slm&quot;</span><span class="p">,</span><span class="s2">&quot;w+&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/ksh -l</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --output=</span><span class="si">%s</span><span class="s1">/Lothar_frame_</span><span class="si">%04d%02d%02d%02d</span><span class="s1">.out</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span>
+                   <span class="p">(</span><span class="n">opdir</span><span class="p">,</span>
+                    <span class="n">current_day</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
+                    <span class="n">current_day</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">hour</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --qos=normal</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --ntasks=4</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --ntasks-per-core=1</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --mem=40000</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --time=10</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">count</span><span class="o">=</span><span class="mi">0</span>
+        <span class="k">for</span> <span class="n">fraction</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">.</span><span class="mi">25</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="o">.</span><span class="mi">75</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">is_done</span><span class="p">(</span><span class="n">current_day</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
+                           <span class="n">current_day</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">hour</span><span class="o">+</span><span class="n">fraction</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">cmd</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;./IG_V3vV2c.py --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">+</span>
+                <span class="s2">&quot; --day=</span><span class="si">%d</span><span class="s2"> --hour=</span><span class="si">%f</span><span class="s2"> &amp;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
+                   <span class="n">current_day</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
+                   <span class="n">current_day</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">hour</span><span class="o">+</span><span class="n">fraction</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+            <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;wait</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">current_day</span><span class="o">=</span><span class="n">current_day</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">count</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">max_new_jobs</span><span class="o">=</span><span class="n">max_new_jobs</span><span class="o">-</span><span class="mi">1</span>
+            <span class="n">rc</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s1">&#39;sbatch multirun.slm&#39;</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="s1">&#39;multirun.slm&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To turn the thousands of images into a movie, use <a class="reference external" href="http://www.ffmpeg.org">ffmpeg</a></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ffmpeg -r <span class="m">24</span> -pattern_type glob -i Irish_Gale_1843/<span class="se">\*</span>.png <span class="se">\</span>
+       -c:v libx264 -threads <span class="m">16</span> -preset slow -tune animation <span class="se">\</span>
+       -profile:v high -level 4.2 -pix_fmt yuv420p -crf <span class="m">25</span> <span class="se">\</span>
+       -c:a copy Irish_Gale.mp4
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul>
+<li class="toctree-l1"><a class="reference internal" href="../extract_data/extract_data.html">Extracting data from 20CRv3</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="european_windstorms.html">European windstorms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extreme_months/extreme_months.html">Extreme months</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="../genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="../_sources/european_windstorms/1843_Irish_Gale_video.rst.txt"
+                rel="nofollow">Show Source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
