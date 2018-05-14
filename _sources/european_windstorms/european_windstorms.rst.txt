@@ -11,5 +11,6 @@ European windstorms
   1894_North_German_Express
   1884_Darias_sister
   1876_Lothars_brother
+  1859_Royal_Charter
   1843_Irish_Gale
 
