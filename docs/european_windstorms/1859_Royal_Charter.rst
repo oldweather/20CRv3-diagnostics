@@ -1,5 +1,5 @@
-Royal Charter Storm 1859
-========================
+Royal Charter Storm of 1859
+===========================
 
 .. seealso:: :doc:`Video version <1859_Royal_Charter_video>`
 
