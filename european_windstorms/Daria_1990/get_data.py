@@ -1,6 +1,8 @@
-import Meteorographica.data.twcr as twcr
+import IRData.twcr as twcr
+import datetime
 
+dte=datetime.datetime(1990,1,1)
 for version in ('2c','4.5.2'):
-    twcr.fetch('prmsl',1990,1,version=version)
-    twcr.fetch_observations(1990,1,version=version)
+    twcr.fetch('prmsl',dte,version=version)
+    twcr.fetch_observations(dte,version=version)
 
