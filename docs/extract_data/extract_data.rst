@@ -1,7 +1,7 @@
 Extracting data from 20CRv3
 ===========================
 
-The 20CRv2c data are `available <http://portal.nersc.gov/project/20C_Reanalysis/>`_ as netCDF files, each containing 3- or 6-hourly data, for a single variable, for all ensemble members, for a year. I have `software that uses data in this format <https://philip-brohan.github.io/Meteorographica/>`_, so I aim to produce v3 data in a similar format. The main difference is that there is much more data from v3 (higher resolution, more ensemble members, always 3-hourly) so I make files for each month, not each year.
+The 20CRv2c data are `available <http://portal.nersc.gov/project/20C_Reanalysis/>`_ as netCDF files, each containing 3- or 6-hourly data, for a single variable, for all ensemble members, for a year. I have `software that uses data in this format <https://brohan.org/IRData>`_, so I aim to produce v3 data in a similar format. The main difference is that there is much more data from v3 (higher resolution, more ensemble members, always 3-hourly) so I make files for each month, not each year.
 
 v3 does not exist yet, we identify proto-v3 data by its *run number*. The two run numbers I've looked at so far are 451 and 452. Run numbers in the 400s are from the v3 model and this data extraction method should work for any of them.
 
