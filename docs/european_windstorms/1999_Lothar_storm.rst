@@ -3,7 +3,7 @@ Lothar storm of 1999
 
 .. seealso:: :doc:`Video version <1999_Lothar_storm_video>`
 
-.. figure:: ../../european_windstorms/Lothar_1999/V3vV2c_Lothar_1999122718.png
+.. figure:: ../../analyses/european_windstorms/Lothar_1999/V3vV2c_Lothar_1999122718.png
    :width: 650px
    :align: center
    :figwidth: 700px
@@ -19,9 +19,9 @@ Lothar storm of 1999
 
 Download the data required:
 
-.. literalinclude:: ../../european_windstorms/Lothar_1999/get_data.py
+.. literalinclude:: ../../analyses/european_windstorms/Lothar_1999/get_data.py
 
 Make the figure:
 
-.. literalinclude:: ../../european_windstorms/Lothar_1999/Lothar_V3vV2c.py
+.. literalinclude:: ../../analyses/european_windstorms/Lothar_1999/Lothar_V3vV2c.py
 

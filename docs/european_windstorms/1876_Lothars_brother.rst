@@ -3,7 +3,7 @@ Lothar's brother (Marzorkan) of 1876
 
 .. seealso:: :doc:`Video version <1876_Lothars_brother_video>`
 
-.. figure:: ../../european_windstorms/Lothars_brother_1876/V3vV2c_Lothars_brother_1876031218.png
+.. figure:: ../../analyses/european_windstorms/Lothars_brother_1876/V3vV2c_Lothars_brother_1876031218.png
    :width: 650px
    :align: center
    :figwidth: 700px
@@ -18,9 +18,9 @@ Storm :doc:`Lothar in 1999 <1999_Lothar_storm>` is the architype of a damaging E
 
 Download the data required:
 
-.. literalinclude:: ../../european_windstorms/Lothars_brother_1876/get_data.py
+.. literalinclude:: ../../analyses/european_windstorms/Lothars_brother_1876/get_data.py
 
 Make the figure:
 
-.. literalinclude:: ../../european_windstorms/Lothars_brother_1876/LB_V3vV2c.py
+.. literalinclude:: ../../analyses/european_windstorms/Lothars_brother_1876/LB_V3vV2c.py
 

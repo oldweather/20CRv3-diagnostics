@@ -3,7 +3,7 @@ North Sea flood of 1953
 
 .. seealso:: :doc:`Video version <1953_north_sea_flood_video>`
 
-.. figure:: ../../european_windstorms/1953_north-sea_flood/V3vV2c_1953_flood_1953020103.png
+.. figure:: ../../analyses/european_windstorms/1953_north-sea_flood/V3vV2c_1953_flood_1953020103.png
    :width: 650px
    :align: center
    :figwidth: 700px
@@ -18,9 +18,9 @@ This storm caused major flooding in several countries. (`Wikipedia  <https://en.
 
 Download the data required:
 
-.. literalinclude:: ../../european_windstorms/1953_north-sea_flood/get_data.py
+.. literalinclude:: ../../analyses/european_windstorms/1953_north-sea_flood/get_data.py
 
 Make the figure:
 
-.. literalinclude:: ../../european_windstorms/1953_north-sea_flood/NSF_V3vV2c.py
+.. literalinclude:: ../../analyses/european_windstorms/1953_north-sea_flood/NSF_V3vV2c.py
 

@@ -3,7 +3,7 @@ Okeechobee Hurricane (1928)
 
 .. seealso:: :doc:`Video version <Okeechobee_Hurricane_video>`
 
-.. figure:: ../../tropical-storms/Okeechobee_Hurricane_1928/V3vV2c_Okeecheobee_1928091212.png
+.. figure:: ../../analyses/tropical-storms/Okeechobee_Hurricane_1928/V3vV2c_Okeecheobee_1928091212.png
    :width: 650px
    :align: center
    :figwidth: 700px
@@ -16,9 +16,9 @@ Okeechobee Hurricane (1928)
 
 Download the data required:
 
-.. literalinclude:: ../../tropical-storms/Okeechobee_Hurricane_1928/get_data.py
+.. literalinclude:: ../../analyses/tropical-storms/Okeechobee_Hurricane_1928/get_data.py
 
 Make the figure:
 
-.. literalinclude:: ../../tropical-storms/Okeechobee_Hurricane_1928/Okeechobee_V3vV2c.py
+.. literalinclude:: ../../analyses/tropical-storms/Okeechobee_Hurricane_1928/Okeechobee_V3vV2c.py
 

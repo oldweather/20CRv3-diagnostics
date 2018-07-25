@@ -18,7 +18,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('./modules'))
+sys.path.insert(0, os.path.abspath('../modules'))
 
 # -- General configuration ------------------------------------------------
 
@@ -125,17 +125,12 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'agogo'
+html_theme = 'sphinxdoc'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-html_theme_options = {
-    'documentwidth': '825px',
-    'textalign': 'left',
-    'headerfont': 'serif',    # Need caps and digits same height (20CR)
-}
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
@@ -152,7 +147,7 @@ html_short_title = '20CRv3'
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 #
-# html_logo = None
+html_logo = 'logo/t2t3.png'
 
 # The name of an image file (relative to this directory) to use as a favicon of
 # the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -184,14 +179,7 @@ html_static_path = ['_static']
 
 # Custom sidebar templates, maps document names to template names.
 #
-#html_sidebars = {
-#    '**': [
-#        'about.html',
-#        'navigation.html',
-#        'relations.html',
-#        'searchbox.html',
-#    ]
-#}
+html_sidebars = {'**': ['globaltoc.html','sourcelink.html']}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
@@ -204,7 +192,7 @@ html_static_path = ['_static']
 
 # If false, no index is generated.
 #
-# html_use_index = True
+html_use_index = False
 
 # If true, the index is split into individual pages for each letter.
 #

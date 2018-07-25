@@ -3,7 +3,7 @@ British Isles in October 1903
 
 .. seealso:: :doc:`Video version <British_Isles_in_Oct_1903_video>`
 
-.. figure:: ../../extreme_months/October_1903/V3vV2c_1903_oct_1903101212.png
+.. figure:: ../../analyses/extreme_months/October_1903/V3vV2c_1903_oct_1903101212.png
    :width: 650px
    :align: center
    :figwidth: 700px
@@ -18,9 +18,9 @@ October 1903 was one of the wettest months in UK history.
 
 Download the data required:
 
-.. literalinclude:: ../../extreme_months/October_1903/get_data.py
+.. literalinclude:: ../../analyses/extreme_months/October_1903/get_data.py
 
 Make the figure:
 
-.. literalinclude:: ../../extreme_months/October_1903/cm_V3vV2c.py
+.. literalinclude:: ../../analyses/extreme_months/October_1903/cm_V3vV2c.py
 

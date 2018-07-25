@@ -3,7 +3,7 @@ Irish Gale of 1843
 
 .. seealso:: :doc:`Video version <1843_Irish_Gale_video>`
 
-.. figure:: ../../european_windstorms/Irish_Gale_1843/V3vV2c_IG_1843011312.png
+.. figure:: ../../analyses/european_windstorms/Irish_Gale_1843/V3vV2c_IG_1843011312.png
    :width: 650px
    :align: center
    :figwidth: 700px
@@ -18,9 +18,9 @@ The 1843 Irish Gale is described in `Stephen Burt's paper on Extreme British Isl
 
 Download the data required:
 
-.. literalinclude:: ../../european_windstorms/Irish_Gale_1843/get_data.py
+.. literalinclude:: ../../analyses/european_windstorms/Irish_Gale_1843/get_data.py
 
 Make the figure:
 
-.. literalinclude:: ../../european_windstorms/Irish_Gale_1843/IG_V3vV2c.py
+.. literalinclude:: ../../analyses/european_windstorms/Irish_Gale_1843/IG_V3vV2c.py
 
