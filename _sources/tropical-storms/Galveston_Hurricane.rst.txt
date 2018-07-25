@@ -3,7 +3,7 @@ Galveston Hurricane (1900)
 
 .. seealso:: :doc:`Video version <Galveston_Hurricane_video>`
 
-.. figure:: ../../tropical-storms/Galveston_Hurricane_1900/V3vV2c_Galveston_1900090806.png
+.. figure:: ../../analyses/tropical-storms/Galveston_Hurricane_1900/V3vV2c_Galveston_1900090806.png
    :width: 650px
    :align: center
    :figwidth: 700px
@@ -16,9 +16,9 @@ Galveston Hurricane (1900)
 
 Download the data required:
 
-.. literalinclude:: ../../tropical-storms/Galveston_Hurricane_1900/get_data.py
+.. literalinclude:: ../../analyses/tropical-storms/Galveston_Hurricane_1900/get_data.py
 
 Make the figure:
 
-.. literalinclude:: ../../tropical-storms/Galveston_Hurricane_1900/Galveston_V3vV2c.py
+.. literalinclude:: ../../analyses/tropical-storms/Galveston_Hurricane_1900/Galveston_V3vV2c.py
 

@@ -3,7 +3,7 @@ North German Express of 1894
 
 .. seealso:: :doc:`Video version <1894_North_German_Express_video>`
 
-.. figure:: ../../european_windstorms/North_German_Express_1894/V3vV2c_NGE_1894021200.png
+.. figure:: ../../analyses/european_windstorms/North_German_Express_1894/V3vV2c_NGE_1894021200.png
    :width: 650px
    :align: center
    :figwidth: 700px
@@ -16,9 +16,9 @@ North German Express of 1894
 
 Download the data required:
 
-.. literalinclude:: ../../european_windstorms/North_German_Express_1894/get_data.py
+.. literalinclude:: ../../analyses/european_windstorms/North_German_Express_1894/get_data.py
 
 Make the figure:
 
-.. literalinclude:: ../../european_windstorms/North_German_Express_1894/NGE_V3vV2c.py
+.. literalinclude:: ../../analyses/european_windstorms/North_German_Express_1894/NGE_V3vV2c.py
 

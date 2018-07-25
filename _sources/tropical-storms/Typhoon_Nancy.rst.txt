@@ -3,7 +3,7 @@ Super-Typhoon Nancy (1961)
 
 .. seealso:: :doc:`Video version <Typhoon_Nancy_video>`
 
-.. figure:: ../../tropical-storms/Typhoon_Nancy_1961/V3vV2c_Typhoon_Nancy_1961091112.png
+.. figure:: ../../analyses/tropical-storms/Typhoon_Nancy_1961/V3vV2c_Typhoon_Nancy_1961091112.png
    :width: 650px
    :align: center
    :figwidth: 700px
@@ -16,9 +16,9 @@ Super-Typhoon Nancy (1961)
 
 Download the data required:
 
-.. literalinclude:: ../../tropical-storms/Typhoon_Nancy_1961/get_data.py
+.. literalinclude:: ../../analyses/tropical-storms/Typhoon_Nancy_1961/get_data.py
 
 Make the figure:
 
-.. literalinclude:: ../../tropical-storms/Typhoon_Nancy_1961/Nancy_V3vV2c.py
+.. literalinclude:: ../../analyses/tropical-storms/Typhoon_Nancy_1961/Nancy_V3vV2c.py
 

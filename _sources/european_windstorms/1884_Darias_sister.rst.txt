@@ -3,7 +3,7 @@ Daria's sister storm of 1884
 
 .. seealso:: :doc:`Video version <1884_Darias_sister_video>`
 
-.. figure:: ../../european_windstorms/Darias_sister_1884/V3vV2c_DS_1884012700.png
+.. figure:: ../../analyses/european_windstorms/Darias_sister_1884/V3vV2c_DS_1884012700.png
    :width: 650px
    :align: center
    :figwidth: 700px
@@ -18,9 +18,9 @@ Storm :doc:`Daria in 1990 <1990_Daria_storm>` is an architype of a damaging Euro
 
 Download the data required:
 
-.. literalinclude:: ../../european_windstorms/Darias_sister_1884/get_data.py
+.. literalinclude:: ../../analyses/european_windstorms/Darias_sister_1884/get_data.py
 
 Make the figure:
 
-.. literalinclude:: ../../european_windstorms/Darias_sister_1884/DS_V3vV2c.py
+.. literalinclude:: ../../analyses/european_windstorms/Darias_sister_1884/DS_V3vV2c.py
 

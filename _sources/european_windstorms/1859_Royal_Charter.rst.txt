@@ -3,7 +3,7 @@ Royal Charter Storm of 1859
 
 .. seealso:: :doc:`Video version <1859_Royal_Charter_video>`
 
-.. figure:: ../../european_windstorms/Royal_Charter_1859/V3vV2c_Royal_Charter_1859102606.png
+.. figure:: ../../analyses/european_windstorms/Royal_Charter_1859/V3vV2c_Royal_Charter_1859102606.png
    :width: 650px
    :align: center
    :figwidth: 700px
@@ -18,9 +18,9 @@ The `Royal Charter Storm <https://en.wikipedia.org/wiki/Royal_Charter_Storm>`_ w
 
 Download the data required:
 
-.. literalinclude:: ../../european_windstorms/Royal_Charter_1859/get_data.py
+.. literalinclude:: ../../analyses/european_windstorms/Royal_Charter_1859/get_data.py
 
 Make the figure:
 
-.. literalinclude:: ../../european_windstorms/Royal_Charter_1859/RCS_V3vV2c.py
+.. literalinclude:: ../../analyses/european_windstorms/Royal_Charter_1859/RCS_V3vV2c.py
 

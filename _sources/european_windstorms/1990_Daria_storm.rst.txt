@@ -3,7 +3,7 @@ Burn's Day (Daria) storm of 1990
 
 .. seealso:: :doc:`Video version <1990_Daria_storm_video>`
 
-.. figure:: ../../european_windstorms/Daria_1990/V3vV2c_Daria_1990012515.png
+.. figure:: ../../analyses/european_windstorms/Daria_1990/V3vV2c_Daria_1990012515.png
    :width: 650px
    :align: center
    :figwidth: 700px
@@ -19,9 +19,9 @@ Burn's Day (Daria) storm of 1990
 
 Download the data required:
 
-.. literalinclude:: ../../european_windstorms/Daria_1990/get_data.py
+.. literalinclude:: ../../analyses/european_windstorms/Daria_1990/get_data.py
 
 Make the figure:
 
-.. literalinclude:: ../../european_windstorms/Daria_1990/Daria_V3vV2c.py
+.. literalinclude:: ../../analyses/european_windstorms/Daria_1990/Daria_V3vV2c.py
 

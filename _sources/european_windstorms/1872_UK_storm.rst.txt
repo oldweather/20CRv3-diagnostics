@@ -3,7 +3,7 @@ UK storm of 1872
 
 .. seealso:: :doc:`Video version <1872_UK_storm_video>`
 
-.. figure:: ../../european_windstorms/UK_storm_1872/V3vV2c_1872011915.png
+.. figure:: ../../analyses/european_windstorms/UK_storm_1872/V3vV2c_1872011915.png
    :width: 650px
    :align: center
    :figwidth: 700px
@@ -16,9 +16,9 @@ UK storm of 1872
 
 Download the data required:
 
-.. literalinclude:: ../../european_windstorms/UK_storm_1872/get_data.py
+.. literalinclude:: ../../analyses/european_windstorms/UK_storm_1872/get_data.py
 
 Make the figure:
 
-.. literalinclude:: ../../european_windstorms/UK_storm_1872/UKS_V3vV2c.py
+.. literalinclude:: ../../analyses/european_windstorms/UK_storm_1872/UKS_V3vV2c.py
 

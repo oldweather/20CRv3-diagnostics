@@ -3,7 +3,7 @@ Ulysses storm of 1903
 
 .. seealso:: :doc:`Video version <1903_Ulysses_storm_video>`
 
-.. figure:: ../../european_windstorms/Ulysses_storm_1903/V3vV2c_Ulysses_storm_1903022706.png
+.. figure:: ../../analyses/european_windstorms/Ulysses_storm_1903/V3vV2c_Ulysses_storm_1903022706.png
    :width: 650px
    :align: center
    :figwidth: 700px
@@ -19,9 +19,9 @@ This storm is a case study for `weatherrescue.org <https://weatherrescue.wordpre
 
 Download the data required:
 
-.. literalinclude:: ../../european_windstorms/Ulysses_storm_1903/get_data.py
+.. literalinclude:: ../../analyses/european_windstorms/Ulysses_storm_1903/get_data.py
 
 Make the figure:
 
-.. literalinclude:: ../../european_windstorms/Ulysses_storm_1903/US_V3vV2c.py
+.. literalinclude:: ../../analyses/european_windstorms/Ulysses_storm_1903/US_V3vV2c.py
 

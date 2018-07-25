@@ -18,15 +18,15 @@ The `Royal Charter Storm <https://en.wikipedia.org/wiki/Royal_Charter_Storm>`_ w
 
 Download the data required:
 
-.. literalinclude:: ../../european_windstorms/Royal_Charter_1859/get_data.py
+.. literalinclude:: ../../analyses/european_windstorms/Royal_Charter_1859/get_data.py
 
 Script to make an individual frame - takes year, month, day, and hour as command-line options:
 
-.. literalinclude:: ../../european_windstorms/Royal_Charter_1859/video/RCS_V3vV2c.py
+.. literalinclude:: ../../analyses/european_windstorms/Royal_Charter_1859/video/RCS_V3vV2c.py
 
 To make the video, it is necessary to run the script above hundreds of times - giving an image for every 15-minute period. The best way to do this is system dependent - the script below does it on the Met Office SPICE cluster - it will need modification to run on any other system. (Could do this on a single PC, but it will take many hours).
 
-.. literalinclude:: ../../european_windstorms/Royal_Charter_1859/video/make_frames.py
+.. literalinclude:: ../../analyses/european_windstorms/Royal_Charter_1859/video/make_frames.py
 
 To turn the thousands of images into a movie, use `ffmpeg <http://www.ffmpeg.org>`_
 
