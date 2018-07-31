@@ -23,4 +23,12 @@ Comparisons of 20CRv3 with 20CRv2c
 Validation against observations
 -------------------------------
 
+The `new observations rescued from the Daily Weather Reports <https://oldweather.github.io/DWR/>`_ have not yet been used by any reanalysis, so they are ideal for validation. Doing the comparison for several different times during the period covered by the new observations shows the effect of varying reanalysis and observation quality.
+
+.. toctree::
+   :maxdepth: 1
+
+   DWR_validation/January_1872/january_1872.rst
+   DWR_validation/February_1953/february_1953.rst
+
 This document and the data associated with it, are crown copyright (2018) and distributed under the terms of the `Open Government Licence <https://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/>`_. All code included is licensed under the terms of the `GNU Lesser General Public License <https://www.gnu.org/licenses/lgpl.html>`_.

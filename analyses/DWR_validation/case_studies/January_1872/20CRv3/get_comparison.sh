@@ -1,0 +1,1 @@
+../../../scripts/get_comparison.py --start="1872010118" --end="1872013118" --skip=ABERDEEN --skip=LISBON --skip=ROCHEFORT --skip=DIYARBAKIR --skip=BAGHDAD  --skip=BASRA --reanalysis=20cr3 --npar=6

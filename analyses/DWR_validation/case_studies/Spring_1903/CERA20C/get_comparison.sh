@@ -1,0 +1,1 @@
+../../../scripts/get_comparison.py --start="1903010118" --end="1903033118" --skip=BODO --skip=HAPARANDA --skip=HERNOSAND --skip=STOCKHOLM --skip=WISBY --skip=FANO --skip=BERLIN --skip=ABERDEEN --skip=VALENCIA --skip=JERSEY --skip=LISBON --reanalysis=cera --npar=6
