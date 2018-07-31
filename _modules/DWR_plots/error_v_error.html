@@ -1,0 +1,249 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>DWR_plots.error_v_error &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">20CRv3</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/t2t3.png" alt="Logo"/>
+            </a></p>
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../credits.html">Authors and acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../instructions.html">How to re-use this</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extract_data/extract_data.html">Extracting data from 20CRv3</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../european_windstorms/european_windstorms.html">European windstorms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extreme_months/extreme_months.html">Extreme months</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../DWR_validation/February_1953/february_1953.html">Validation against observations for February 1953</a></li>
+</ul>
+<h3><a href="https://github.com/oldweather/20CRv3-diagnostics">Get a copy</a></h3>
+
+<ul>
+<li><a href="https://github.com/oldweather/20CRv3-diagnostics"
+           rel="nofollow">Github repository</a></li>
+</ul>
+
+<h3>Found a bug, or have a suggestion?</h3>
+
+Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">raise an issue</a>.
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for DWR_plots.error_v_error</h1><div class="highlight"><pre>
+<span></span><span class="c1"># (C) British Crown Copyright 2017, Met Office</span>
+<span class="c1">#</span>
+<span class="c1"># This code is free software: you can redistribute it and/or modify it under</span>
+<span class="c1"># the terms of the GNU Lesser General Public License as published by the</span>
+<span class="c1"># Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This code is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+
+<span class="c1"># Plot reanalysis pressure and DWR comparisons - error v. error plots.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+
+<div class="viewcode-block" id="plot_eve"><a class="viewcode-back" href="../../DWR_validation/scripts/DWR_plot_module.html#DWR_plots.plot_eve">[docs]</a><span class="k">def</span> <span class="nf">plot_eve</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">dmonth</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot obs-reanalysis against reanalysis sd</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ax (:obj:`cartopy.axes`): Axes to hold the plot</span>
+<span class="sd">        dmonth (:obj:`dict`): Components &#39;ensembles&#39; and &#39;observations&#39; each an array with the ensemble values and observation value at the time and place of each observation. </span>
+
+<span class="sd">    Kwargs:</span>
+<span class="sd">        range (:obj:`list`): data range in scatterplot, default is (0,6).</span>
+<span class="sd">        x_label (:obj:`str`): x label, default is &#39;Ensemble SD (hPa)&#39;.</span>
+<span class="sd">        y_label (:obj:`str`): y label, default is &#39;Ob-Ensemble mean RMS (hPa)&#39;.</span>
+<span class="sd">        point_size (:obj:`float`): Plot plot size, default 10.0.</span>
+<span class="sd">        point_size (:obj:`str`): Plot plot color, default &#39;blue&#39;.</span>
+<span class="sd">        obs_errors (:obj:`list`): Assumed obs errors to show, default is (0,1,2)</span>
+<span class="sd">        nbins (:obj:`int`): Resolution of plot - number of points.</span>
+<span class="sd">    |</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Set keyword argument defaults</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;range&#39;</span><span class="p">,(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">6.0</span><span class="p">))</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;x_label&#39;</span><span class="p">,</span><span class="s1">&#39;Ensemble SD (hPa)&#39;</span><span class="p">)</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;y_label&#39;</span><span class="p">,</span><span class="s1">&#39;Ob-Ensemble mean RMS (hPa)&#39;</span><span class="p">)</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;point_size&#39;</span><span class="p">,</span><span class="mf">100.0</span><span class="p">)</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;point_color&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;obs_errors&#39;</span><span class="p">,(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;nbins&#39;</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+
+    <span class="c1"># x &amp; y-axis</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;range&#39;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;x_label&#39;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;range&#39;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;y_label&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Background line</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;obs_errors&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">o_error</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;obs_errors&#39;</span><span class="p">):</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;range&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                             <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;range&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="n">o_error</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">(</span>
+                        <span class="n">xdata</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+                        <span class="n">ydata</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+                        <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">,</span>
+                        <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">),</span>
+                        <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Calculate std of each ensemble</span>
+    <span class="n">ens_sd</span><span class="o">=</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dmonth</span><span class="p">[</span><span class="s1">&#39;ensembles&#39;</span><span class="p">][</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dmonth</span><span class="p">[</span><span class="s1">&#39;ensembles&#39;</span><span class="p">]))]</span>
+
+    <span class="n">resolution</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nbins&#39;</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nbins&#39;</span><span class="p">)):</span>
+        <span class="n">sd_min</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">ens_sd</span><span class="p">,</span><span class="n">idx</span><span class="o">*</span><span class="n">resolution</span><span class="p">)</span>
+        <span class="n">sd_max</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">ens_sd</span><span class="p">,(</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">resolution</span><span class="p">)</span>
+        <span class="n">selected</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">x_select</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">sdx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ens_sd</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">ens_sd</span><span class="p">[</span><span class="n">sdx</span><span class="p">]</span><span class="o">&gt;=</span><span class="n">sd_min</span> <span class="ow">and</span> <span class="n">ens_sd</span><span class="p">[</span><span class="n">sdx</span><span class="p">]</span><span class="o">&lt;</span><span class="n">sd_max</span><span class="p">:</span>
+                <span class="n">selected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dmonth</span><span class="p">[</span><span class="s1">&#39;ensembles&#39;</span><span class="p">][</span><span class="n">sdx</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span>
+                                <span class="n">dmonth</span><span class="p">[</span><span class="s1">&#39;observations&#39;</span><span class="p">][</span><span class="n">sdx</span><span class="p">])</span>
+                <span class="n">x_select</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ens_sd</span><span class="p">[</span><span class="n">sdx</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">:</span> <span class="k">continue</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x_select</span><span class="p">),</span>
+                   <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">selected</span><span class="p">))),</span>
+                   <span class="n">s</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;point_size&#39;</span><span class="p">),</span>
+                   <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span>
+                   <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                   <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span></div>
+                   <span class="n">c</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;point_color&#39;</span><span class="p">))</span>
+
+<div class="viewcode-block" id="plot_vvv"><a class="viewcode-back" href="../../DWR_validation/scripts/DWR_plot_module.html#DWR_plots.plot_vvv">[docs]</a><span class="k">def</span> <span class="nf">plot_vvv</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">dmonth</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot obs-reanalysis against reanalysis variance</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ax (:obj:`cartopy.axes`): Axes to hold the plot</span>
+<span class="sd">        dmonth (:obj:`dict`): Components &#39;ensembles&#39; and &#39;observations&#39; each an array with the ensemble valuues and observation value at the time and place of each observation. </span>
+
+<span class="sd">    Kwargs:</span>
+<span class="sd">        range (:obj:`list`): data range in scatterplot, default is (0,30).</span>
+<span class="sd">        x_label (:obj:`str`): x label, default is &#39;Ensemble Variance (hPa**2)&#39;.</span>
+<span class="sd">        y_label (:obj:`str`): y label, default is &#39;Ob-Ensemble mean MS (hPa**2)&#39;.</span>
+<span class="sd">        point_size (:obj:`float`): Plot plot size, default 100.0.</span>
+<span class="sd">        point_size (:obj:`str`): Plot plot color, default &#39;blue&#39;.</span>
+<span class="sd">        obs_errors (:obj:`list`): Assumed obs errors to show, default is (0,1,2)</span>
+<span class="sd">        nbins (:obj:`int`): Resolution of plot - number of points.</span>
+<span class="sd">    |</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Set keyword argument defaults</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;range&#39;</span><span class="p">,(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">30.0</span><span class="p">))</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;x_label&#39;</span><span class="p">,</span><span class="s1">&#39;Ensemble Variance (hPa**2)&#39;</span><span class="p">)</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;y_label&#39;</span><span class="p">,</span><span class="s1">&#39;Ob-Ensemble mean MS (hPa**2)&#39;</span><span class="p">)</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;point_size&#39;</span><span class="p">,</span><span class="mf">100.0</span><span class="p">)</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;point_color&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;obs_errors&#39;</span><span class="p">,(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;nbins&#39;</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+
+    <span class="c1"># x &amp; y-axis</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;range&#39;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;x_label&#39;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;range&#39;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;y_label&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Background line</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;obs_errors&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">o_error</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;obs_errors&#39;</span><span class="p">):</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;range&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                             <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;range&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">x</span><span class="o">+</span><span class="n">o_error</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">(</span>
+                        <span class="n">xdata</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+                        <span class="n">ydata</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+                        <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">,</span>
+                        <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">),</span>
+                        <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Calculate variance of each ensemble</span>
+    <span class="n">ens_sd</span><span class="o">=</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">dmonth</span><span class="p">[</span><span class="s1">&#39;ensembles&#39;</span><span class="p">][</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dmonth</span><span class="p">[</span><span class="s1">&#39;ensembles&#39;</span><span class="p">]))]</span>
+
+    <span class="n">resolution</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nbins&#39;</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nbins&#39;</span><span class="p">)):</span>
+        <span class="n">sd_min</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">ens_sd</span><span class="p">,</span><span class="n">idx</span><span class="o">*</span><span class="n">resolution</span><span class="p">)</span>
+        <span class="n">sd_max</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">ens_sd</span><span class="p">,(</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">resolution</span><span class="p">)</span>
+        <span class="n">selected</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">x_select</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">sdx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ens_sd</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">ens_sd</span><span class="p">[</span><span class="n">sdx</span><span class="p">]</span><span class="o">&gt;=</span><span class="n">sd_min</span> <span class="ow">and</span> <span class="n">ens_sd</span><span class="p">[</span><span class="n">sdx</span><span class="p">]</span><span class="o">&lt;</span><span class="n">sd_max</span><span class="p">:</span>
+                <span class="n">selected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dmonth</span><span class="p">[</span><span class="s1">&#39;ensembles&#39;</span><span class="p">][</span><span class="n">sdx</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span>
+                                <span class="n">dmonth</span><span class="p">[</span><span class="s1">&#39;observations&#39;</span><span class="p">][</span><span class="n">sdx</span><span class="p">])</span>
+                <span class="n">x_select</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ens_sd</span><span class="p">[</span><span class="n">sdx</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">:</span> <span class="k">continue</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x_select</span><span class="p">),</span>
+                   <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">selected</span><span class="p">)),</span>
+                   <span class="n">s</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;point_size&#39;</span><span class="p">),</span>
+                   <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span>
+                   <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                   <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+                   <span class="n">c</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;point_color&#39;</span><span class="p">),</span></div>
+                   <span class="n">edgecolors</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;point_color&#39;</span><span class="p">))</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">20CRv3</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    </div>
+  </body>
+</html>
