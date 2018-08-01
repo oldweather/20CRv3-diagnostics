@@ -19,6 +19,7 @@ Comparisons of 20CRv3 with 20CRv2c
    tropical-storms/tropical_storms
    european_windstorms/european_windstorms
    extreme_months/extreme_months
+   north_american_severe_weather/nasw
 
 Validation against observations
 -------------------------------
@@ -29,6 +30,8 @@ The `new observations rescued from the Daily Weather Reports <https://oldweather
    :maxdepth: 1
 
    DWR_validation/January_1872/january_1872.rst
+   DWR_validation/Spring_1903/spring_1903.rst
    DWR_validation/February_1953/february_1953.rst
+   DWR_validation/comparison
 
 This document and the data associated with it, are crown copyright (2018) and distributed under the terms of the `Open Government Licence <https://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/>`_. All code included is licensed under the terms of the `GNU Lesser General Public License <https://www.gnu.org/licenses/lgpl.html>`_.
