@@ -1,0 +1,164 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>20CR3 validation Spread v. Error plot Spring 1903 &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Validating CERA-20C against observations for Spring 1903" href="../CERA-20C/index.html" />
+    <link rel="prev" title="20CR3 validation scatterplot Spring 1903" href="scatterplot.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a></li>
+        <li class="right" >
+          <a href="../CERA-20C/index.html" title="Validating CERA-20C against observations for Spring 1903"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scatterplot.html" title="20CR3 validation scatterplot Spring 1903"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">20CRv3</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../spring_1903.html" >Validation against observations for Spring 1903</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" accesskey="U">Validating 20CR3 against observations for Spring 1903</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/t2t3.png" alt="Logo"/>
+            </a></p>
+<h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../credits.html">Authors and acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../instructions.html">How to re-use this</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../extract_data/extract_data.html">Extracting data from 20CRv3</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../european_windstorms/european_windstorms.html">European windstorms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../extreme_months/extreme_months.html">Extreme months</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../January_1872/january_1872.html">Validation against observations for January 1872</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../spring_1903.html">Validation against observations for Spring 1903</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../February_1953/february_1953.html">Validation against observations for February 1953</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../comparison.html">Validation Spread v. Error plot January 1872 + Spring 1903 + February 1953</a></li>
+</ul>
+<h3><a href="https://github.com/oldweather/20CRv3-diagnostics">Get a copy</a></h3>
+
+<ul>
+<li><a href="https://github.com/oldweather/20CRv3-diagnostics"
+           rel="nofollow">Github repository</a></li>
+</ul>
+
+<h3>Found a bug, or have a suggestion?</h3>
+
+Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">raise an issue</a>.
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cr3-validation-spread-v-error-plot-spring-1903">
+<h1>20CR3 validation Spread v. Error plot Spring 1903<a class="headerlink" href="#cr3-validation-spread-v-error-plot-spring-1903" title="Permalink to this headline">¶</a></h1>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference internal" href="scatter+contour_video.html"><span class="doc">Video contourplot</span></a></li>
+<li><a class="reference internal" href="scatter+contour.html"><span class="doc">Still contourplot</span></a></li>
+<li><a class="reference internal" href="scatterplot.html"><span class="doc">Validation scatterplot</span></a></li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Compare</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="26%" />
+<col width="26%" />
+<col width="26%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>20CR2c</td>
+<td><a class="reference internal" href="../../January_1872/20cr2c/rms_v_rms.html"><span class="doc">January 1872</span></a></td>
+<td><a class="reference internal" href="../20cr2c/rms_v_rms.html"><span class="doc">Spring 1903</span></a></td>
+<td><a class="reference internal" href="../../February_1953/20cr2c/rms_v_rms.html"><span class="doc">February 1953</span></a></td>
+</tr>
+<tr class="row-even"><td>20CR3</td>
+<td><a class="reference internal" href="../../January_1872/20cr3/rms_v_rms.html"><span class="doc">January 1872</span></a></td>
+<td><a class="reference internal" href="#"><span class="doc">Spring 1903</span></a></td>
+<td><a class="reference internal" href="../../February_1953/20cr3/rms_v_rms.html"><span class="doc">February 1953</span></a></td>
+</tr>
+<tr class="row-odd"><td>CERA-20C</td>
+<td>&#160;</td>
+<td><a class="reference internal" href="../CERA-20C/rms_v_rms.html"><span class="doc">Spring 1903</span></a></td>
+<td><a class="reference internal" href="../../February_1953/CERA-20C/rms_v_rms.html"><span class="doc">February 1953</span></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="figure align-center" id="id1" style="width: 700px">
+<a class="reference internal image-reference" href="../../../_images/E_v_E_1903-01-02_to_1903-04-01_20cr3.png"><img alt="../../../_images/E_v_E_1903-01-02_to_1903-04-01_20cr3.png" src="../../../_images/E_v_E_1903-01-02_to_1903-04-01_20cr3.png" style="width: 650px;" /></a>
+<p class="caption"><span class="caption-text">RMS reanalysis difference from observations, against reanalysis spread.</span></p>
+</div>
+<p>If the observations were perfect, and the reanalysis spread was an unbiased estimate of its error, the RMS difference and the spread would be the same at all points. Because the observations have error, the RMS difference should be bigger than the spread, especially at small spread: the three grey lines show the expected relationship for three values of observation error (0, 1 and 2hPa). If the points are above the lines, the reanalysis is overconfident (spread too small) - if they are below the lines it is underconfident (spread too large).</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Download the data (uses <a class="reference internal" href="../../scripts/get_data.html"><span class="doc">this script</span></a>)</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+../../../scripts/get_data.py --reanalysis<span class="o">=</span>20cr3 --start<span class="o">=</span><span class="s2">&quot;1903010118&quot;</span> --end<span class="o">=</span><span class="s2">&quot;1903033118&quot;</span>
+</pre></div>
+</div>
+<p>Extract the reanalysis data associated with each observation (uses <a class="reference internal" href="../../scripts/get_comparison.html"><span class="doc">this script</span></a>)</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>../../../scripts/get_comparison.py --start<span class="o">=</span><span class="s2">&quot;1903010118&quot;</span> --end<span class="o">=</span><span class="s2">&quot;1903033118&quot;</span> --skip<span class="o">=</span>BODO --skip<span class="o">=</span>HAPARANDA --skip<span class="o">=</span>HERNOSAND --skip<span class="o">=</span>STOCKHOLM --skip<span class="o">=</span>WISBY --skip<span class="o">=</span>FANO --skip<span class="o">=</span>BERLIN --skip<span class="o">=</span>ABERDEEN --skip<span class="o">=</span>VALENCIA --skip<span class="o">=</span>JERSEY --skip<span class="o">=</span>LISBON --reanalysis<span class="o">=</span>20cr3 --npar<span class="o">=</span>6
+</pre></div>
+</div>
+<p>Make the figure (uses <a class="reference internal" href="../../scripts/rms_v_rms.html"><span class="doc">this script</span></a>)</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>../../../scripts/rms_v_rms.py --start<span class="o">=</span><span class="s2">&quot;1903010118&quot;</span> --end<span class="o">=</span><span class="s2">&quot;1903033118&quot;</span> --reanalysis<span class="o">=</span>20cr3 --nbins<span class="o">=</span>20
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a></li>
+        <li class="right" >
+          <a href="../CERA-20C/index.html" title="Validating CERA-20C against observations for Spring 1903"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scatterplot.html" title="20CR3 validation scatterplot Spring 1903"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">20CRv3</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../spring_1903.html" >Validation against observations for Spring 1903</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="index.html" >Validating 20CR3 against observations for Spring 1903</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    </div>
+  </body>
+</html>
