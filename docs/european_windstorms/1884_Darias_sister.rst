@@ -4,9 +4,9 @@ Daria's sister storm of 1884
 .. seealso:: :doc:`Video version <1884_Darias_sister_video>`
 
 .. figure:: ../../analyses/european_windstorms/Darias_sister_1884/V3vV2c_DS_1884012700.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for v2c (left) and v3 (right)
 

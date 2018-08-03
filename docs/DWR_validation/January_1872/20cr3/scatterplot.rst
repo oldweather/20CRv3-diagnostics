@@ -25,9 +25,9 @@
 	  - :doc:`February 1953 <../../February_1953/CERA-20C/scatterplot>`
  
 .. figure:: ../../../../analyses/DWR_validation/case_studies/January_1872/20CRv3/Scatter_1872-01-02_to_1872-02-01_20cr3.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    Scatterplot of observed v. reanalysis MSLP
 

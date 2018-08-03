@@ -4,9 +4,9 @@ Okeechobee Hurricane (1928)
 .. seealso:: :doc:`Video version <Okeechobee_Hurricane_video>`
 
 .. figure:: ../../analyses/tropical-storms/Okeechobee_Hurricane_1928/V3vV2c_Okeecheobee_1928091212.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for v2c (left) and v3 (right)
 

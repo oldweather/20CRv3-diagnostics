@@ -4,9 +4,9 @@ Burn's Day (Daria) storm of 1990
 .. seealso:: :doc:`Video version <1990_Daria_storm_video>`
 
 .. figure:: ../../analyses/european_windstorms/Daria_1990/V3vV2c_Daria_1990012515.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for v2c (left) and v3 (right)
 

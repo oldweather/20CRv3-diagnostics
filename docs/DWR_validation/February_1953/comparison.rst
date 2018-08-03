@@ -2,9 +2,9 @@ Validation Spread v. Error plot February 1953
 =============================================
 
 .. figure:: ../../../analyses/DWR_validation/case_studies/February_1953/intercomparison/E_v_E.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    RMS reanalysis difference from observations, against reanalysis spread. For three reanalyses: 20CR2c in black, 20CR3 in red, and CERA-20C in blue. 
 

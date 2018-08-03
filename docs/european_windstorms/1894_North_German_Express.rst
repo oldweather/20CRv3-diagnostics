@@ -4,9 +4,9 @@ North German Express of 1894
 .. seealso:: :doc:`Video version <1894_North_German_Express_video>`
 
 .. figure:: ../../analyses/european_windstorms/North_German_Express_1894/V3vV2c_NGE_1894021200.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for v2c (left) and v3 (right)
 

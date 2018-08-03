@@ -4,9 +4,9 @@ Galveston Hurricane (1900)
 .. seealso:: :doc:`Video version <Galveston_Hurricane_video>`
 
 .. figure:: ../../analyses/tropical-storms/Galveston_Hurricane_1900/V3vV2c_Galveston_1900090806.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for v2c (left) and v3 (right)
 

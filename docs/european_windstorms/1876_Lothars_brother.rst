@@ -4,9 +4,9 @@ Lothar's brother (Marzorkan) of 1876
 .. seealso:: :doc:`Video version <1876_Lothars_brother_video>`
 
 .. figure:: ../../analyses/european_windstorms/Lothars_brother_1876/V3vV2c_Lothars_brother_1876031218.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for v2c (left) and v3 (right)
 
