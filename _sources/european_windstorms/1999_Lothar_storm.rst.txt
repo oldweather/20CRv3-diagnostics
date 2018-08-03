@@ -4,9 +4,9 @@ Lothar storm of 1999
 .. seealso:: :doc:`Video version <1999_Lothar_storm_video>`
 
 .. figure:: ../../analyses/european_windstorms/Lothar_1999/V3vV2c_Lothar_1999122718.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for v2c (left) and v3 (right)
 

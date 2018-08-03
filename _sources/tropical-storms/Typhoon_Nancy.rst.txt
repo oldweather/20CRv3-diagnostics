@@ -4,9 +4,9 @@ Super-Typhoon Nancy (1961)
 .. seealso:: :doc:`Video version <Typhoon_Nancy_video>`
 
 .. figure:: ../../analyses/tropical-storms/Typhoon_Nancy_1961/V3vV2c_Typhoon_Nancy_1961091112.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for v2c (left) and v3 (right)
 

@@ -4,9 +4,9 @@ Royal Charter Storm of 1859
 .. seealso:: :doc:`Video version <1859_Royal_Charter_video>`
 
 .. figure:: ../../analyses/european_windstorms/Royal_Charter_1859/V3vV2c_Royal_Charter_1859102606.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for v2c (left) and v3 (right)
 

@@ -4,9 +4,9 @@ UK storm of 1872
 .. seealso:: :doc:`Video version <1872_UK_storm_video>`
 
 .. figure:: ../../analyses/european_windstorms/UK_storm_1872/V3vV2c_1872011915.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for v2c (left) and v3 (right)
 

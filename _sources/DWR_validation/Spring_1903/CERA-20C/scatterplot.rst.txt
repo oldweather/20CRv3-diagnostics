@@ -25,9 +25,9 @@ CERA-20C validation scatterplot Spring 1903
 	  - :doc:`February 1953 <../../February_1953/CERA-20C/scatterplot>`
  
 .. figure:: ../../../../analyses/DWR_validation/case_studies/Spring_1903/CERA20C/Scatter_1903-01-02_to_1903-04-01_cera.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    Scatterplot of observed v. reanalysis MSLP
 

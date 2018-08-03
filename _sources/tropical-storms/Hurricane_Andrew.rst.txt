@@ -4,9 +4,9 @@ Hurricane Andrew (1992)
 .. seealso:: :doc:`Video version <Hurricane_Andrew_video>`
 
 .. figure:: ../../analyses/tropical-storms/Hurricane_Andrew_1992/V3vV2c_Hurricane_Andrew_1992082318.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for v2c (left) and v3 (right)
 

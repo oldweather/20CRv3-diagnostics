@@ -4,9 +4,9 @@ Ulysses storm of 1903
 .. seealso:: :doc:`Video version <1903_Ulysses_storm_video>`
 
 .. figure:: ../../analyses/european_windstorms/Ulysses_storm_1903/V3vV2c_Ulysses_storm_1903022706.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for v2c (left) and v3 (right)
 

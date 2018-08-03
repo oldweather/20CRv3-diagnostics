@@ -25,9 +25,9 @@
 	  - :doc:`February 1953 <../../February_1953/CERA-20C/scatter+contour>`
  
 .. figure:: ../../../../analyses/DWR_validation/case_studies/January_1872/20CRv2c/Scatter+contour_187201191200.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP contours (left) and at the new station locations (right)
 

@@ -6,9 +6,9 @@ One good thing about the 20CR and CERA-20C reanalyses is that each of them is an
 |
 
 .. figure:: ../analyses/spaghetti_contour/Spaghetti_prmsl_1903102218.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for 20CR2c for October 22nd, 1903 (at 6pm).
 
@@ -23,9 +23,9 @@ To see how well the reanalysis ensemble spread represents its actual uncertainty
 |
 
 .. figure:: ../analyses/scatter+contour/Scatter+contour_1901012218.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP ensemble for 20CR2c, and observations, for January 22nd, 1901 (at 6pm).
 

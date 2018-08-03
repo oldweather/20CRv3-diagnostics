@@ -4,9 +4,9 @@ Irish Gale of 1843
 .. seealso:: :doc:`Video version <1843_Irish_Gale_video>`
 
 .. figure:: ../../analyses/european_windstorms/Irish_Gale_1843/V3vV2c_IG_1843011312.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for v2c (left) and v3 (right)
 

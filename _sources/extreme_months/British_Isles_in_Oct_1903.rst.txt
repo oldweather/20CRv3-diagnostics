@@ -4,9 +4,9 @@ British Isles in October 1903
 .. seealso:: :doc:`Video version <British_Isles_in_Oct_1903_video>`
 
 .. figure:: ../../analyses/extreme_months/October_1903/V3vV2c_1903_oct_1903101212.png
-   :width: 650px
+   :width: 95%
    :align: center
-   :figwidth: 700px
+   :figwidth: 95%
 
    MSLP Contours for v2c (left) and v3 (right)
 
