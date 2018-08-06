@@ -99,7 +99,7 @@ mg.pressure.plot(ax_2c,prmsl_m,scale=0.01,
                    resolution=0.25,
                    levels=numpy.arange(870,1050,10),
                    colors='black',
-                   label=False,
+                   label=True,
                    linewidths=2)
 
 # 20CR2c label
@@ -133,7 +133,7 @@ mg.pressure.plot(ax_3,prmsl_m,scale=0.01,
                    resolution=0.25,
                    levels=numpy.arange(870,1050,10),
                    colors='black',
-                   label=False,
+                   label=True,
                    linewidths=2)
 
 mg.utils.plot_label(ax_3,'20CR v3',

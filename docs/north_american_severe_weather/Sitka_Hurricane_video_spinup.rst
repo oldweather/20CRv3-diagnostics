@@ -14,7 +14,7 @@ Sitka Hurricane (1880) video - spinup version
 
 The thin blue lines are mslp contours from each of 56 ensemble members (all members for v2c, the first 56 members for v3). The thicker black lines are contours of the ensemble mean. The yellow dots mark pressure observations assimilated while making the field shown. 
 
-20CRv3 reconstructed this event twice, one in the stream started in November 1979 (so October 1880 is still in the spinup period) - that's this version. The :doc:`version in the stream starting in November 1874 <Sitka_Hurricane_video>` is not only fully spun-up, but also includes more observations: the observations from the USS Jamestown (at Sitka) were added to those from the Jeannette (Arctic Ocean) and Yukon (North Pacific) in this version.
+20CRv3 reconstructed this event twice, one in the stream started in November 1879 (so October 1880 is still in the spinup period) - that's this version. The :doc:`version in the stream starting in November 1874 <Sitka_Hurricane_video>` is not only fully spun-up, but also includes more observations: the observations from the USS Jamestown (at Sitka) were added to those from the Jeannette (Arctic Ocean) and Yukon (North Pacific) in this version.
 
 `The "Sitka Hurricane" <https://link.springer.com/chapter/10.1007/978-90-481-2828-0_7>`_ was an unusually strong storm that made landfall near Sitka, in Alaska, on October 26, 1880.
 

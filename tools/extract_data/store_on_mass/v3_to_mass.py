@@ -27,6 +27,22 @@ parser.add_argument("--user", help="MASS user name",
                     default='philip.brohan')
 args = parser.parse_args()
 
+# Clunky wrappers around the moose CLI
+def moo_hasdir(dirn):
+    moo_cmd="moo test %s" % dirn
+    proc = subprocess.Popen(moo_cmd,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        shell=True)
+    (out, err) = proc.communicate()
+    if len(err)>0:
+        raise StandardError('moo test error %s' % err)
+    if out=='true\n':
+        return True
+    else:
+        return False
+
+
 # Base location for storage
 mbase="moose:/adhoc/users/%s/20CRV3/" % args.user
 moose_dir=("%s/version_%s/%04d/%02d" %
