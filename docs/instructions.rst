@@ -7,12 +7,13 @@ This document is kept under version control in a `git repository <https://en.wik
 
 If you are familiar with GitHub, you already know `what to do <https://github.com/oldweather/20CRv3-diagnostics>`_: If you'd prefer not to bother with that, you can download the whole dataset as `a zip file <https://github.com/oldweather/20CRv3-diagnostics/archive/master.zip>`_.
 
-To re-run the scripts included, first install two packages this depends on:
+To re-run the scripts included, first install three packages this depends on:
 
-- `IRData <http://brohan.org/IRData/>`_ which provides access to the reanalysis data used, and
-- `Meteographica <https://brohan.org/Meteorographica/>`_ for plotting weather maps
+- `IRData <http://brohan.org/IRData/>`_ which provides access to the reanalysis data used,
+- `Meteographica <https://brohan.org/Meteorographica/>`_ for plotting weather maps,
+- `The DWR dataset <https://oldweather.github.io/DWR/>`_ containing the newly-digitised British Isles observations.
 
-then install the libraries included in this package:
+Then install the libraries included in this package:
 
 .. code-block:: sh
 
