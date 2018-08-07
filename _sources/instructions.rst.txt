@@ -1,7 +1,7 @@
 How to use this dataset
 =======================
 
-This document is hard to reproduce, as it uses on pre-release data, which is not widely available. 
+This document is hard to reproduce, as it uses pre-release data, which is not widely available. 
 
 This document is kept under version control in a `git repository <https://en.wikipedia.org/wiki/Git>`_. The repository is hosted on `GitHub <https://github.com/>`_ (and the documentation made with `GitHub Pages <https://pages.github.com/>`_). The repository is `<https://github.com/oldweather/20CRv3-diagnostics>`_. This repository contains everything you need to reproduce or extend this work **except** the 20CRv3 data, which is not yet released.
 
