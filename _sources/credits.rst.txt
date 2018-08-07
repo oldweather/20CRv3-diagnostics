@@ -1,7 +1,7 @@
 Authors and acknowledgements
 ============================
 
-This document is currently maintained by Philip Brohan (philip.brohan @ metoffice.gov.uk). All criticism should be directed to him - put please **don't** send email, `raise an issue <https://github.com/https://github.com/oldweather/20CRv3-diagnostics/issues/new>`_ instead.
+This document is currently maintained by Philip Brohan (philip.brohan @ metoffice.gov.uk). All criticism should be directed to him - put please **don't** send email, `raise an issue <https://github.com/oldweather/20CRv3-diagnostics/issues/new>`_ instead.
 
 |
 

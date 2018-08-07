@@ -47,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="tropical-storms/tropical_storms.html">Tropical Storms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="european_windstorms/european_windstorms.html">European windstorms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extreme_months/extreme_months.html">Extreme months</a></li>
+<li class="toctree-l1"><a class="reference internal" href="north_american_severe_weather/nasw.html">North American severe weather</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
@@ -77,12 +78,13 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <p>This document is hard to reproduce, as it uses on pre-release data, which is not widely available.</p>
 <p>This document is kept under version control in a <a class="reference external" href="https://en.wikipedia.org/wiki/Git">git repository</a>. The repository is hosted on <a class="reference external" href="https://github.com/">GitHub</a> (and the documentation made with <a class="reference external" href="https://pages.github.com/">GitHub Pages</a>). The repository is <a class="reference external" href="https://github.com/oldweather/20CRv3-diagnostics">https://github.com/oldweather/20CRv3-diagnostics</a>. This repository contains everything you need to reproduce or extend this work <strong>except</strong> the 20CRv3 data, which is not yet released.</p>
 <p>If you are familiar with GitHub, you already know <a class="reference external" href="https://github.com/oldweather/20CRv3-diagnostics">what to do</a>: If you’d prefer not to bother with that, you can download the whole dataset as <a class="reference external" href="https://github.com/oldweather/20CRv3-diagnostics/archive/master.zip">a zip file</a>.</p>
-<p>To re-run the scripts included, first install two packages this depends on:</p>
+<p>To re-run the scripts included, first install three packages this depends on:</p>
 <ul class="simple">
-<li><a class="reference external" href="http://brohan.org/IRData/">IRData</a> which provides access to the reanalysis data used, and</li>
-<li><a class="reference external" href="https://brohan.org/Meteorographica/">Meteographica</a> for plotting weather maps</li>
+<li><a class="reference external" href="http://brohan.org/IRData/">IRData</a> which provides access to the reanalysis data used,</li>
+<li><a class="reference external" href="https://brohan.org/Meteorographica/">Meteographica</a> for plotting weather maps,</li>
+<li><a class="reference external" href="https://oldweather.github.io/DWR/">The DWR dataset</a> containing the newly-digitised British Isles observations.</li>
 </ul>
-<p>then install the libraries included in this package:</p>
+<p>Then install the libraries included in this package:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python setup.py install --user
 </pre></div>
 </div>
