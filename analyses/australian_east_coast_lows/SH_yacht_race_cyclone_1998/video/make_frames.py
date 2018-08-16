@@ -14,13 +14,13 @@ opdir="%s/slurm_output" % os.getenv('SCRATCH')
 if not os.path.isdir(opdir):
     os.makedirs(opdir)
 
-start_day=datetime.datetime(1880, 10, 22, 0)
-end_day  =datetime.datetime(1880, 10, 27, 23)
+start_day=datetime.datetime(1998, 12, 26, 0)
+end_day  =datetime.datetime(1998, 12, 28, 23)
 
 # Function to check if the job is already done for this timepoint
 def is_done(year,month,day,hour):
-    op_file_name=("%s/images/Sitka_Hurricane/" +
-                  "V3vV2c_Sitka_Hurricane_%04d%02d%02d%02d%02d.png") % (
+    op_file_name=("%s/images/SH_Yacht_Race/" +
+                  "V3vV2c_SH_Yacht_Race_%04d%02d%02d%02d%02d.png") % (
                             os.getenv('SCRATCH'),
                             year,month,day,int(hour),
                                         int(hour%1*60))
@@ -36,7 +36,7 @@ while current_day<=end_day:
     while max_new_jobs>0 and current_day<=end_day:
         f=open("multirun.slm","w+")
         f.write('#!/bin/ksh -l\n')
-        f.write('#SBATCH --output=%s/SH_frame_%04d%02d%02d%02d.out\n' %
+        f.write('#SBATCH --output=%s/YR_frame_%04d%02d%02d%02d.out\n' %
                    (opdir,
                     current_day.year,current_day.month,
                     current_day.day,current_day.hour))
@@ -50,7 +50,7 @@ while current_day<=end_day:
             if is_done(current_day.year,current_day.month,
                            current_day.day,current_day.hour+fraction):
                 continue
-            cmd=("./SH_V3vV2c_test_contour.py --year=%d --month=%d" +
+            cmd=("./YR_V3vV2c.py --year=%d --month=%d" +
                 " --day=%d --hour=%f &\n") % (
                    current_day.year,current_day.month,
                    current_day.day,current_day.hour+fraction)

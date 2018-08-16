@@ -7,6 +7,7 @@ import os
 import subprocess
 import os.path
 import glob
+import afterburner.io.moose2 as moose
 
 # What to store
 import argparse
@@ -27,46 +28,30 @@ parser.add_argument("--user", help="MASS user name",
                     default='philip.brohan')
 args = parser.parse_args()
 
-# Clunky wrappers around the moose CLI
-def moo_hasdir(dirn):
-    moo_cmd="moo test %s" % dirn
-    proc = subprocess.Popen(moo_cmd,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                        shell=True)
-    (out, err) = proc.communicate()
-    if len(err)>0:
-        raise StandardError('moo test error %s' % err)
-    if out=='true\n':
-        return True
-    else:
-        return False
-
+# Check moose availability
+if not moose.has_moose_support():
+    raise StandardError("Moose unavailable")
+if not moose.check_moose_commands_enabled(moose.MOOSE_LS):
+    raise StandardError("'moo ls' disabled")
+if not moose.check_moose_commands_enabled(moose.MOOSE_PUT):
+    raise StandardError("'moo put' disabled")
 
 # Base location for storage
 mbase="moose:/adhoc/users/%s/20CRV3/" % args.user
 moose_dir=("%s/version_%s/%04d/%02d" %
                 (mbase,args.version,args.year,args.month))
+if moose.run_moose_command('moo test %s' % moose_dir)[0]!='true':
 # Make the moose directory
-proc = subprocess.Popen("moo mkdir -p %s" % moose_dir,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                        shell=True)
-# If the directory already exists, this will throw an error
-#  otherwise it will create the directory
-(out, err) = proc.communicate()
+    moose.run_moose_command("moo mkdir -p %s" % moose_dir)
 
 # Disc data dir
-ddir="%s/20CR/version_%s/" % (os.environ['SCRATCH'],args.version)
+ddir="%s/20CR/version_%s" % (os.environ['SCRATCH'],args.version)
 
 # Archive the observations
 def archive_obs(year,month,version,variable):
-    proc = subprocess.Popen("moo ls %s/observations.tgz" % moose_dir,
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                            shell=True)
-    (out, err) = proc.communicate()
-    if len(err)==0: return()  # Already archived
+    if moose.run_moose_command("moo test -f %s/observations.tgz" % 
+                               moose_dir)[0]=='true':
+        return()  # Already archived
 
     # Are there any observations to archive?
     ofiles=glob.glob("%s/observations/%04d/%04d%02d*.txt" %
@@ -92,39 +77,24 @@ def archive_obs(year,month,version,variable):
         raise StandardError("Failed to tar observations")
 
     # Stow the ob file on MASS
-    proc = subprocess.Popen("moo put %s %s/observations.tgz" % 
-                                              (otarf,moose_dir),
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE,
-                               shell=True)
-    (out, err) = proc.communicate()
-    if len(err)!=0:
-        print err
-        raise StandardError("Failed to archive observations %s" % otarf)
+    moose.put("%s/observations/%04d" % (ddir,year),
+              ['observations.tgz'],
+              moose_dir)
 
     # Clean up
     os.remove(otarf)
 
 # Archive a variable file
 def archive_variable(year,month,version,variable):
-    proc = subprocess.Popen("moo ls %s/%s.nc" % (moose_dir,variable),
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                            shell=True)
-    (out, err) = proc.communicate()
-    if len(err)==0: return()  # Already archived
+    if moose.run_moose_command("moo test %s/%s.nc" % 
+                               (moose_dir,variable))[0]=='true':
+        return()  # Already archived
     vf="%s/%04d/%02d/%s.nc" % (ddir,year,month,variable)
     if not os.path.isfile(vf):
         raise StandardError("No data file %s" % vf)
-    proc = subprocess.Popen("moo put %s %s/%s.nc" % 
-                             (vf,moose_dir,variable),
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,
-                             shell=True)
-    (out, err) = proc.communicate()
-    if len(err) !=0:
-        print err
-        raise StandardError("Failed to archive %s" % vf)
+    moose.put("%s/%04d/%02d" % (ddir,year,month),
+              ["%s.nc" % variable],
+              moose_dir) 
 
 
 if args.variable=='all':
