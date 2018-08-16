@@ -40,6 +40,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../european_windstorms/european_windstorms.html">European windstorms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../extreme_months/extreme_months.html">Extreme months</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nasw.html">North American severe weather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../australian_east_coast_lows/aecl.html">Australian east coast lows</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
@@ -305,7 +306,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
             <span class="k">if</span> <span class="n">is_done</span><span class="p">(</span><span class="n">current_day</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
                            <span class="n">current_day</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">hour</span><span class="o">+</span><span class="n">fraction</span><span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="n">cmd</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;./SH_V3vV2c.py --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">+</span>
+            <span class="n">cmd</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;./SH_V3vV2c_test_contour.py --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">+</span>
                 <span class="s2">&quot; --day=</span><span class="si">%d</span><span class="s2"> --hour=</span><span class="si">%f</span><span class="s2"> &amp;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
                    <span class="n">current_day</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
                    <span class="n">current_day</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">hour</span><span class="o">+</span><span class="n">fraction</span><span class="p">)</span>

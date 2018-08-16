@@ -20,6 +20,8 @@ Comparisons of 20CRv3 with 20CRv2c
    european_windstorms/european_windstorms
    extreme_months/extreme_months
    north_american_severe_weather/nasw
+   australian_east_coast_lows/aecl
+   
 
 Validation against observations
 -------------------------------
