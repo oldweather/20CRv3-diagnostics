@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import IRData.twcr as twcr
 import datetime
 

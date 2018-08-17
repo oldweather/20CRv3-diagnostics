@@ -14,6 +14,8 @@ Galveston Hurricane (1900)
 
 |
 
+The data shown here is from the production 20CRv3 stream started in September 1894. Data for this period is also available in the subsequent stream starting in September 1899, but we expect it to be :doc:`still spinning-up <Galveston_Hurricane_spinup>`.
+
 Download the data required:
 
 .. literalinclude:: ../../analyses/tropical-storms/Galveston_Hurricane_1900/get_data.py

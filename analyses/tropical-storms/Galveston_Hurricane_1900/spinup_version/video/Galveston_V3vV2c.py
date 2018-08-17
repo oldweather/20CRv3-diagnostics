@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
 # US region weather plot 
-# Compare pressures from 20CRV3 and 20CRV2c
+# Compare pressures from 20CRV3 spinup and production
+# Video version.
 
+import os
 import math
 import datetime
 import numpy
@@ -22,15 +24,32 @@ import cartopy.crs as ccrs
 import Meteorographica as mg
 import IRData.twcr as twcr
 
-# Date to show
-year=1900
-month=9
-day=8
-hour=06
-dte=datetime.datetime(year,month,day,hour)
+# Get the datetime to plot from commandline arguments
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--year", help="Year",
+                    type=int,required=True)
+parser.add_argument("--month", help="Integer month",
+                    type=int,required=True)
+parser.add_argument("--day", help="Day of month",
+                    type=int,required=True)
+parser.add_argument("--hour", help="Time of day (0 to 23.99)",
+                    type=float,required=True)
+parser.add_argument("--opdir", help="Directory for output files",
+                    default="%s/images/Galveston_Hurricane_sp" % \
+                                           os.getenv('SCRATCH'),
+                    type=str,required=False)
+args = parser.parse_args()
+if not os.path.isdir(args.opdir):
+    os.makedirs(args.opdir)
 
-# Landscape page
-fig=Figure(figsize=(22,22/math.sqrt(2)),  # Width, Height (inches)
+dte=datetime.datetime(args.year,args.month,args.day,
+                      int(args.hour),int(args.hour%1*60))
+
+
+# HD video size 1920x1080
+aspect=16.0/9.0
+fig=Figure(figsize=(10.8*aspect,10.8),  # Width, Height (inches)
            dpi=100,
            facecolor=(0.88,0.88,0.88,1),
            edgecolor=None,
@@ -43,7 +62,7 @@ canvas=FigureCanvas(fig)
 # US-centred projection
 projection=ccrs.RotatedPole(pole_longitude=110, pole_latitude=56)
 scale=30
-extent=[scale*-1,scale,scale*-1*math.sqrt(2),scale*math.sqrt(2)]
+extent=[scale*-1*aspect/2,scale*aspect/2,scale*-1,scale]
 
 # Two side-by-side plots
 ax_2c=fig.add_axes([0.01,0.01,0.485,0.98],projection=projection)
@@ -61,8 +80,8 @@ mg.background.add_grid(ax_3)
 land_img_2c=ax_2c.background_img(name='GreyT', resolution='low')
 land_img_3=ax_3.background_img(name='GreyT', resolution='low')
 
-# Add the observations from 2c
-obs=twcr.load_observations_fortime(dte,version='2c')
+# Add the observations from spinup
+obs=twcr.load_observations_fortime(dte,version='4.5.1.spinup')
 mg.observations.plot(ax_2c,obs,radius=0.15)
 # Highlight the Hurricane obs
 obs_h=obs[obs.Name=='NOT NAMED']
@@ -70,11 +89,12 @@ if not obs_h.empty:
     mg.observations.plot(ax_2c,obs_h,radius=0.25,facecolor='red',
                          zorder=100)
 
-# load the 2c pressures
-prmsl=twcr.load('prmsl',dte,version='2c')
+# load the spinup pressures
+prmsl=twcr.load('prmsl',dte,version='4.5.1.spinup')
 
 # Contour spaghetti plot of ensemble members
-mg.pressure.plot(ax_2c,prmsl,scale=0.01,type='spaghetti',
+prmsl_r=prmsl.extract(iris.Constraint(member=range(0,56)))
+mg.pressure.plot(ax_2c,prmsl_r,scale=0.01,type='spaghetti',
                    resolution=0.25,
                    levels=numpy.arange(870,1050,10),
                    colors='blue',
@@ -87,11 +107,11 @@ mg.pressure.plot(ax_2c,prmsl_m,scale=0.01,
                    resolution=0.25,
                    levels=numpy.arange(870,1050,10),
                    colors='black',
-                   label=True,
+                   label=False,
                    linewidths=2)
 
 # 20CR2c label
-mg.utils.plot_label(ax_2c,'20CR 2c',
+mg.utils.plot_label(ax_2c,'20CR3 spinup',
                      facecolor=fig.get_facecolor(),
                      x_fraction=0.02,
                      horizontalalignment='left')
@@ -126,20 +146,22 @@ mg.pressure.plot(ax_3,prmsl_m,scale=0.01,
                    resolution=0.25,
                    levels=numpy.arange(870,1050,10),
                    colors='black',
-                   label=True,
+                   label=False,
                    linewidths=2)
 
-mg.utils.plot_label(ax_3,'20CR v3',
+mg.utils.plot_label(ax_3,'20CR3 production',
                      facecolor=fig.get_facecolor(),
                      x_fraction=0.02,
                      horizontalalignment='left')
 
 mg.utils.plot_label(ax_3,
-              '%04d-%02d-%02d:%02d' % (year,month,day,hour),
+              ('%04d-%02d-%02d:%02d' % 
+               (args.year,args.month,args.day,args.hour)),
               facecolor=fig.get_facecolor(),
               x_fraction=0.98,
               horizontalalignment='right')
 
 # Output as png
-fig.savefig('V3vV2c_Galveston_%04d%02d%02d%02d.png' % 
-                                  (year,month,day,hour))
+fig.savefig('%s/V3vV2c_Galveston_sp_%04d%02d%02d%02d%02d.png' % 
+               (args.opdir,args.year,args.month,args.day,
+                           int(args.hour),int(args.hour%1*60)))

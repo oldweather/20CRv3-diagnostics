@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # US region weather plot 
-# Compare pressures from 20CRV3 and 20CRV2c
+# Compare pressures from 20CRV3 spinup and operational versions
 
 import math
 import datetime
@@ -61,8 +61,8 @@ mg.background.add_grid(ax_3)
 land_img_2c=ax_2c.background_img(name='GreyT', resolution='low')
 land_img_3=ax_3.background_img(name='GreyT', resolution='low')
 
-# Add the observations from 2c
-obs=twcr.load_observations_fortime(dte,version='2c')
+# Add the observations from spinup
+obs=twcr.load_observations_fortime(dte,version='4.5.1.spinup')
 mg.observations.plot(ax_2c,obs,radius=0.15)
 # Highlight the Hurricane obs
 obs_h=obs[obs.Name=='NOT NAMED']
@@ -70,11 +70,12 @@ if not obs_h.empty:
     mg.observations.plot(ax_2c,obs_h,radius=0.25,facecolor='red',
                          zorder=100)
 
-# load the 2c pressures
-prmsl=twcr.load('prmsl',dte,version='2c')
+# load the spinup pressures
+prmsl=twcr.load('prmsl',dte,version='4.5.1.spinup')
 
 # Contour spaghetti plot of ensemble members
-mg.pressure.plot(ax_2c,prmsl,scale=0.01,type='spaghetti',
+prmsl_r=prmsl.extract(iris.Constraint(member=range(0,56)))
+mg.pressure.plot(ax_2c,prmsl_r,scale=0.01,type='spaghetti',
                    resolution=0.25,
                    levels=numpy.arange(870,1050,10),
                    colors='blue',
@@ -91,7 +92,7 @@ mg.pressure.plot(ax_2c,prmsl_m,scale=0.01,
                    linewidths=2)
 
 # 20CR2c label
-mg.utils.plot_label(ax_2c,'20CR 2c',
+mg.utils.plot_label(ax_2c,'20CR3 spinup',
                      facecolor=fig.get_facecolor(),
                      x_fraction=0.02,
                      horizontalalignment='left')
@@ -129,7 +130,7 @@ mg.pressure.plot(ax_3,prmsl_m,scale=0.01,
                    label=True,
                    linewidths=2)
 
-mg.utils.plot_label(ax_3,'20CR v3',
+mg.utils.plot_label(ax_3,'20CR3 production',
                      facecolor=fig.get_facecolor(),
                      x_fraction=0.02,
                      horizontalalignment='left')
