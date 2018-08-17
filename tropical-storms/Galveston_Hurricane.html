@@ -56,6 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../european_windstorms/european_windstorms.html">European windstorms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../extreme_months/extreme_months.html">Extreme months</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../north_american_severe_weather/nasw.html">North American severe weather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../australian_east_coast_lows/aecl.html">Australian east coast lows</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
@@ -96,8 +97,11 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<p>The data shown here is from the production 20CRv3 stream started in September 1894. Data for this period is also available in the subsequent stream starting in September 1899, but we expect it to be <a class="reference internal" href="Galveston_Hurricane_spinup.html"><span class="doc">still spinning-up</span></a>.</p>
 <p>Download the data required:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">IRData.twcr</span> <span class="k">as</span> <span class="nn">twcr</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">import</span> <span class="nn">IRData.twcr</span> <span class="k">as</span> <span class="nn">twcr</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="k">for</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;2c&#39;</span><span class="p">,</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">):</span>
@@ -109,7 +113,9 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
 </pre></div>
 </div>
 <p>Make the figure:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># US region weather plot </span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="c1"># US region weather plot </span>
 <span class="c1"># Compare pressures from 20CRV3 and 20CRV2c</span>
 
 <span class="kn">import</span> <span class="nn">math</span>

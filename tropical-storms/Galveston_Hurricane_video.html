@@ -39,6 +39,8 @@
 <li class="toctree-l1"><a class="reference internal" href="tropical_storms.html">Tropical Storms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../european_windstorms/european_windstorms.html">European windstorms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../extreme_months/extreme_months.html">Extreme months</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../north_american_severe_weather/nasw.html">North American severe weather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../australian_east_coast_lows/aecl.html">Australian east coast lows</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
@@ -68,7 +70,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <h1>Galveston Hurricane (1900) video<a class="headerlink" href="#galveston-hurricane-1900-video" title="Permalink to this headline">¶</a></h1>
 <center>
 <table><tr><td><center>
-<iframe src="https://player.vimeo.com/video/264026723?title=0&byline=0&portrait=0" width="795" height="448" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></center></td></tr>
+<iframe src="https://player.vimeo.com/video/285501368?title=0&byline=0&portrait=0" width="795" height="448" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></center></td></tr>
 <tr><td><center>MSLP Contours for v2c (left) and v3 (right)</center></td></tr>
 </table>
 </center><p>The thin blue lines are mslp contours from each of 56 ensemble members (all members for v2c, the first 56 members for v3). The thicker black lines are contours of the ensemble mean. The yellow dots mark pressure observations assimilated while making the field shown. The red dots are the IBTRACS best-track observations for unnamed tropical storms - the southernmost is the <a class="reference external" href="https://en.wikipedia.org/wiki/1900_Galveston_hurricane">Galveston Hurricane</a>.</p>
@@ -77,7 +79,9 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <div class="line"><br /></div>
 </div>
 <p>Download the data required:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">IRData.twcr</span> <span class="k">as</span> <span class="nn">twcr</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">import</span> <span class="nn">IRData.twcr</span> <span class="k">as</span> <span class="nn">twcr</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="k">for</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;2c&#39;</span><span class="p">,</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">):</span>
