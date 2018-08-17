@@ -7,6 +7,7 @@ Tropical Storms
    Hurricane_Andrew
    Typhoon_Nancy
    Hurricane_Carla
+   Gold_Coast_Cyclone
    Okeechobee_Hurricane
    Galveston_Hurricane
 
