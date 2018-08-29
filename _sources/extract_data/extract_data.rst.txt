@@ -23,7 +23,15 @@ The conversion scripts use the NCAR library and the netcdf operators, these need
    module load ncar
    module load nco
 
-Look for the scripts in directory '/global/homes/p/pbrohan/Projects/20CRv3-diagnostics/extract_data/' (or `clone this repository <https://github.com/oldweather/20CRv3-diagnostics>`_).
+The data extraction scripts use `wgrib2 <http://www.cpc.ncep.noaa.gov/products/wesley/wgrib2/>`_ and by default this will use all the cores on the system it is running on, in an attempt to go faster. If you are using a (shared) login node, this is not what you want (and will get you shouted at by the sysops). Tell it to only use one core:
+
+.. code-block:: bash
+
+   export OMP_NUM_THREADS=1
+
+(If you are running the scripts in a job, on a dedicated node, you may get a useful speedup by setting this to a larger number).
+
+Look for the scripts in directory '/global/homes/p/pbrohan/Projects/20CRv3-diagnostics/tools/extract_data/' (or `clone this repository <https://github.com/oldweather/20CRv3-diagnostics>`_).
 
 Find the model output files
 ---------------------------
@@ -66,6 +74,8 @@ If the data are not yet on tape, only on disc, then they are in grib1 format - c
 
 In all cases the data transfer will take several hours.
 
+A full month's 20CR output is a *lot* of data, and if you do this data extraction for more than a couple of months you will exceed your allocation on SCRATCH (and be shouted at by the sysops). Once you've done the data extraction (below) it's a good idea to clean out '$SCRATCH/20CR_working' and '$SCRATCH/20CR_working_orig'
+
 Strip output for one variable and convert to netCDF
 ---------------------------------------------------
 
@@ -77,7 +87,7 @@ Analysis variables are obtained from the 'pgrbanl' files. For the grib2 data, th
 
     v3_release/extract_anl_var.py --startyear=1899 --year=1903 --month=10 --version=451 --var=prmsl
 
---var must be one of 'prmsl', 'air.2m', 'uwnd.10m', 'vwnd.10m', 'air.sfc', and 'icec'.
+--var must be one of 'prmsl', 'air.2m', 'uwnd.10m', 'vwnd.10m', 'air.sfc', and 'icec'. If you want anything else you will have to edit the script (please send a `pull request <http://oss-watch.ac.uk/resources/pullrequest>`_ with your improved version).
 
 Forecast variables are obtained from the 'pgrbanl' and 'pgrbfg' files. For the grib2 data, the :doc:`script that extracts and converts them <release_extract_fg_var>` is called as:
 
@@ -96,7 +106,7 @@ These scripts will also take some time to run (at least 2 hours).
 Assemble the observations files
 -------------------------------
 
-The observations feedback files are text files (the the format is different to v2c), so it's just a matter of copying them to the output directory. The :doc:`script to do that (for the grib2 data) <release_extract_obs>` is called as:
+The observations feedback files are text files (though the format is different to v2c), so it's just a matter of copying them to the output directory. The :doc:`script to do that (for the grib2 data) <release_extract_obs>` is called as:
 
 .. code-block:: bash
 
@@ -106,7 +116,23 @@ and the :doc:`analagous script for grib1 <orig_extract_obs>` is in directory v3_
 
 These scripts only take a couple of minutes to run.
 
-ToDo
-----
+Optimisation
+------------
 
-These scripts work fine, but the process is fiddly and slow. An obvious improvement is to write a single script that automatically detects the data source, and then runs a sequence of jobs to do the extraction, working in parallel where possible. I failed at this, as running multiple extractions in parallel makes them **very** slow (possibly because of file-system contention). Some cunning will be necessary to produce an efficient script, and so far I have not bothered.
+You can run all these scripts in sequence on a login node, and it will work fine, but it's a hassle, and performance is variable depending on system load. A simpler aproach is to submit jobs to do the work, and this can be much faster as the extractions can be run in parallel.
+
+First, submit an xfer job to get the data off tape. The :doc:`script to do that <from_tape_job>` is:
+
+.. code-block:: bash
+
+    from_tape_job.py --startyear=1899 --year=1903 --month=10 --version=451
+
+When that job has completed, submit a regular job to extract and convert the data. The :doc:`script to do that <conversion_job>` is:
+
+.. code-block:: bash
+
+    conversion_job.py --startyear=1899 --year=1903 --month=10 --version=451
+
+which wil extract and convert all the standard surface variables. As it uses so few resources, it will usually start running soon after being submitted, but this depends on the system load and the job queue.
+
+These two scripts are the same for the grib1 and grib2 data. Run them from the approprate directory (v3_release or v3_orig) to determine which set of conversion scripts are used.
