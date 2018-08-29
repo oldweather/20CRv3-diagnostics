@@ -19,17 +19,22 @@ parser.add_argument("--version", help="Version to extract",
 args = parser.parse_args()
 
 tfile=tempfile.NamedTemporaryFile(delete=False)
-tfile.write('#!/bin/bash -l\n')
-tfile.write("#SBATCH --output=%s/slurm_output/v3_conversion-%d-%d-%%j.out\n" %
-                (os.getenv('SCRATCH'),args.year,args.month))
+tfile.write('#!/bin/bash\n')
+tfile.write("#SBATCH --output=v3_conversion-%d-%d-%%j.out\n" %
+                (args.year,args.month))
 tfile.write('#SBATCH -p regular\n')
 tfile.write('#SBATCH -C knl\n')
 tfile.write('#SBATCH -N 1\n')
-tfile.write('#SBATCH -t 7:30:00\n')
+tfile.write('#SBATCH -t 5:30:00\n')
 tfile.write("#SBATCH -J V3co%04d%02d\n" % (args.year,args.month))
-tfile.write('#SBATCH -L SCRATCH\n')
-tfile.write('module load ncl\n')
-tfile.write('module load python\n')
+tfile.write('#SBATCH -L SCRATCH\n\n')
+tfile.write('module load ncar\n')
+tfile.write('module load nco\n')
+tfile.write('module load python\n\n')
+tfile.write('mkdir -p %s/20CRv3.final/version_%d.%d.%d/%02d/%02d\n' % (os.getenv('SCRATCH'),int(args.version/100),
+                                                               int((args.version%100)/10),int(args.version%10),
+                                                               args.year,args.month))
+tfile.write('export OMP_NUM_THREADS=10\n\n')
 tfile.write('./extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=prmsl &\n' % (args.startyear,args.year,args.month,args.version))
 tfile.write('./extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=air.2m &\n' % (args.startyear,args.year,args.month,args.version))
 tfile.write('./extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=uwnd.10m &\n' % (args.startyear,args.year,args.month,args.version))
@@ -40,6 +45,12 @@ tfile.write('./extract_fg_var.py --startyear=%d --year=%d --month=%d --version=%
 tfile.write('./extract_obs.py --startyear=%d --year=%d --month=%d --version=%d &\n' % (args.startyear,args.year,args.month,args.version))
 tfile.write('wait\n')
 tfile.close
-print tfile.name
+
+proc = subprocess.Popen('sbatch %s' % tfile.name)
+(out, err) = proc.communicate()
+if out is not None or err is not None:
+    raise StandardError("Failed to submit %s" % tfile.name)
+
+os.remove(tfile.name)
 
 	 

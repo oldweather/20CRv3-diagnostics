@@ -14,4 +14,4 @@ All criticism should go to the maintainer; credit is more widely distributed:
 * Observations used for validation come from the `DWR dataset <https://oldweather.github.io/DWR/>`_.
 * Software used includes `IRData <http://brohan.org/IRData/>`_ for data access, `Meteographica <https://brohan.org/Meteorographica/>`_ for weather maps, and `SciPy <https://www.scipy.org/>`_.
 
- Note that appearance on this list does not mean that the person or organisation named endorses this work, agrees with any of it, or even knows of its existence.
+Note that appearance on this list does not mean that the person or organisation named endorses this work, agrees with any of it, or even knows of its existence.
