@@ -4,6 +4,7 @@
 
 import tempfile
 import argparse
+import subprocess
 import os
 
 parser = argparse.ArgumentParser()
@@ -29,9 +30,9 @@ tfile.write('#SBATCH -L SCRATCH\n')
 tfile.write('module load python\n')
 tfile.write('./month_from_tape.py --startyear=%d --year=%d --month=%d --version=%d\n' % 
                                   (args.startyear,args.year,args.month,args.version))
-tfile.close
+tfile.close()
 
-proc = subprocess.Popen('sbatch %s' % tfile.name)
+proc = subprocess.Popen('sbatch %s' % tfile.name,shell=True)
 (out, err) = proc.communicate()
 if out is not None or err is not None:
     raise StandardError("Failed to submit %s" % tfile.name)
