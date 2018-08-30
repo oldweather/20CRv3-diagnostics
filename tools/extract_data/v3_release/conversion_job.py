@@ -45,13 +45,12 @@ tfile.write('./extract_anl_var.py --startyear=%d --year=%d --month=%d --version=
 tfile.write('./extract_fg_var.py --startyear=%d --year=%d --month=%d --version=%d --var=prate &\n' % (args.startyear,args.year,args.month,args.version))
 tfile.write('./extract_obs.py --startyear=%d --year=%d --month=%d --version=%d &\n' % (args.startyear,args.year,args.month,args.version))
 tfile.write('wait\n')
-tfile.close
+tfile.close()
 
 proc = subprocess.Popen('sbatch %s' % tfile.name,shell=True)
 (out, err) = proc.communicate()
 if out is not None or err is not None:
     raise StandardError("Failed to submit %s" % tfile.name)
-
 os.remove(tfile.name)
 
 	 

@@ -48,8 +48,6 @@ final_directory="%s/20CRv3.final/version_%1d.%1d.%1d/%04d/%02d" % (
                   args.year,args.month)
 if not os.path.isdir(final_directory):
     os.makedirs(final_directory)
-if not os.path.isdir("%s/observations" % final_directory):
-    os.makedirs("%s/observations" % final_directory)
 
 # Use the wgrib2 utility for data extraction
 wgrib2='/global/homes/c/cmccoll/bin/wgrib2'
