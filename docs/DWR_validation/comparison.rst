@@ -22,4 +22,4 @@ First make the equivalent figure for each period seperately:
 
 Then make the figure
 
-.. literalinclude:: ../../../analyses/DWR_validation/case_studies/intercomparison/rms_v_rms.py
+.. literalinclude:: ../../analyses/DWR_validation/case_studies/intercomparison/rms_v_rms.py

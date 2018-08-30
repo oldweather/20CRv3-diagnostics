@@ -20,7 +20,7 @@ Download the data required:
 
 Script to make an individual frame - takes year, month, day, and hour as command-line options:
 
-.. literalinclude:: ../../analyses/australian_east_coast_lows/maitland_gale_1898/video/YR_V3vV2c.py
+.. literalinclude:: ../../analyses/australian_east_coast_lows/maitland_gale_1898/video/MG_V3vV2c.py
 
 To make the video, it is necessary to run the script above hundreds of times - giving an image for every 15-minute period. The best way to do this is system dependent - the script below does it on the Met Office SPICE cluster - it will need modification to run on any other system. (Could do this on a single PC, but it will take many hours).
 
