@@ -2,7 +2,6 @@ European windstorms
 ===================
 
 .. toctree::
-   :maxdepth: 2
 
   1999_Lothar_storm
   1990_Daria_storm

@@ -39,6 +39,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../european_windstorms/european_windstorms.html">European windstorms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../extreme_months/extreme_months.html">Extreme months</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../north_american_severe_weather/nasw.html">North American severe weather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../australian_east_coast_lows/aecl.html">Australian east coast lows</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
@@ -116,8 +118,6 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
                   <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">final_directory</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">final_directory</span><span class="p">)</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/observations&quot;</span> <span class="o">%</span> <span class="n">final_directory</span><span class="p">):</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/observations&quot;</span> <span class="o">%</span> <span class="n">final_directory</span><span class="p">)</span>
 
 <span class="c1"># Use the wgrib2 utility for data extraction</span>
 <span class="n">wgrib2</span><span class="o">=</span><span class="s1">&#39;/global/homes/c/cmccoll/bin/wgrib2&#39;</span>
