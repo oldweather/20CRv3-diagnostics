@@ -1,6 +1,24 @@
 Extracting data from 20CRv3
 ===========================
 
+Executive summary
+-----------------
+
+On `Cori <http://www.nersc.gov/users/computational-systems/cori/>`_, from an account that's part of the 20CR group, run:
+
+.. code-block:: bash
+
+   /global/homes/p/pbrohan/Projects/20CRv3-diagnostics/tools/extract_data/v3_release/extract_month_job.py --startyear=1899 --year=1901 --month=7 --version=451
+
+(But change 1899, 1901, 7, and possibly 451, to your preferred values).
+
+This will make a netCDF4 file, for each of the surface weather variables ``prmsl``, ``air.2m``, ``uwnd.10m``, ``vwnd.10m``, ``icec``, and ``prate``, containing the 3-hourly, full ensemble, analysis output for the whole of July 1901, from the experiment 451 run starting in 1899. It will also extract the observations feedback files. It will put the output in ``$SCRATCH/20CRv3.final/``
+
+The command will submit an `xfer job <http://www.nersc.gov/users/computational-systems/cori/running-jobs/advanced-running-jobs-options/>`_ to get the data off tape, and when that's done it will submit a regular job to do the data reshaping and conversion. This will take a while - a minimum of all day, and longer if the system is heavily loaded. You can run multiple extractions in parallel - if you submit more than Cori can run at once, they will just queue up.
+
+The details
+-----------
+
 The 20CRv2c data are `available <http://portal.nersc.gov/project/20C_Reanalysis/>`_ as netCDF files, each containing 3- or 6-hourly data, for a single variable, for all ensemble members, for a year. I have `software that uses data in this format <https://brohan.org/IRData>`_, so I aim to produce v3 data in a similar format. The main difference is that there is much more data from v3 (higher resolution, more ensemble members, always 3-hourly) so I make files for each month, not each year.
 
 v3 does not exist yet, we identify proto-v3 data by its *run number*. The two run numbers I've looked at so far are 451 and 452. Run numbers in the 400s are from the v3 model and this data extraction method should work for any of them.
@@ -125,14 +143,14 @@ First, submit an xfer job to get the data off tape. The :doc:`script to do that 
 
 .. code-block:: bash
 
-    from_tape_job.py --startyear=1899 --year=1903 --month=10 --version=451
+    extract_month_job.py --startyear=1899 --year=1903 --month=10 --version=451
 
-When that job has completed, submit a regular job to extract and convert the data. The :doc:`script to do that <conversion_job>` is:
+When that job has completed, it will submit a follow-on regular job to extract and convert the data. The :doc:`script it runs to do that <conversion_job>` is:
 
 .. code-block:: bash
 
     conversion_job.py --startyear=1899 --year=1903 --month=10 --version=451
 
-which wil extract and convert all the standard surface variables. As it uses so few resources, it will usually start running soon after being submitted, but this depends on the system load and the job queue.
+which wil extract and convert all the standard surface variables. As it uses so few resources, it will usually start running soon after being submitted, but this depends on the system load and the job queue. When the conversion completes, it will delete all the tape retrievals from SCRATCH.
 
-These two scripts are the same for the grib1 and grib2 data. Run them from the approprate directory (v3_release or v3_orig) to determine which set of conversion scripts are used.
+These two scripts only work for grib2 data

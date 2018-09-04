@@ -3,6 +3,15 @@ How to use this dataset
 
 This document is kept under version control in a `git repository <https://en.wikipedia.org/wiki/Git>`_. The repository is hosted on `GitHub <https://github.com/>`_ (and the documentation made with `GitHub Pages <https://pages.github.com/>`_). The repository is `<https://github.com/oldweather/20CRv3-diagnostics>`_. This repository contains everything you need to reproduce or extend this work, but note that the 20CRv3 data is still preliminary, and access to it is currently restricted.
 
+If you are just looking to extract 20CRv3 data as netCDF files from the tape archive at NERSC then you don't need to install this software - you can use the version already installed on Cori:
+
+.. toctree::
+   :maxdepth: 1
+
+   extract_data/extract_data
+
+If you want to do anything else, you will need to install your own version of this package:
+
 If you are familiar with GitHub, you already know `what to do <https://github.com/oldweather/20CRv3-diagnostics>`_: If you'd prefer not to bother with that, you can download the whole dataset as `a zip file <https://github.com/oldweather/20CRv3-diagnostics/archive/master.zip>`_.
 
 To re-run the scripts included, first install three packages this depends on:
