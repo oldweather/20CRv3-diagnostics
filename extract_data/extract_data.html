@@ -29,7 +29,8 @@
         <li class="right" >
           <a href="../instructions.html" title="How to use this dataset"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../instructions.html" accesskey="U">How to use this dataset</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -39,9 +40,10 @@
             </a></p>
 <h3><a href="../index.html">Table Of Contents</a></h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../instructions.html">How to re-use this</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Extracting data from 20CRv3</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../instructions.html">How to use this</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Extracting data from 20CRv3</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
@@ -55,6 +57,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/Spring_1903/spring_1903.html">Validation against observations for Spring 1903</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/February_1953/february_1953.html">Validation against observations for February 1953</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/comparison.html">Validation Spread v. Error plot January 1872 + Spring 1903 + February 1953</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
 </ul>
 <h3><a href="https://github.com/oldweather/20CRv3-diagnostics">Get a copy</a></h3>
 
@@ -76,6 +81,18 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
             
   <div class="section" id="extracting-data-from-20crv3">
 <h1>Extracting data from 20CRv3<a class="headerlink" href="#extracting-data-from-20crv3" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="executive-summary">
+<h2>Executive summary<a class="headerlink" href="#executive-summary" title="Permalink to this headline">¶</a></h2>
+<p>On <a class="reference external" href="http://www.nersc.gov/users/computational-systems/cori/">Cori</a>, from an account that’s part of the 20CR group, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/global/homes/p/pbrohan/Projects/20CRv3-diagnostics/tools/extract_data/v3_release/extract_month_job.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1901</span> --month<span class="o">=</span><span class="m">7</span> --version<span class="o">=</span>451
+</pre></div>
+</div>
+<p>(But change 1899, 1901, 7, and possibly 451, to your preferred values).</p>
+<p>This will make a netCDF4 file, for each of the surface weather variables <code class="docutils literal notranslate"><span class="pre">prmsl</span></code>, <code class="docutils literal notranslate"><span class="pre">air.2m</span></code>, <code class="docutils literal notranslate"><span class="pre">uwnd.10m</span></code>, <code class="docutils literal notranslate"><span class="pre">vwnd.10m</span></code>, <code class="docutils literal notranslate"><span class="pre">icec</span></code>, and <code class="docutils literal notranslate"><span class="pre">prate</span></code>, containing the 3-hourly, full ensemble, analysis output for the whole of July 1901, from the experiment 451 run starting in 1899. It will also extract the observations feedback files. It will put the output in <code class="docutils literal notranslate"><span class="pre">$SCRATCH/20CRv3.final/</span></code></p>
+<p>The command will submit an <a class="reference external" href="http://www.nersc.gov/users/computational-systems/cori/running-jobs/advanced-running-jobs-options/">xfer job</a> to get the data off tape, and when that’s done it will submit a regular job to do the data reshaping and conversion. This will take a while - a minimum of all day, and longer if the system is heavily loaded. You can run multiple extractions in parallel - if you submit more than Cori can run at once, they will just queue up.</p>
+</div>
+<div class="section" id="the-details">
+<h2>The details<a class="headerlink" href="#the-details" title="Permalink to this headline">¶</a></h2>
 <p>The 20CRv2c data are <a class="reference external" href="http://portal.nersc.gov/project/20C_Reanalysis/">available</a> as netCDF files, each containing 3- or 6-hourly data, for a single variable, for all ensemble members, for a year. I have <a class="reference external" href="https://brohan.org/IRData">software that uses data in this format</a>, so I aim to produce v3 data in a similar format. The main difference is that there is much more data from v3 (higher resolution, more ensemble members, always 3-hourly) so I make files for each month, not each year.</p>
 <p>v3 does not exist yet, we identify proto-v3 data by its <em>run number</em>. The two run numbers I’ve looked at so far are 451 and 452. Run numbers in the 400s are from the v3 model and this data extraction method should work for any of them.</p>
 <p>The data extraction process is in four steps:</p>
@@ -85,6 +102,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <li>Copy all the output for a single variable to one grib file and convert it to netCDF</li>
 <li>Assemble the observations files</li>
 </ol>
+</div>
 <div class="section" id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
 <p>All the scripts need to be run on <a class="reference external" href="http://www.nersc.gov/users/computational-systems/cori/">Cori</a>, from an account that’s part of the 20CR group.
@@ -163,15 +181,15 @@ module load nco
 <h2>Optimisation<a class="headerlink" href="#optimisation" title="Permalink to this headline">¶</a></h2>
 <p>You can run all these scripts in sequence on a login node, and it will work fine, but it’s a hassle, and performance is variable depending on system load. A simpler aproach is to submit jobs to do the work, and this can be much faster as the extractions can be run in parallel.</p>
 <p>First, submit an xfer job to get the data off tape. The <a class="reference internal" href="from_tape_job.html"><span class="doc">script to do that</span></a> is:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>from_tape_job.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span>451
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>extract_month_job.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span>451
 </pre></div>
 </div>
-<p>When that job has completed, submit a regular job to extract and convert the data. The <a class="reference internal" href="conversion_job.html"><span class="doc">script to do that</span></a> is:</p>
+<p>When that job has completed, it will submit a follow-on regular job to extract and convert the data. The <a class="reference internal" href="conversion_job.html"><span class="doc">script it runs to do that</span></a> is:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conversion_job.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span>451
 </pre></div>
 </div>
-<p>which wil extract and convert all the standard surface variables. As it uses so few resources, it will usually start running soon after being submitted, but this depends on the system load and the job queue.</p>
-<p>These two scripts are the same for the grib1 and grib2 data. Run them from the approprate directory (v3_release or v3_orig) to determine which set of conversion scripts are used.</p>
+<p>which wil extract and convert all the standard surface variables. As it uses so few resources, it will usually start running soon after being submitted, but this depends on the system load and the job queue. When the conversion completes, it will delete all the tape retrievals from SCRATCH.</p>
+<p>These two scripts only work for grib2 data</p>
 </div>
 </div>
 
@@ -193,7 +211,8 @@ module load nco
         <li class="right" >
           <a href="../instructions.html" title="How to use this dataset"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../instructions.html" >How to use this dataset</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

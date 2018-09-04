@@ -31,9 +31,7 @@
             </a></p>
 <h3><a href="../index.html">Table Of Contents</a></h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../instructions.html">How to re-use this</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extract_data.html">Extracting data from 20CRv3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../instructions.html">How to use this</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
@@ -47,6 +45,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/Spring_1903/spring_1903.html">Validation against observations for Spring 1903</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/February_1953/february_1953.html">Validation against observations for February 1953</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/comparison.html">Validation Spread v. Error plot January 1872 + Spring 1903 + February 1953</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
 </ul>
 <h3><a href="https://github.com/oldweather/20CRv3-diagnostics">Get a copy</a></h3>
 
@@ -89,6 +90,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
 <span class="n">tfile</span><span class="o">=</span><span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ldir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/bash -l</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH --output=v3_extraction-</span><span class="si">%d</span><span class="s2">-</span><span class="si">%d</span><span class="s2">-</span><span class="si">%%</span><span class="s2">j.out</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span>
                 <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">))</span>
@@ -98,8 +100,11 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH -J V3ft</span><span class="si">%04d%02d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">))</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -L SCRATCH</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;module load python</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;./month_from_tape.py --startyear=</span><span class="si">%d</span><span class="s1"> --year=</span><span class="si">%d</span><span class="s1"> --month=</span><span class="si">%d</span><span class="s1"> --version=</span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> 
-                                  <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/month_from_tape.py --startyear=</span><span class="si">%d</span><span class="s1"> --year=</span><span class="si">%d</span><span class="s1"> --month=</span><span class="si">%d</span><span class="s1"> --version=</span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> 
+                                  <span class="p">(</span><span class="n">ldir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="c1"># Submit the conversion job</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/conversion_job.py --startyear=</span><span class="si">%d</span><span class="s1"> --year=</span><span class="si">%d</span><span class="s1"> --month=</span><span class="si">%d</span><span class="s1"> --version=</span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> 
+                                  <span class="p">(</span><span class="n">ldir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s1">&#39;sbatch </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
