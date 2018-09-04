@@ -32,19 +32,31 @@ tfile.write('#SBATCH -L SCRATCH\n\n')
 tfile.write('module load ncar\n')
 tfile.write('module load nco\n')
 tfile.write('module load python\n\n')
-tfile.write('mkdir -p %s/20CRv3.final/version_%d.%d.%d/%02d/%02d\n' % (os.getenv('SCRATCH'),int(args.version/100),
-                                                               int((args.version%100)/10),int(args.version%10),
+tfile.write('mkdir -p %s/20CRv3.final/version_%d.%d.%d/%02d/%02d\n' % 
+                                                 (os.getenv('SCRATCH'),int(args.version/100),
+                                                  int((args.version%100)/10),int(args.version%10),
                                                                args.year,args.month))
 tfile.write('export OMP_NUM_THREADS=10\n\n')
-tfile.write('./extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=prmsl &\n' % (args.startyear,args.year,args.month,args.version))
-tfile.write('./extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=air.2m &\n' % (args.startyear,args.year,args.month,args.version))
-tfile.write('./extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=uwnd.10m &\n' % (args.startyear,args.year,args.month,args.version))
-tfile.write('./extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=vwnd.10m &\n' % (args.startyear,args.year,args.month,args.version))
-tfile.write('./extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=air.sfc &\n' % (args.startyear,args.year,args.month,args.version))
-tfile.write('./extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=icec &\n' % (args.startyear,args.year,args.month,args.version))
-tfile.write('./extract_fg_var.py --startyear=%d --year=%d --month=%d --version=%d --var=prate &\n' % (args.startyear,args.year,args.month,args.version))
-tfile.write('./extract_obs.py --startyear=%d --year=%d --month=%d --version=%d &\n' % (args.startyear,args.year,args.month,args.version))
+ldir=os.path.abspath(os.path.dirname(__file__))
+tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=prmsl &\n' % 
+                                                         (ldir,args.startyear,args.year,args.month,args.version))
+tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=air.2m &\n' % 
+                                                         (ldir,args.startyear,args.year,args.month,args.version))
+tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=uwnd.10m &\n' % 
+                                                         (ldir,args.startyear,args.year,args.month,args.version))
+tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=vwnd.10m &\n' % 
+                                                         (ldir,args.startyear,args.year,args.month,args.version))
+tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=air.sfc &\n' % 
+                                                         (ldir,args.startyear,args.year,args.month,args.version))
+tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=icec &\n' % 
+                                                         (ldir,args.startyear,args.year,args.month,args.version))
+tfile.write('%s/extract_fg_var.py --startyear=%d --year=%d --month=%d --version=%d --var=prate &\n' % 
+                                                         (ldir,args.startyear,args.year,args.month,args.version))
+tfile.write('%s/extract_obs.py --startyear=%d --year=%d --month=%d --version=%d &\n' % 
+                                                         (ldir,args.startyear,args.year,args.month,args.version))
 tfile.write('wait\n')
+tfile.write('%s/cleanup.py --startyear=%d --year=%d --month=%d --version=%d &\n' % 
+                                                         (ldir,args.startyear,args.year,args.month,args.version))
 tfile.close()
 
 proc = subprocess.Popen('sbatch %s' % tfile.name,shell=True)

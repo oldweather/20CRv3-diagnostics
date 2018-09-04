@@ -19,6 +19,7 @@ parser.add_argument("--version", help="Version to extract",
 args = parser.parse_args()
 
 tfile=tempfile.NamedTemporaryFile(delete=False)
+ldir=os.path.abspath(os.path.dirname(__file__))
 tfile.write('#!/bin/bash -l\n')
 tfile.write("#SBATCH --output=v3_extraction-%d-%d-%%j.out\n" %
                 (args.year,args.month))
@@ -28,8 +29,11 @@ tfile.write('#SBATCH -t 12:00:00\n')
 tfile.write("#SBATCH -J V3ft%04d%02d\n" % (args.year,args.month))
 tfile.write('#SBATCH -L SCRATCH\n')
 tfile.write('module load python\n')
-tfile.write('./month_from_tape.py --startyear=%d --year=%d --month=%d --version=%d\n' % 
-                                  (args.startyear,args.year,args.month,args.version))
+tfile.write('%s/month_from_tape.py --startyear=%d --year=%d --month=%d --version=%d\n' % 
+                                  (ldir,args.startyear,args.year,args.month,args.version))
+# Submit the conversion job
+tfile.write('%s/conversion_job.py --startyear=%d --year=%d --month=%d --version=%d\n' % 
+                                  (ldir,args.startyear,args.year,args.month,args.version))
 tfile.close()
 
 proc = subprocess.Popen('sbatch %s' % tfile.name,shell=True)
