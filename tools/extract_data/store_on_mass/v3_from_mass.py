@@ -58,21 +58,21 @@ def retrieve_obs(year,month,version,variable):
         return
 
     # Retrieve ob file from MASS
-    proc = subprocess.Popen("moo get %s %s/observations.tgz %s/observations/%04d" % 
-                                              (otarf,moose_dir,ddir,year),
+    proc = subprocess.Popen("moo get %s/observations.tgz %s/observations/%04d" % 
+                                              (moose_dir,ddir,year),
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE,
                                shell=True)
     (out, err) = proc.communicate()
     if len(err)!=0:
         print err
-        raise StandardError("Failed to retrieve observations %s" % otarf)
+        raise StandardError("Failed to retrieve observations from %s" % moose_dir)
     # Pack the month's obs into a single file
     otarf=("%s/observations/%04d/observations.tgz" % 
                            (ddir,year))
     proc = subprocess.Popen(
-            "cd %s ; tar xzf %s observations/%04d/observations.tgz" 
-               % (ddir,otarf,year),
+            "cd %s ; tar xzf %s" 
+               % (ddir,otarf),
                stdout=subprocess.PIPE,
                stderr=subprocess.PIPE,
                shell=True)
