@@ -23,9 +23,6 @@ parser.add_argument("--variable",
                     help="Variable name ('prmsl','observations,...)",
                     type=str,required=False,
                     default='all')
-parser.add_argument("--user", help="MASS user name",
-                    type=str,required=False,
-                    default='philip.brohan')
 args = parser.parse_args()
 
 # Check moose availability
@@ -37,7 +34,7 @@ if not moose.check_moose_commands_enabled(moose.MOOSE_PUT):
     raise StandardError("'moo put' disabled")
 
 # Base location for storage
-mbase="moose:/adhoc/users/%s/20CRV3/" % args.user
+mbase="moose:/adhoc/projects/20cr/"
 moose_dir=("%s/version_%s/%04d/%02d" %
                 (mbase,args.version,args.year,args.month))
 if moose.run_moose_command('moo test %s' % moose_dir)[0]!='true':

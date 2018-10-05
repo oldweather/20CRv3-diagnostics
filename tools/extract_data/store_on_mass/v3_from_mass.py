@@ -7,6 +7,7 @@ import os
 import subprocess
 import os.path
 import glob
+import re
 
 # What to store
 import argparse
