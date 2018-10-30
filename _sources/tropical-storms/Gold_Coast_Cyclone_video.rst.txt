@@ -1,3 +1,5 @@
+:orphan:
+
 The Gold Coast Cyclone (1954) video
 ===================================
 

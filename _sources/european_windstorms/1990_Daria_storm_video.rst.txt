@@ -1,3 +1,5 @@
+:orphan:
+
 Burn's Day (Daria) storm of 1990 video
 ======================================
 

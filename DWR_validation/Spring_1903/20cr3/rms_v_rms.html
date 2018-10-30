@@ -4,15 +4,16 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>20CR3 validation Spread v. Error plot Spring 1903 &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
     <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Validating CERA-20C against observations for Spring 1903" href="../CERA-20C/index.html" />
     <link rel="prev" title="20CR3 validation scatterplot Spring 1903" href="scatterplot.html" /> 
@@ -41,21 +42,23 @@
             </a></p>
 <h3><a href="../../../index.html">Table Of Contents</a></h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../credits.html">Authors and acknowledgements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../instructions.html">How to re-use this</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../extract_data/extract_data.html">Extracting data from 20CRv3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../instructions.html">How to use this</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../european_windstorms/european_windstorms.html">European windstorms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../extreme_months/extreme_months.html">Extreme months</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../north_american_severe_weather/nasw.html">North American severe weather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../australian_east_coast_lows/aecl.html">Australian east coast lows</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../January_1872/january_1872.html">Validation against observations for January 1872</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../spring_1903.html">Validation against observations for Spring 1903</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../February_1953/february_1953.html">Validation against observations for February 1953</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../comparison.html">Validation Spread v. Error plot January 1872 + Spring 1903 + February 1953</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../credits.html">Authors and acknowledgements</a></li>
 </ul>
 <h3><a href="https://github.com/oldweather/20CRv3-diagnostics">Get a copy</a></h3>
 
@@ -87,7 +90,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 </div>
 <div class="topic">
 <p class="topic-title first">Compare</p>
-<table border="1" class="docutils">
+<table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="21%" />
 <col width="26%" />
@@ -127,11 +130,11 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 </pre></div>
 </div>
 <p>Extract the reanalysis data associated with each observation (uses <a class="reference internal" href="../../scripts/get_comparison.html"><span class="doc">this script</span></a>)</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>../../../scripts/get_comparison.py --start<span class="o">=</span><span class="s2">&quot;1903010118&quot;</span> --end<span class="o">=</span><span class="s2">&quot;1903033118&quot;</span> --skip<span class="o">=</span>BODO --skip<span class="o">=</span>HAPARANDA --skip<span class="o">=</span>HERNOSAND --skip<span class="o">=</span>STOCKHOLM --skip<span class="o">=</span>WISBY --skip<span class="o">=</span>FANO --skip<span class="o">=</span>BERLIN --skip<span class="o">=</span>ABERDEEN --skip<span class="o">=</span>VALENCIA --skip<span class="o">=</span>JERSEY --skip<span class="o">=</span>LISBON --reanalysis<span class="o">=</span>20cr3 --npar<span class="o">=</span>6
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>../../../scripts/get_comparison.py --start<span class="o">=</span><span class="s2">&quot;1903010118&quot;</span> --end<span class="o">=</span><span class="s2">&quot;1903033118&quot;</span> --skip<span class="o">=</span>BODO --skip<span class="o">=</span>HAPARANDA --skip<span class="o">=</span>HERNOSAND --skip<span class="o">=</span>STOCKHOLM --skip<span class="o">=</span>WISBY --skip<span class="o">=</span>FANO --skip<span class="o">=</span>BERLIN --skip<span class="o">=</span>ABERDEEN --skip<span class="o">=</span>VALENCIA --skip<span class="o">=</span>JERSEY --skip<span class="o">=</span>LISBON --reanalysis<span class="o">=</span>20cr3 --npar<span class="o">=</span><span class="m">6</span>
 </pre></div>
 </div>
 <p>Make the figure (uses <a class="reference internal" href="../../scripts/rms_v_rms.html"><span class="doc">this script</span></a>)</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>../../../scripts/rms_v_rms.py --start<span class="o">=</span><span class="s2">&quot;1903010118&quot;</span> --end<span class="o">=</span><span class="s2">&quot;1903033118&quot;</span> --reanalysis<span class="o">=</span>20cr3 --nbins<span class="o">=</span>20
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>../../../scripts/rms_v_rms.py --start<span class="o">=</span><span class="s2">&quot;1903010118&quot;</span> --end<span class="o">=</span><span class="s2">&quot;1903033118&quot;</span> --reanalysis<span class="o">=</span>20cr3 --nbins<span class="o">=</span><span class="m">20</span>
 </pre></div>
 </div>
 </div>

@@ -4,15 +4,16 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Extracting data from 20CRv3 &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Tropical Storms" href="../tropical-storms/tropical_storms.html" />
     <link rel="prev" title="How to use this dataset" href="../instructions.html" /> 
@@ -84,7 +85,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <div class="section" id="executive-summary">
 <h2>Executive summary<a class="headerlink" href="#executive-summary" title="Permalink to this headline">¶</a></h2>
 <p>On <a class="reference external" href="http://www.nersc.gov/users/computational-systems/cori/">Cori</a>, from an account that’s part of the 20CR group, run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/global/homes/p/pbrohan/Projects/20CRv3-diagnostics/tools/extract_data/v3_release/extract_month_job.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1901</span> --month<span class="o">=</span><span class="m">7</span> --version<span class="o">=</span>451
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/global/homes/p/pbrohan/Projects/20CRv3-diagnostics/tools/extract_data/v3_release/extract_month_job.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1901</span> --month<span class="o">=</span><span class="m">7</span> --version<span class="o">=</span><span class="m">451</span>
 </pre></div>
 </div>
 <p>(But change 1899, 1901, 7, and possibly 451, to your preferred values).</p>
@@ -112,7 +113,7 @@ module load nco
 </pre></div>
 </div>
 <p>The data extraction scripts use <a class="reference external" href="http://www.cpc.ncep.noaa.gov/products/wesley/wgrib2/">wgrib2</a> and by default this will use all the cores on the system it is running on, in an attempt to go faster. If you are using a (shared) login node, this is not what you want (and will get you shouted at by the sysops). Tell it to only use one core:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span>1
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">1</span>
 </pre></div>
 </div>
 <p>(If you are running the scripts in a job, on a dedicated node, you may get a useful speedup by setting this to a larger number).</p>
@@ -140,11 +141,11 @@ module load nco
 <div class="section" id="copy-to-my-own-scratch">
 <h2>Copy to my own $SCRATCH<a class="headerlink" href="#copy-to-my-own-scratch" title="Permalink to this headline">¶</a></h2>
 <p>If the data are in the grib2 tape archive, copy them to ‘$SCRATCH/20CR_working/ensda_1899/1903/10’ (where 1899, 1903, and 10 are replaced by start year, validity year, and validity month). The <a class="reference internal" href="release_month_from_tape.html"><span class="doc">script to do this</span></a> is called as:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_release/month_from_tape.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span>451
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_release/month_from_tape.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span><span class="m">451</span>
 </pre></div>
 </div>
 <p>If the data are not yet in the grib2 archive, but they are in the hsi grib1 archive, then copy them to ‘$SCRATCH/20CR_working_orig/ensda_1899/1903/10’ (replacing start year, validity year, and validity month, as appropriate). The <a class="reference internal" href="orig_month_from_tape.html"><span class="doc">script to do this</span></a> is called with the same options as above:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_orig/month_from_tape.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span>451
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_orig/month_from_tape.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span><span class="m">451</span>
 </pre></div>
 </div>
 <p>If the data are not yet on tape, only on disc, then they are in grib1 format - copy them directly (‘cp’ command) into the grib1 working directory: ‘$SCRATCH/20CR_working_orig/ensda_1899/1903/10’ (replacing start year, validity year, and validity month, as appropriate).</p>
@@ -171,7 +172,7 @@ module load nco
 <div class="section" id="assemble-the-observations-files">
 <h2>Assemble the observations files<a class="headerlink" href="#assemble-the-observations-files" title="Permalink to this headline">¶</a></h2>
 <p>The observations feedback files are text files (though the format is different to v2c), so it’s just a matter of copying them to the output directory. The <a class="reference internal" href="release_extract_obs.html"><span class="doc">script to do that (for the grib2 data)</span></a> is called as:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_release/extract_obs.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span>451
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_release/extract_obs.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span><span class="m">451</span>
 </pre></div>
 </div>
 <p>and the <a class="reference internal" href="orig_extract_obs.html"><span class="doc">analagous script for grib1</span></a> is in directory v3_orig. Either of these will copy all the observations files to ‘$SCRATCH/20CRv3.final/version_4.5.1/1903/10/observations’.</p>
@@ -181,11 +182,11 @@ module load nco
 <h2>Optimisation<a class="headerlink" href="#optimisation" title="Permalink to this headline">¶</a></h2>
 <p>You can run all these scripts in sequence on a login node, and it will work fine, but it’s a hassle, and performance is variable depending on system load. A simpler aproach is to submit jobs to do the work, and this can be much faster as the extractions can be run in parallel.</p>
 <p>First, submit an xfer job to get the data off tape. The <a class="reference internal" href="from_tape_job.html"><span class="doc">script to do that</span></a> is:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>extract_month_job.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span>451
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>extract_month_job.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span><span class="m">451</span>
 </pre></div>
 </div>
 <p>When that job has completed, it will submit a follow-on regular job to extract and convert the data. The <a class="reference internal" href="conversion_job.html"><span class="doc">script it runs to do that</span></a> is:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conversion_job.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span>451
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conversion_job.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span><span class="m">451</span>
 </pre></div>
 </div>
 <p>which wil extract and convert all the standard surface variables. As it uses so few resources, it will usually start running soon after being submitted, but this depends on the system load and the job queue. When the conversion completes, it will delete all the tape retrievals from SCRATCH.</p>

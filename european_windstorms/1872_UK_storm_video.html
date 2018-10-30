@@ -4,15 +4,16 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>UK Storm of 1872 video &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="search" title="Search" href="../search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -31,20 +32,23 @@
             </a></p>
 <h3><a href="../index.html">Table Of Contents</a></h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../instructions.html">How to re-use this</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extract_data/extract_data.html">Extracting data from 20CRv3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../instructions.html">How to use this</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="european_windstorms.html">European windstorms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../extreme_months/extreme_months.html">Extreme months</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../north_american_severe_weather/nasw.html">North American severe weather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../australian_east_coast_lows/aecl.html">Australian east coast lows</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/Spring_1903/spring_1903.html">Validation against observations for Spring 1903</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/February_1953/february_1953.html">Validation against observations for February 1953</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/comparison.html">Validation Spread v. Error plot January 1872 + Spring 1903 + February 1953</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
 </ul>
 <h3><a href="https://github.com/oldweather/20CRv3-diagnostics">Get a copy</a></h3>
 
@@ -313,7 +317,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <p>To turn the thousands of images into a movie, use <a class="reference external" href="http://www.ffmpeg.org">ffmpeg</a></p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ffmpeg -r <span class="m">24</span> -pattern_type glob -i UK_storm_1872/<span class="se">\*</span>.png <span class="se">\</span>
        -c:v libx264 -threads <span class="m">16</span> -preset slow -tune animation <span class="se">\</span>
-       -profile:v high -level 4.2 -pix_fmt yuv420p -crf <span class="m">25</span> <span class="se">\</span>
+       -profile:v high -level <span class="m">4</span>.2 -pix_fmt yuv420p -crf <span class="m">25</span> <span class="se">\</span>
        -c:a copy UK_storm_1872.mp4
 </pre></div>
 </div>

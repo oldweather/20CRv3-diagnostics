@@ -13,5 +13,6 @@ European windstorms
   1872_UK_storm
   1859_Royal_Charter
   1843_Irish_Gale
+  1811_Xmas_storm
 
 

@@ -1,3 +1,5 @@
+:orphan:
+
 Super-Typhoon Nancy (1961) video
 ================================
 
