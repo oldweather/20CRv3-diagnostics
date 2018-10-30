@@ -236,7 +236,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
                            <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">hour</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">hour</span><span class="o">%</span><span class="mi">1</span><span class="o">*</span><span class="mi">60</span><span class="p">)))</span>
 </pre></div>
 </div>
-<p>To make the video, it is necessary to run the script above hundreds of times - giving an image for every 15-minute period. This script makes the list of commands needed to make all the images, which can be run with <a class="reference external" href="https://www.gnu.org/software/parallel/">GNU parallel</a> or a system-specific faster method.</p>
+<p>To make the video, it is necessary to run the script above hundreds of times - giving an image for every 15-minute period. This script makes the list of commands needed to make all the images, which can be run <a class="reference external" href="http://brohan.org/offline_assimilation/tools/parallel.html">in parallel</a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
 
 <span class="c1"># Make all the individual frames for a movie</span>

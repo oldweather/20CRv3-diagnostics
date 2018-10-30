@@ -33,7 +33,7 @@ Script to make an individual frame - takes year, month, day, and hour as command
 
 .. literalinclude:: ../../analyses/european_windstorms/xmas_eve_1811/video/x11_V3only.py
 
-To make the video, it is necessary to run the script above hundreds of times - giving an image for every 15-minute period. This script makes the list of commands needed to make all the images, which can be run with `GNU parallel <https://www.gnu.org/software/parallel/>`_ or a system-specific faster method.
+To make the video, it is necessary to run the script above hundreds of times - giving an image for every 15-minute period. This script makes the list of commands needed to make all the images, which can be run `in parallel <http://brohan.org/offline_assimilation/tools/parallel.html>`_.
 
 .. literalinclude:: ../../analyses/european_windstorms/xmas_eve_1811/video/make_frames.py
 
