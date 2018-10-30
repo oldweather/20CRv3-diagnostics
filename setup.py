@@ -49,11 +49,11 @@ setup(
     install_requires=[
         'IRData>0.0',
         'Meteorographica>0.0',
-        'numpy>1.13',
-        'scipy>0.18',
-        'pandas>0.20',
+        'numpy>=1.15.2',
+        'scipy>=1.1.0',
+        'pandas>=0.23.4',
         'scikit-learn>0.19',
-        'matplotlib>1.5,<2.0',
+        'matplotlib==2.2.3',
     ],
 
 

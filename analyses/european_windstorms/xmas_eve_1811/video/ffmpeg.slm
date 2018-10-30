@@ -1,0 +1,15 @@
+#!/bin/ksh -l
+#SBATCH --qos=normal
+#SBATCH --mem=200000
+#SBATCH --ntasks=8
+#SBATCH --ntasks-per-core=1
+#SBATCH --time=20
+
+cd $SCRATCH/images/
+
+rm xmas_1811.mp4
+# Get rid of empty images - they make ffmpeg stop processing
+#  These usually come from disc problems in the creation step.
+find xmas_1811/*.png -type f -empty -delete
+
+ffmpeg -r 24 -pattern_type glob -i xmas_1811/\*.png -c:v libx264 -threads 16 -preset slow -tune animation -profile:v high -level 4.2 -pix_fmt yuv420p -crf 25 -c:a copy xmas_1811.mp4
