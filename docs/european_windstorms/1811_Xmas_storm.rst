@@ -16,7 +16,12 @@ Christmas Storm of 1811
 
 The `Christmas storm of 1811 <https://ageofsail.wordpress.com/2009/04/24/the-christmas-gale-of-1811/>`_ Drove HMS Defence, HMS St George, HMS Hero, and HMS Grasshopper aground on Jutland: more than 1,900 sailors were killed.
 
-This means strong north-west winds in the north sea, and implies a deep low over scandinavia. The uncertainties are large, which reduces the amplitude of the ensemble mean signal, but 20CRv3 does reporoduce this feature.
+This means strong north-west winds in the north sea, and implies a deep low over scandinavia. The uncertainties are large, which reduces the amplitude of the ensemble mean signal, but 20CRv3 does reproduce this feature.
+
+|
+
+Code to make the figure
+-----------------------
 
 Download the data required:
 
