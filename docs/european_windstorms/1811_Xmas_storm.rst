@@ -24,5 +24,5 @@ Download the data required:
 
 Make the figure:
 
-.. literalinclude:: ../../analyses/european_windstorms/x11_1811/RCS_V3only.py
+.. literalinclude:: ../../analyses/european_windstorms/xmas_eve_1811/x11_V3only.py
 

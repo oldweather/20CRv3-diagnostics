@@ -1,3 +1,5 @@
+:orphan:
+
 extract_obs (grib2)
 ===================
 
