@@ -50,12 +50,22 @@ tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version
                                                          (ldir,args.startyear,args.year,args.month,args.version))
 tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=icec &\n' % 
                                                          (ldir,args.startyear,args.year,args.month,args.version))
+tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=hgt --level=850 &\n' % 
+                                                         (ldir,args.startyear,args.year,args.month,args.version))
+tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=tmp --level=850 &\n' % 
+                                                         (ldir,args.startyear,args.year,args.month,args.version))
+tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=spfh --level=850 &\n' % 
+                                                         (ldir,args.startyear,args.year,args.month,args.version))
+tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=uwnd --level=850 &\n' % 
+                                                         (ldir,args.startyear,args.year,args.month,args.version))
+tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=vwnd --level=850 &\n' % 
+                                                         (ldir,args.startyear,args.year,args.month,args.version))
 tfile.write('%s/extract_fg_var.py --startyear=%d --year=%d --month=%d --version=%d --var=prate &\n' % 
                                                          (ldir,args.startyear,args.year,args.month,args.version))
 tfile.write('%s/extract_obs.py --startyear=%d --year=%d --month=%d --version=%d &\n' % 
                                                          (ldir,args.startyear,args.year,args.month,args.version))
 tfile.write('wait\n')
-tfile.write('%s/cleanup.py --startyear=%d --year=%d --month=%d --version=%d &\n' % 
+tfile.write('%s/cleanup.py --startyear=%d --year=%d --month=%d --version=%d\n' % 
                                                          (ldir,args.startyear,args.year,args.month,args.version))
 tfile.close()
 
