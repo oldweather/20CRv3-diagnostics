@@ -8,6 +8,7 @@ Tropical Storms
    Typhoon_Nancy
    Hurricane_Carla
    Gold_Coast_Cyclone
+   Typhoon_Kathleen
    Okeechobee_Hurricane
    Galveston_Hurricane
 

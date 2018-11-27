@@ -93,20 +93,96 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
                     <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="mi">451</span><span class="p">)</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--var&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Variable to extract&quot;</span><span class="p">,</span>
                     <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--level&quot;</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Pressure level (hPa) to extract at&quot;</span><span class="p">,</span>
+                    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span><span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;1000&#39;</span><span class="p">,</span><span class="s1">&#39;975&#39;</span><span class="p">,</span><span class="s1">&#39;950&#39;</span><span class="p">,</span><span class="s1">&#39;925&#39;</span><span class="p">,</span><span class="s1">&#39;900&#39;</span><span class="p">,</span><span class="s1">&#39;850&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;800&#39;</span><span class="p">,</span><span class="s1">&#39;750&#39;</span><span class="p">,</span><span class="s1">&#39;700&#39;</span><span class="p">,</span><span class="s1">&#39;650&#39;</span><span class="p">,</span><span class="s1">&#39;600&#39;</span><span class="p">,</span><span class="s1">&#39;550&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;500&#39;</span><span class="p">,</span><span class="s1">&#39;450&#39;</span><span class="p">,</span><span class="s1">&#39;400&#39;</span><span class="p">,</span><span class="s1">&#39;350&#39;</span><span class="p">,</span><span class="s1">&#39;300&#39;</span><span class="p">,</span><span class="s1">&#39;250&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;200&#39;</span><span class="p">,</span><span class="s1">&#39;150&#39;</span><span class="p">,</span><span class="s1">&#39;100&#39;</span><span class="p">,</span><span class="s1">&#39;70&#39;</span><span class="p">,</span><span class="s1">&#39;50&#39;</span><span class="p">,</span><span class="s1">&#39;30&#39;</span><span class="p">,</span><span class="s1">&#39;20&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;10&#39;</span><span class="p">,</span><span class="s1">&#39;5&#39;</span><span class="p">,</span><span class="s1">&#39;1&#39;</span><span class="p">])</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--height&quot;</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;Height (m) to extract at&quot;</span><span class="p">,</span>
+                    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span><span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;2&#39;</span><span class="p">,</span><span class="s1">&#39;10&#39;</span><span class="p">,</span><span class="s1">&#39;12&#39;</span><span class="p">,</span><span class="s1">&#39;20&#39;</span><span class="p">,</span><span class="s1">&#39;30&#39;</span><span class="p">,</span><span class="s1">&#39;50&#39;</span><span class="p">,</span><span class="s1">&#39;80&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;100&#39;</span><span class="p">,</span><span class="s1">&#39;150&#39;</span><span class="p">,</span><span class="s1">&#39;200&#39;</span><span class="p">,</span><span class="s1">&#39;250&#39;</span><span class="p">,</span><span class="s1">&#39;300&#39;</span><span class="p">,</span><span class="s1">&#39;500&#39;</span><span class="p">])</span>
+                             
 <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
-<span class="c1"># Each variable needs a search which finds it (uniquely) in the grib</span>
-<span class="n">search_strings</span><span class="o">=</span><span class="p">{</span>
-    <span class="s1">&#39;prmsl&#39;</span>   <span class="p">:</span> <span class="s1">&#39;PRMSL&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;air.2m&#39;</span>  <span class="p">:</span> <span class="s1">&#39;TMP:2 m above ground&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;uwnd.10m&#39;</span><span class="p">:</span> <span class="s1">&#39;UGRD:10 m above ground&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;vwnd.10m&#39;</span><span class="p">:</span> <span class="s1">&#39;VGRD:10 m above ground&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;air.sfc&#39;</span> <span class="p">:</span> <span class="s1">&#39;TMP:surface&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;icec&#39;</span>    <span class="p">:</span> <span class="s1">&#39;ICEC&#39;</span>
-<span class="p">}</span>
-<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">var</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">search_strings</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Unsupported variable </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">)</span>  
+<span class="c1"># Set default heights, where appropriate</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="o">==</span><span class="s1">&#39;air.2m&#39;</span><span class="p">:</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">height</span><span class="o">=</span><span class="s1">&#39;2&#39;</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="o">=</span><span class="s1">&#39;TMP&#39;</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="o">==</span><span class="s1">&#39;uwnd.10m&#39;</span><span class="p">:</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">height</span><span class="o">=</span><span class="s1">&#39;10&#39;</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="o">=</span><span class="s1">&#39;UGRD&#39;</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="o">==</span><span class="s1">&#39;vwnd.10m&#39;</span><span class="p">:</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">height</span><span class="o">=</span><span class="s1">&#39;10&#39;</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="o">=</span><span class="s1">&#39;VWND&#39;</span>
 
+<span class="c1"># Make an output file name</span>
+<span class="k">def</span> <span class="nf">opfile</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="n">level</span><span class="p">,</span><span class="n">height</span><span class="p">):</span>
+   <span class="n">var</span><span class="o">=</span><span class="n">var</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+   <span class="k">if</span> <span class="n">var</span><span class="o">==</span><span class="s1">&#39;prmsl&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;prmsl&#39;</span>
+   <span class="k">if</span> <span class="n">var</span><span class="o">==</span><span class="s1">&#39;air.sfc&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;air.sfc&#39;</span>
+   <span class="k">if</span> <span class="n">var</span><span class="o">==</span><span class="s1">&#39;uwnd&#39;</span> <span class="ow">or</span> <span class="n">var</span><span class="o">==</span><span class="s1">&#39;ugrd&#39;</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+          <span class="k">return</span> <span class="s1">&#39;uwnd.</span><span class="si">%d</span><span class="s1">mb&#39;</span> <span class="o">%</span> <span class="nb">int</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">height</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">none</span><span class="p">:</span>
+          <span class="k">return</span> <span class="s1">&#39;uwnd.</span><span class="si">%d</span><span class="s1">m&#39;</span> <span class="o">%</span> <span class="nb">int</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Either height or level must be specified&#39;</span><span class="p">)</span>
+   <span class="k">if</span> <span class="n">var</span><span class="o">==</span><span class="s1">&#39;vwnd&#39;</span> <span class="ow">or</span> <span class="n">var</span><span class="o">==</span><span class="s1">&#39;vgrd&#39;</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+          <span class="k">return</span> <span class="s1">&#39;vwnd.</span><span class="si">%d</span><span class="s1">mb&#39;</span> <span class="o">%</span> <span class="nb">int</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">height</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">none</span><span class="p">:</span>
+          <span class="k">return</span> <span class="s1">&#39;vwnd.</span><span class="si">%d</span><span class="s1">m&#39;</span> <span class="o">%</span> <span class="nb">int</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Either height or level must be specified&#39;</span><span class="p">)</span>
+   <span class="k">if</span> <span class="n">var</span><span class="o">==</span><span class="s1">&#39;icec&#39;</span><span class="p">:</span>
+      <span class="k">return</span> <span class="s1">&#39;icec&#39;</span>
+
+   <span class="c1"># Default - specify grib2 var directly</span>
+   <span class="k">if</span> <span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.</span><span class="si">%d</span><span class="s1">mb&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span><span class="nb">int</span><span class="p">(</span><span class="n">level</span><span class="p">))</span>
+   <span class="k">if</span> <span class="n">height</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">none</span><span class="p">:</span>
+      <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.</span><span class="si">%d</span><span class="s1">m&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span><span class="nb">int</span><span class="p">(</span><span class="n">level</span><span class="p">))</span>
+   <span class="k">else</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Either height or level must be specified&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># Make a search string</span>
+<span class="k">def</span> <span class="nf">search_string</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="n">level</span><span class="p">,</span><span class="n">height</span><span class="p">):</span>
+   <span class="k">if</span> <span class="n">var</span><span class="o">==</span><span class="s1">&#39;prmsl&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;PRMSL&#39;</span>
+   <span class="k">if</span> <span class="n">var</span><span class="o">==</span><span class="s1">&#39;air.sfc&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;TMP:surface&#39;</span>
+   <span class="k">if</span> <span class="n">var</span><span class="o">==</span><span class="s1">&#39;uwnd&#39;</span> <span class="ow">or</span> <span class="n">var</span><span class="o">==</span><span class="s1">&#39;ugrd&#39;</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+          <span class="k">return</span> <span class="s1">&#39;UGRD:</span><span class="si">%d</span><span class="s1"> mb&#39;</span> <span class="o">%</span> <span class="nb">int</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">height</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">none</span><span class="p">:</span>
+          <span class="k">return</span> <span class="s1">&#39;UGRD:</span><span class="si">%d</span><span class="s1"> m above ground&#39;</span> <span class="o">%</span> <span class="nb">int</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Either height or level must be specified&#39;</span><span class="p">)</span>
+   <span class="k">if</span> <span class="n">var</span><span class="o">==</span><span class="s1">&#39;vwnd&#39;</span> <span class="ow">or</span> <span class="n">var</span><span class="o">==</span><span class="s1">&#39;vgrd&#39;</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+          <span class="k">return</span> <span class="s1">&#39;VGRD:</span><span class="si">%d</span><span class="s1"> mb&#39;</span> <span class="o">%</span> <span class="nb">int</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">height</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">none</span><span class="p">:</span>
+          <span class="k">return</span> <span class="s1">&#39;VGRD:</span><span class="si">%d</span><span class="s1"> m above ground&#39;</span> <span class="o">%</span> <span class="nb">int</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Either height or level must be specified&#39;</span><span class="p">)</span>
+   <span class="k">if</span> <span class="n">var</span><span class="o">==</span><span class="s1">&#39;icec&#39;</span><span class="p">:</span>
+      <span class="k">return</span> <span class="s1">&#39;ICEC&#39;</span>
+
+   <span class="c1"># Default - specify grib2 var directly</span>
+   <span class="k">if</span> <span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:</span><span class="si">%d</span><span class="s1"> mb&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span><span class="nb">int</span><span class="p">(</span><span class="n">level</span><span class="p">))</span>
+   <span class="k">if</span> <span class="n">height</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">none</span><span class="p">:</span>
+      <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:</span><span class="si">%d</span><span class="s1"> m above ground&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span><span class="nb">int</span><span class="p">(</span><span class="n">level</span><span class="p">))</span>
+   <span class="k">else</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Either height or level must be specified&#39;</span><span class="p">)</span>
+   
 <span class="c1"># Where to find the grib (and obs) files retrieved from hsi</span>
 <span class="n">working_directory</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/20CRv3.working/ensda_</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
                    <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">),</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span>
@@ -125,7 +201,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <span class="n">wgrib2</span><span class="o">=</span><span class="s1">&#39;/global/homes/c/cmccoll/bin/wgrib2&#39;</span>
 
 <span class="c1"># Don&#39;t repeat pre-existing extractions</span>
-<span class="n">fn</span><span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">.nc4&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">final_directory</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">)</span>
+<span class="n">fn</span><span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">.nc4&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">final_directory</span><span class="p">,</span><span class="n">opfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
     <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s1">&#39;Already done&#39;</span><span class="p">)</span>
 
@@ -146,15 +222,17 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 
             <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
               <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -match &#39;</span><span class="si">%s</span><span class="s2">&#39; -grib </span><span class="si">%s</span><span class="s2">; cat </span><span class="si">%s</span><span class="s2"> &gt;&gt; </span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">.grb2&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                                    <span class="n">wgrib2</span><span class="p">,</span><span class="n">an_file_name</span><span class="p">,</span>
-                                    <span class="n">search_strings</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">],</span>
-                                    <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                                    <span class="n">final_directory</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">),</span>
-                                    <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                         <span class="n">wgrib2</span><span class="p">,</span><span class="n">an_file_name</span><span class="p">,</span>
+                         <span class="n">search_string</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">height</span><span class="p">),</span>
+                         <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                         <span class="n">final_directory</span><span class="p">,</span>
+                         <span class="n">opfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">height</span><span class="p">)),</span>
+        <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Failed to extract </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                                     <span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">,</span><span class="n">an_file_name</span><span class="p">))</span>
+                                     <span class="n">opfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">height</span><span class="p">),</span>
+                                     <span class="n">an_file_name</span><span class="p">))</span>
    
     <span class="n">current_day</span><span class="o">=</span><span class="n">current_day</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -162,13 +240,14 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <span class="c1"># Convert to netCDF</span>
 <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
   <span class="s2">&quot;ncl_convert2nc </span><span class="si">%s</span><span class="s2">.grb2 -i </span><span class="si">%s</span><span class="s2"> -o </span><span class="si">%s</span><span class="s2"> -nc4c -cl 5&quot;</span> <span class="o">%</span> <span class="p">(</span> 
-                        <span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">,</span>
+                        <span class="n">opfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">height</span><span class="p">),</span>
                         <span class="n">final_directory</span><span class="p">,</span>
                         <span class="n">final_directory</span><span class="p">),</span>
                         <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Failed to convert </span><span class="si">%s</span><span class="s2"> to netCDF&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Failed to convert </span><span class="si">%s</span><span class="s2"> to netCDF&quot;</span> <span class="o">%</span> 
+                         <span class="n">opfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>

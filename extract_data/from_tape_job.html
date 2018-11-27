@@ -95,9 +95,12 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/bash -l</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH --output=v3_extraction-</span><span class="si">%d</span><span class="s2">-</span><span class="si">%d</span><span class="s2">-</span><span class="si">%%</span><span class="s2">j.out</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span>
                 <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -M escori</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -q xfer</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -t 12:00:00</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="c1">#tfile.write(&#39;#SBATCH -M escori\n&#39;)</span>
+<span class="c1">#tfile.write(&#39;#SBATCH -q xfer\n&#39;)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -p regular</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -C knl</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -N 1</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -t 6:00:00</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH -J V3ft</span><span class="si">%04d%02d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">))</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -L SCRATCH</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;module load python</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -114,6 +117,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
     <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Failed to submit </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
 <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="c1">#print tfile.name</span>
 
 </pre></div>
 </div>
