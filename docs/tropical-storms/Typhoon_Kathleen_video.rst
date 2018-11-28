@@ -29,7 +29,7 @@ Download the data required:
 
 Script to make an individual frame - takes year, month, day, and hour as command-line options:
 
-.. literalinclude:: ../../analyses/tropical-storms/Typhoon_Kathleen_1947/Kathleen_V3vV2c.py
+.. literalinclude:: ../../analyses/tropical-storms/Typhoon_Kathleen_1947/video/Kathleen_V3vV2c.py
 
 To make the video, it is necessary to run the script above hundreds of times - giving an image for every 15-minute period. This script makes the list of commands needed to make all the images, which can be run `in parallel <http://brohan.org/offline_assimilation/tools/parallel.html>`_.
 

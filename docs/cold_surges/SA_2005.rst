@@ -1,0 +1,26 @@
+South American cold surge of 2005
+=================================
+
+.. seealso:: :doc:`Video version <SA_2005_video>`
+
+.. figure:: ../../analyses/cold_surges/Argentina_September_2005/CS_V3_2005091212.png
+   :width: 95%
+   :align: center
+   :figwidth: 95%
+
+   MSLP (left) and 850hPa temperature (right) contours from 20CRv3
+
+   The thin lines are contours from each of 56 ensemble members. The thicker lines are contours of the ensemble mean. The yellow dots mark pressure observations assimilated while making the fields shown. 
+
+|
+
+Code to make the figure
+-----------------------
+
+Download the data required:
+
+.. literalinclude:: ../../analyses/cold_surges/Argentina_September_2005/get_data.py
+
+Make the figure:
+
+.. literalinclude:: ../../analyses/cold_surges/Argentina_September_2005/CS_V3.py
