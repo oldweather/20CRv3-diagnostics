@@ -19,6 +19,7 @@ Comparisons of 20CRv3 with 20CRv2c
    extreme_months/extreme_months
    north_american_severe_weather/nasw
    australian_east_coast_lows/aecl
+   cold_surges/cold_surges
    
 
 Validation against observations

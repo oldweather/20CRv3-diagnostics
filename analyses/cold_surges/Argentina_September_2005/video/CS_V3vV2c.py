@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # South America plot
-# MSLP and 850hPa temperature from 20CRv3
+# MSLP and 850hPa temperature from 20CRv3 and v2c
 
 import os
 import math
@@ -83,7 +83,7 @@ land_img_2c=ax_2c.background_img(name='GreyT', resolution='low')
 land_img_3=ax_3.background_img(name='GreyT', resolution='low')
 
 # Observations
-obs=twcr.load_observations_fortime(dte,version='4.5.2')
+obs=twcr.load_observations_fortime(dte,version='2c')
 obs=obs.loc[((obs['Latitude']<10) & 
                  (obs['Latitude']>-90)) &
               ((obs['Longitude']>270) & 
@@ -91,85 +91,92 @@ obs=obs.loc[((obs['Latitude']<10) &
 mg.observations.plot(ax_2c,obs,radius=0.15)
 
 # MSLP
-prmsl=twcr.load('prmsl',dte,version='4.5.2')
+prmsl=twcr.load('prmsl',dte,version='2c')
 
 # Contour spaghetti plot of MSLP ensemble
 mg.pressure.plot(ax_2c,prmsl,scale=0.01,type='spaghetti',
                    resolution=0.25,
                    levels=numpy.arange(870,1050,10),
-                   colors='blue',
+                   colors='grey',
                    label=False,
-                   linewidths=0.1)
+                   linewidths=0.1,
+                   zorder=150)
 
 # Add the ensemble mean - with labels
 prmsl_m=prmsl.collapsed('member', iris.analysis.MEAN)
 mg.pressure.plot(ax_2c,prmsl_m,scale=0.01,
                    resolution=0.25,
                    levels=numpy.arange(870,1050,10),
-                   colors='black',
-                   label=True,
-                   linewidths=2)
+                   colors='grey',
+                   label=False,
+                   linewidths=2,
+                   zorder=200)
 
-# MSLP label
-mg.utils.plot_label(ax_2c,'MSLP',
+# Show the ensemble mean T850 with a colour overlay
+t850=twcr.load('t850',dte,version='2c')
+t850_m=t850.collapsed('member', iris.analysis.MEAN)
+mg.precipitation.plot(ax_2c,t850_m,resolution=0.25,sqrt=False,
+                      cmap=matplotlib.cm.get_cmap('coolwarm'),
+                      vmin=265,vmax=295,alpha=0.5,zorder=100)
+
+mg.utils.plot_label(ax_2c,'20CRv2c',
                      facecolor=fig.get_facecolor(),
                      x_fraction=0.02,
-                     horizontalalignment='left')
+                     horizontalalignment='left',
+                     zorder=500)
 
-# T850 panel
-
-T_cmap = matplotlib.colors.LinearSegmentedColormap('t_cmap',
-                             {'red'  : ((0.0, 0.3, 0.3), 
-                                        (0.5, 0.3, 0.3), 
-                                        (1.0, 1.0, 1.0)), 
-                              'green': ((0.0, 0.3, 0.3), 
-                                        (0.5, 0.3, 0.3), 
-                                        (1.0, 0.3, 0.3)), 
-                              'blue' : ((0.0, 1.0, 1.0), 
-                                        (0.5, 0.3, 0.3), 
-                                        (1.0, 0.3, 0.3)), 
-                              'alpha': ((0.0, 1.0, 1.0),
-                                        (0.5, 1.0, 1.0),
-                                        (1.0, 1.0, 1.0)) })
-
+# V3 version
+obs=twcr.load_observations_fortime(dte,version='4.5.2')
+obs=obs.loc[((obs['Latitude']<10) & 
+                 (obs['Latitude']>-90)) &
+              ((obs['Longitude']>270) & 
+                 (obs['Longitude']<330))].copy()
 mg.observations.plot(ax_3,obs,radius=0.15)
 
-t850=twcr.load('tmp',dte,level=850,version='4.5.2')
+# MSLP
+prmsl=twcr.load('prmsl',dte,version='4.5.2')
 
-# Contour spaghetti plot of ensemble members
-# Only use 56 members to match v2c
-t850_r=t850.extract(iris.Constraint(member=range(0,56)))
-lev=numpy.arange(265,295,5)
-lev_f=(lev-numpy.min(lev))/float(numpy.max(lev)-numpy.min(lev))
-mg.pressure.plot(ax_3,t850_r,scale=1,type='spaghetti',
+# Contour spaghetti plot of MSLP ensemble
+mg.pressure.plot(ax_3,prmsl,scale=0.01,type='spaghetti',
                    resolution=0.25,
-                   levels=lev,
-                   colors=T_cmap(lev_f),
+                   levels=numpy.arange(870,1050,10),
+                   colors='grey',
                    label=False,
-                   linewidths=0.15)
+                   linewidths=0.2,
+                   zorder=150)
 
 # Add the ensemble mean - with labels
-t850_m=t850.collapsed('member', iris.analysis.MEAN)
-mg.pressure.plot(ax_3,t850_m,scale=1,
+prmsl_m=prmsl.collapsed('member', iris.analysis.MEAN)
+mg.pressure.plot(ax_3,prmsl_m,scale=0.01,
                    resolution=0.25,
-                   levels=lev,
-                   colors=T_cmap(lev_f),
-                   label=True,
-                   linewidths=2)
+                   levels=numpy.arange(870,1050,10),
+                   colors='grey',
+                   label=False,
+                   linewidths=2,
+                   zorder=200)
 
-mg.utils.plot_label(ax_3,'Temperature at 850hPa',
+# Show the ensemble mean T850 with a colour overlay
+t850=twcr.load('tmp',dte,level=850,version='4.5.2')
+t850_m=t850.collapsed('member', iris.analysis.MEAN)
+mg.precipitation.plot(ax_3,t850_m,resolution=0.25,sqrt=False,
+                      cmap=matplotlib.cm.get_cmap('coolwarm'),
+                      vmin=265,vmax=295,alpha=0.5,zorder=100)
+
+mg.utils.plot_label(ax_3,'20CRv3',
                      facecolor=fig.get_facecolor(),
                      x_fraction=0.02,
-                     horizontalalignment='left')
+                     horizontalalignment='left',
+                     zorder=500)
 
 mg.utils.plot_label(ax_3,
               '%04d-%02d-%02d:%02d' % (args.year,args.month,
                                        args.day,int(args.hour)),
               facecolor=fig.get_facecolor(),
               x_fraction=0.98,
-              horizontalalignment='right')
+              horizontalalignment='right',
+              zorder=500)
 
 # Output as png
-fig.savefig('%s/CS_V3_%04d%02d%02d%02d%02d.png' % 
+fig.savefig('%s/CS_V3vV2c_%04d%02d%02d%02d%02d.png' % 
                (args.opdir,args.year,args.month,args.day,
                            int(args.hour),int(args.hour%1*60)))
