@@ -8,11 +8,11 @@ South American cold surge of 2005 video
     <center>
     <table><tr><td><center>
     <iframe src="https://player.vimeo.com/video/303321991?title=0&byline=0&portrait=0" width="795" height="448" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></center></td></tr>
-    <tr><td><center>MSLP (left) and 850hPa temperature (right) contours from 20CRv3</center></td></tr>
+    <tr><td><center>MSLP contours and 850hPa temperature field from 20CRv2c (left) and 20CRv3 (right)</center></td></tr>
     </table>
     </center>
 
-The thin lines are contours from each of 56 ensemble members. The thicker lines are contours of the ensemble mean. The yellow dots mark pressure observations assimilated while making the fields shown. 
+The thin lines are MSLP contours from each of 56 ensemble members. The thicker lines are contours of the ensemble mean. The background colour field shows the ensemble mean temperature at 850hPa. The small circles mark pressure observations assimilated while making the fields shown.
 
 |
 
@@ -25,7 +25,7 @@ Download the data required:
 
 Script to make an individual frame - takes year, month, day, and hour as command-line options:
 
-.. literalinclude:: ../../analyses/cold_surges/Argentina_September_2005/video/CS_V3.py
+.. literalinclude:: ../../analyses/cold_surges/Argentina_September_2005/video/CS_V3vV2c.py
 
 To make the video, it is necessary to run the script above hundreds of times - giving an image for every 15-minute period. This script makes the list of commands needed to make all the images, which can be run `in parallel <http://brohan.org/offline_assimilation/tools/parallel.html>`_.
 

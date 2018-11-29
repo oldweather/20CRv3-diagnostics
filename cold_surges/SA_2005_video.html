@@ -40,6 +40,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../extreme_months/extreme_months.html">Extreme months</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../north_american_severe_weather/nasw.html">North American severe weather</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../australian_east_coast_lows/aecl.html">Australian east coast lows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cold_surges.html">Cold Surges</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
@@ -73,9 +74,9 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <center>
 <table><tr><td><center>
 <iframe src="https://player.vimeo.com/video/303321991?title=0&byline=0&portrait=0" width="795" height="448" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></center></td></tr>
-<tr><td><center>MSLP (left) and 850hPa temperature (right) contours from 20CRv3</center></td></tr>
+<tr><td><center>MSLP contours and 850hPa temperature field from 20CRv2c (left) and 20CRv3 (right)</center></td></tr>
 </table>
-</center><p>The thin lines are contours from each of 56 ensemble members. The thicker lines are contours of the ensemble mean. The yellow dots mark pressure observations assimilated while making the fields shown.</p>
+</center><p>The thin lines are MSLP contours from each of 56 ensemble members. The thicker lines are contours of the ensemble mean. The background colour field shows the ensemble mean temperature at 850hPa. The small circles mark pressure observations assimilated while making the fields shown.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -102,7 +103,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
 
 <span class="c1"># South America plot</span>
-<span class="c1"># MSLP and 850hPa temperature from 20CRv3</span>
+<span class="c1"># MSLP and 850hPa temperature from 20CRv3 and v2c</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">math</span>
@@ -184,7 +185,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <span class="n">land_img_3</span><span class="o">=</span><span class="n">ax_3</span><span class="o">.</span><span class="n">background_img</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;GreyT&#39;</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;low&#39;</span><span class="p">)</span>
 
 <span class="c1"># Observations</span>
-<span class="n">obs</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load_observations_fortime</span><span class="p">(</span><span class="n">dte</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">)</span>
+<span class="n">obs</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load_observations_fortime</span><span class="p">(</span><span class="n">dte</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
 <span class="n">obs</span><span class="o">=</span><span class="n">obs</span><span class="o">.</span><span class="n">loc</span><span class="p">[((</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">)</span> <span class="o">&amp;</span> 
                  <span class="p">(</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">]</span><span class="o">&gt;-</span><span class="mi">90</span><span class="p">))</span> <span class="o">&amp;</span>
               <span class="p">((</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">270</span><span class="p">)</span> <span class="o">&amp;</span> 
@@ -192,86 +193,93 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <span class="n">mg</span><span class="o">.</span><span class="n">observations</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax_2c</span><span class="p">,</span><span class="n">obs</span><span class="p">,</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
 
 <span class="c1"># MSLP</span>
-<span class="n">prmsl</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;prmsl&#39;</span><span class="p">,</span><span class="n">dte</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">)</span>
+<span class="n">prmsl</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;prmsl&#39;</span><span class="p">,</span><span class="n">dte</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
 
 <span class="c1"># Contour spaghetti plot of MSLP ensemble</span>
 <span class="n">mg</span><span class="o">.</span><span class="n">pressure</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax_2c</span><span class="p">,</span><span class="n">prmsl</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;spaghetti&#39;</span><span class="p">,</span>
                    <span class="n">resolution</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
                    <span class="n">levels</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">870</span><span class="p">,</span><span class="mi">1050</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span>
-                   <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+                   <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span>
                    <span class="n">label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                   <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+                   <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                   <span class="n">zorder</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
 
 <span class="c1"># Add the ensemble mean - with labels</span>
 <span class="n">prmsl_m</span><span class="o">=</span><span class="n">prmsl</span><span class="o">.</span><span class="n">collapsed</span><span class="p">(</span><span class="s1">&#39;member&#39;</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">MEAN</span><span class="p">)</span>
 <span class="n">mg</span><span class="o">.</span><span class="n">pressure</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax_2c</span><span class="p">,</span><span class="n">prmsl_m</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
                    <span class="n">resolution</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
                    <span class="n">levels</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">870</span><span class="p">,</span><span class="mi">1050</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span>
-                   <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
-                   <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                   <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+                   <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span>
+                   <span class="n">label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                   <span class="n">zorder</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 
-<span class="c1"># MSLP label</span>
-<span class="n">mg</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">plot_label</span><span class="p">(</span><span class="n">ax_2c</span><span class="p">,</span><span class="s1">&#39;MSLP&#39;</span><span class="p">,</span>
+<span class="c1"># Show the ensemble mean T850 with a colour overlay</span>
+<span class="n">t850</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;t850&#39;</span><span class="p">,</span><span class="n">dte</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
+<span class="n">t850_m</span><span class="o">=</span><span class="n">t850</span><span class="o">.</span><span class="n">collapsed</span><span class="p">(</span><span class="s1">&#39;member&#39;</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">MEAN</span><span class="p">)</span>
+<span class="n">mg</span><span class="o">.</span><span class="n">precipitation</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax_2c</span><span class="p">,</span><span class="n">t850_m</span><span class="p">,</span><span class="n">resolution</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span><span class="n">sqrt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                      <span class="n">cmap</span><span class="o">=</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">),</span>
+                      <span class="n">vmin</span><span class="o">=</span><span class="mi">265</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">295</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="n">mg</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">plot_label</span><span class="p">(</span><span class="n">ax_2c</span><span class="p">,</span><span class="s1">&#39;20CRv2c&#39;</span><span class="p">,</span>
                      <span class="n">facecolor</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">get_facecolor</span><span class="p">(),</span>
                      <span class="n">x_fraction</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
-                     <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+                     <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span>
+                     <span class="n">zorder</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 
-<span class="c1"># T850 panel</span>
-
-<span class="n">T_cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">LinearSegmentedColormap</span><span class="p">(</span><span class="s1">&#39;t_cmap&#39;</span><span class="p">,</span>
-                             <span class="p">{</span><span class="s1">&#39;red&#39;</span>  <span class="p">:</span> <span class="p">((</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span> 
-                                        <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span> 
-                                        <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span> 
-                              <span class="s1">&#39;green&#39;</span><span class="p">:</span> <span class="p">((</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span> 
-                                        <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span> 
-                                        <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)),</span> 
-                              <span class="s1">&#39;blue&#39;</span> <span class="p">:</span> <span class="p">((</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> 
-                                        <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span> 
-                                        <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)),</span> 
-                              <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="p">((</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-                                        <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
-                                        <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span> <span class="p">})</span>
-
+<span class="c1"># V3 version</span>
+<span class="n">obs</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load_observations_fortime</span><span class="p">(</span><span class="n">dte</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">)</span>
+<span class="n">obs</span><span class="o">=</span><span class="n">obs</span><span class="o">.</span><span class="n">loc</span><span class="p">[((</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">)</span> <span class="o">&amp;</span> 
+                 <span class="p">(</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">]</span><span class="o">&gt;-</span><span class="mi">90</span><span class="p">))</span> <span class="o">&amp;</span>
+              <span class="p">((</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">270</span><span class="p">)</span> <span class="o">&amp;</span> 
+                 <span class="p">(</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">330</span><span class="p">))]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">mg</span><span class="o">.</span><span class="n">observations</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="n">obs</span><span class="p">,</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
 
-<span class="n">t850</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;tmp&#39;</span><span class="p">,</span><span class="n">dte</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="mi">850</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">)</span>
+<span class="c1"># MSLP</span>
+<span class="n">prmsl</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;prmsl&#39;</span><span class="p">,</span><span class="n">dte</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">)</span>
 
-<span class="c1"># Contour spaghetti plot of ensemble members</span>
-<span class="c1"># Only use 56 members to match v2c</span>
-<span class="n">t850_r</span><span class="o">=</span><span class="n">t850</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">member</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">56</span><span class="p">)))</span>
-<span class="n">lev</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">265</span><span class="p">,</span><span class="mi">295</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">lev_f</span><span class="o">=</span><span class="p">(</span><span class="n">lev</span><span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">lev</span><span class="p">))</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">lev</span><span class="p">)</span><span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">lev</span><span class="p">))</span>
-<span class="n">mg</span><span class="o">.</span><span class="n">pressure</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="n">t850_r</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;spaghetti&#39;</span><span class="p">,</span>
+<span class="c1"># Contour spaghetti plot of MSLP ensemble</span>
+<span class="n">mg</span><span class="o">.</span><span class="n">pressure</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="n">prmsl</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;spaghetti&#39;</span><span class="p">,</span>
                    <span class="n">resolution</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
-                   <span class="n">levels</span><span class="o">=</span><span class="n">lev</span><span class="p">,</span>
-                   <span class="n">colors</span><span class="o">=</span><span class="n">T_cmap</span><span class="p">(</span><span class="n">lev_f</span><span class="p">),</span>
+                   <span class="n">levels</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">870</span><span class="p">,</span><span class="mi">1050</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span>
+                   <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span>
                    <span class="n">label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                   <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+                   <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                   <span class="n">zorder</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
 
 <span class="c1"># Add the ensemble mean - with labels</span>
-<span class="n">t850_m</span><span class="o">=</span><span class="n">t850</span><span class="o">.</span><span class="n">collapsed</span><span class="p">(</span><span class="s1">&#39;member&#39;</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">MEAN</span><span class="p">)</span>
-<span class="n">mg</span><span class="o">.</span><span class="n">pressure</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="n">t850_m</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="n">prmsl_m</span><span class="o">=</span><span class="n">prmsl</span><span class="o">.</span><span class="n">collapsed</span><span class="p">(</span><span class="s1">&#39;member&#39;</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">MEAN</span><span class="p">)</span>
+<span class="n">mg</span><span class="o">.</span><span class="n">pressure</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="n">prmsl_m</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
                    <span class="n">resolution</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
-                   <span class="n">levels</span><span class="o">=</span><span class="n">lev</span><span class="p">,</span>
-                   <span class="n">colors</span><span class="o">=</span><span class="n">T_cmap</span><span class="p">(</span><span class="n">lev_f</span><span class="p">),</span>
-                   <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                   <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+                   <span class="n">levels</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">870</span><span class="p">,</span><span class="mi">1050</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span>
+                   <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span>
+                   <span class="n">label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                   <span class="n">zorder</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 
-<span class="n">mg</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">plot_label</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="s1">&#39;Temperature at 850hPa&#39;</span><span class="p">,</span>
+<span class="c1"># Show the ensemble mean T850 with a colour overlay</span>
+<span class="n">t850</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;tmp&#39;</span><span class="p">,</span><span class="n">dte</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="mi">850</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">)</span>
+<span class="n">t850_m</span><span class="o">=</span><span class="n">t850</span><span class="o">.</span><span class="n">collapsed</span><span class="p">(</span><span class="s1">&#39;member&#39;</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">MEAN</span><span class="p">)</span>
+<span class="n">mg</span><span class="o">.</span><span class="n">precipitation</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="n">t850_m</span><span class="p">,</span><span class="n">resolution</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span><span class="n">sqrt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                      <span class="n">cmap</span><span class="o">=</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">),</span>
+                      <span class="n">vmin</span><span class="o">=</span><span class="mi">265</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">295</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="n">mg</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">plot_label</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="s1">&#39;20CRv3&#39;</span><span class="p">,</span>
                      <span class="n">facecolor</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">get_facecolor</span><span class="p">(),</span>
                      <span class="n">x_fraction</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
-                     <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+                     <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span>
+                     <span class="n">zorder</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 
 <span class="n">mg</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">plot_label</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span>
               <span class="s1">&#39;</span><span class="si">%04d</span><span class="s1">-</span><span class="si">%02d</span><span class="s1">-</span><span class="si">%02d</span><span class="s1">:</span><span class="si">%02d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
                                        <span class="n">args</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">hour</span><span class="p">)),</span>
               <span class="n">facecolor</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">get_facecolor</span><span class="p">(),</span>
               <span class="n">x_fraction</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span>
-              <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+              <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
+              <span class="n">zorder</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 
 <span class="c1"># Output as png</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/CS_V3_</span><span class="si">%04d%02d%02d%02d%02d</span><span class="s1">.png&#39;</span> <span class="o">%</span> 
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/CS_V3vV2c_</span><span class="si">%04d%02d%02d%02d%02d</span><span class="s1">.png&#39;</span> <span class="o">%</span> 
                <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">opdir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
                            <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">hour</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">hour</span><span class="o">%</span><span class="mi">1</span><span class="o">*</span><span class="mi">60</span><span class="p">)))</span>
 </pre></div>
@@ -293,7 +301,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <span class="c1"># Function to check if the job is already done for this timepoint</span>
 <span class="k">def</span> <span class="nf">is_done</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">):</span>
     <span class="n">op_file_name</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/images/SA_cold_surge_2005/&quot;</span> <span class="o">+</span>
-                  <span class="s2">&quot;CS_V3_</span><span class="si">%04d%02d%02d%02d%02d</span><span class="s2">.png&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
+                  <span class="s2">&quot;CS_V3vV2c_</span><span class="si">%04d%02d%02d%02d%02d</span><span class="s2">.png&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
                             <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">),</span>
                             <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">hour</span><span class="p">),</span>
                                         <span class="nb">int</span><span class="p">(</span><span class="n">hour</span><span class="o">%</span><span class="mi">1</span><span class="o">*</span><span class="mi">60</span><span class="p">))</span>
@@ -303,7 +311,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 
 <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;run.txt&quot;</span><span class="p">,</span><span class="s2">&quot;w+&quot;</span><span class="p">)</span>
 
-<span class="n">start_day</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2005</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">start_day</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2005</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">end_day</span>  <span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2005</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span>
 
 <span class="n">current_day</span><span class="o">=</span><span class="n">start_day</span>
@@ -312,7 +320,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
         <span class="k">if</span> <span class="n">is_done</span><span class="p">(</span><span class="n">current_day</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
                        <span class="n">current_day</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">hour</span><span class="o">+</span><span class="n">fraction</span><span class="p">):</span>
             <span class="k">continue</span>
-        <span class="n">cmd</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;./CS_V3.py --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">+</span>
+        <span class="n">cmd</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;./CS_V3vV2c.py --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">+</span>
             <span class="s2">&quot; --day=</span><span class="si">%d</span><span class="s2"> --hour=</span><span class="si">%f</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
                <span class="n">current_day</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
                <span class="n">current_day</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">hour</span><span class="o">+</span><span class="n">fraction</span><span class="p">)</span>
