@@ -33,7 +33,7 @@ search_strings={
     'icec'    : 'ICEC'
 }
 if args.var not in search_strings:
-    raise StandardError("Unsupported variable %s" % args.var)  
+    raise Exception("Unsupported variable %s" % args.var)  
 
 # Where to find the grib (and obs) files retrieved from hsi
 working_directory="%s/20CRv3.working.orig/ensda_%04d/%04d/%02d" % (
@@ -55,7 +55,7 @@ wgrib='/global/homes/c/compo/bin/wgrib'
 # Don't repeat pre-existing extractions
 fn= "%s/%s.nc4" % (final_directory,args.var)
 if os.path.isfile(fn):
-    raise StandardError('Already done')
+    raise Exception('Already done')
 
 # Temporary file for staging extracted data
 tfile=tempfile.NamedTemporaryFile(delete=False)
@@ -75,7 +75,7 @@ while current_day.month==args.month:
                             current_day.month,current_day.day,
                             hour,member)
             if not os.path.exists(an_file_name):
-                raise StandardError("Missing data %s" % an_file_name)
+                raise Exception("Missing data %s" % an_file_name)
 
             proc = subprocess.Popen(
               "%s %s | grep '%s' | %s -i -grib %s -o %s; cat %s >> %s/%s.grb" % (
@@ -87,7 +87,7 @@ while current_day.month==args.month:
                                     shell=True)
             (out, err) = proc.communicate()
             if out is not None or err is not None:
-                raise StandardError("Failed to extract %s from %s" % (
+                raise Exception("Failed to extract %s from %s" % (
                                      args.var,an_file_name))
    
     current_day=current_day+datetime.timedelta(days=1)
@@ -102,7 +102,7 @@ proc = subprocess.Popen(
                         shell=True)
 (out, err) = proc.communicate()
 if out is not None or err is not None:
-    raise StandardError("Failed to convert %s to netCDF" % args.var)
+    raise Exception("Failed to convert %s to netCDF" % args.var)
 # Strip out unnecessary dimensions that confuse iris
 proc = subprocess.Popen("ncks -C -O -x -v ensemble0_info,initial_time1,initial_time1_encoded "+
                         "%s/%s.nc4 %s/%s.stripped.nc4" % (final_directory,args.var,
@@ -110,7 +110,7 @@ proc = subprocess.Popen("ncks -C -O -x -v ensemble0_info,initial_time1,initial_t
                         shell=True)
 (out, err) = proc.communicate()
 if out is not None or err is not None:
-    raise StandardError("Failed to strip %s netCDF file" % args.var)
+    raise Exception("Failed to strip %s netCDF file" % args.var)
 os.rename("%s/%s.stripped.nc4" % (final_directory,args.var),
           "%s/%s.nc4" % (final_directory,args.var))
 

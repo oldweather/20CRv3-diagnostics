@@ -118,7 +118,7 @@ t850=twcr.load('tmp',dte,level=850,version='4.5.2')
 
 # Contour spaghetti plot of ensemble members
 # Only use 56 members to match v2c
-t850_r=t850.extract(iris.Constraint(member=range(0,56)))
+t850_r=t850.extract(iris.Constraint(member=list(range(0,56))))
 lev=numpy.arange(265,295,5)
 lev_f=(lev-numpy.min(lev))/float(numpy.max(lev)-numpy.min(lev))
 mg.pressure.plot(ax_3,t850_r,scale=1,type='spaghetti',

@@ -42,7 +42,7 @@ tfile.close()
 proc = subprocess.Popen('sbatch %s' % tfile.name,shell=True)
 (out, err) = proc.communicate()
 if out is not None or err is not None:
-    raise StandardError("Failed to submit %s" % tfile.name)
+    raise Exception("Failed to submit %s" % tfile.name)
 
 os.remove(tfile.name)
 #print tfile.name

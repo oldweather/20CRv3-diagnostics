@@ -72,8 +72,8 @@ obs=DWR.load_observations('prmsl',
 if len(args.skip)>0:
     obs=obs[~obs['name'].isin(args.skip)]
 obs=obs.sort_values(by='latitude',ascending=True)
-stations=collections.OrderedDict.fromkeys(
-                        obs.loc[:,'name']).keys()
+stations=list(collections.OrderedDict.fromkeys(
+                        obs.loc[:,'name']).keys())
 latlon={}
 for station in stations:
    latlon[station]=DWR.get_station_location(obs,station)
@@ -99,7 +99,7 @@ elif args.reanalysis=='20cr3':
 elif args.reanalysis=='cera':
     prmsl=IRData.cera20c.load('prmsl',dte)
 else:
-    raise StandardError("Unsupported reanalysis %s" % args.reanalysis)
+    raise Exception("Unsupported reanalysis %s" % args.reanalysis)
 prmsl.data=prmsl.data/100  # convert to hPa
 
 n_contours=56

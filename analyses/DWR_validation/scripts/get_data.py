@@ -47,7 +47,7 @@ while current<end:
     elif args.reanalysis=='cera':
         cera20c.fetch('prmsl',current)
     else:
-        print "Unsupported reanalysis %s" % args.reanalysis
+        print("Unsupported reanalysis %s" % args.reanalysis)
         sys.exit(1)
 
     current=current+datetime.timedelta(days=28)

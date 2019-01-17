@@ -45,8 +45,8 @@ def plot_scatter(ax,field,dwr_obs,dte,**kwargs):
     kwargs.setdefault('xlabel','MSLP (hPa)')
     kwargs.setdefault('scatter_point_size',25)
     kwargs.setdefault('scatter_alpha',0.5)
-    kwargs.setdefault('stations',collections.OrderedDict.fromkeys(
-                                      dwr_obs.loc[:,'name']).keys())
+    kwargs.setdefault('stations',list(collections.OrderedDict.fromkeys(
+                                      dwr_obs.loc[:,'name']).keys()))
     if 'station_latlon' not in kwargs:
         latlon={}
         for station in kwargs.get('stations'):
@@ -82,7 +82,7 @@ def plot_scatter(ax,field,dwr_obs,dte,**kwargs):
         try:
             interpolated[station]=DWR.at_station_and_time(
                                               dwr_obs,station,dte)
-        except StandardError:
+        except Exception:
             interpolated[station]=None
     for y in range(0,len(kwargs.get('stations'))):
         station=kwargs.get('stations')[y]

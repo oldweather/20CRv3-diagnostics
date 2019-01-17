@@ -131,7 +131,7 @@ wgrib2='/global/homes/c/cmccoll/bin/wgrib2'
 # Don't repeat pre-existing extractions
 fn= "%s/%s.nc4" % (final_directory,opfile(args.var,args.level,args.height))
 if os.path.isfile(fn):
-    raise StandardError('Already done')
+    raise Exception('Already done')
 
 # Temporary file for staging extracted data
 tfile=tempfile.NamedTemporaryFile(delete=False)
@@ -146,7 +146,7 @@ while current_day.month==args.month:
                             current_day.month,current_day.day,
                             hour,member)
             if not os.path.exists(an_file_name):
-                raise StandardError("Missing data %s" % an_file_name)
+                raise Exception("Missing data %s" % an_file_name)
 
             proc = subprocess.Popen(
               "%s %s -match '%s' -grib %s; cat %s >> %s/%s.grb2" % (
@@ -158,7 +158,7 @@ while current_day.month==args.month:
         shell=True)
             (out, err) = proc.communicate()
             if out is not None or err is not None:
-                raise StandardError("Failed to extract %s from %s" % (
+                raise Exception("Failed to extract %s from %s" % (
                                      opfile(args.var,args.level,args.height),
                                      an_file_name))
    
@@ -174,5 +174,5 @@ proc = subprocess.Popen(
                         shell=True)
 (out, err) = proc.communicate()
 if out is not None or err is not None:
-    raise StandardError("Failed to convert %s to netCDF" % 
+    raise Exception("Failed to convert %s to netCDF" % 
                          opfile(args.var,args.level,args.height))

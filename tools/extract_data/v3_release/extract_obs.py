@@ -24,7 +24,7 @@ working_directory="%s/20CRv3.working/ensda_%04d/%04d/%02d" % (
                    os.getenv('SCRATCH'),args.startyear,
                    args.year,args.month)
 if not os.path.isdir(working_directory):
-    raise StandardError('No working directory')
+    raise Exception('No working directory')
 # Where to put the final output files for this month
 final_directory="%s/20CRv3.final/version_%1d.%1d.%1d/%04d/%02d" % (
                   os.getenv('SCRATCH'),int(args.version/100),
@@ -46,7 +46,7 @@ while current_day.month==args.month:
         for o_file in ('psobs.txt','psobs_prior.txt',
                                  'psobs_posterior.txt'):   
             if not os.path.exists("%s/%s" % (obs_dir_name,o_file)):
-                raise StandardError("Missing data %s/%s" % (
+                raise Exception("Missing data %s/%s" % (
                                          obs_dir_name,o_file))
             copyfile("%s/%s" % (obs_dir_name,o_file),
                      "%s/observations/%04d%02d%02d%02d_%s" % (

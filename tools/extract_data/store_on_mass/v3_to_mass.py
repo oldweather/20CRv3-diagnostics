@@ -27,11 +27,11 @@ args = parser.parse_args()
 
 # Check moose availability
 if not moose.has_moose_support():
-    raise StandardError("Moose unavailable")
+    raise Exception("Moose unavailable")
 if not moose.check_moose_commands_enabled(moose.MOOSE_LS):
-    raise StandardError("'moo ls' disabled")
+    raise Exception("'moo ls' disabled")
 if not moose.check_moose_commands_enabled(moose.MOOSE_PUT):
-    raise StandardError("'moo put' disabled")
+    raise Exception("'moo put' disabled")
 
 # Base location for storage
 mbase="moose:/adhoc/projects/20cr/"
@@ -55,7 +55,7 @@ def archive_obs(year,month,version,variable):
                            (ddir,year,year,month))
     if len(ofiles)==0:  # No obs on disc
         if variable=='observations':
-            raise StandardError("No obs on disc for %04d-%02d %s" %
+            raise Exception("No obs on disc for %04d-%02d %s" %
                                                 (year,month,version))
         return()
 
@@ -70,8 +70,8 @@ def archive_obs(year,month,version,variable):
                shell=True)
     (out, err) = proc.communicate()
     if len(err)!=0:
-        print err
-        raise StandardError("Failed to tar observations")
+        print(err)
+        raise Exception("Failed to tar observations")
 
     # Stow the ob file on MASS
     moose.put("%s/observations/%04d" % (ddir,year),
@@ -88,7 +88,7 @@ def archive_variable(year,month,version,variable):
         return()  # Already archived
     vf="%s/%04d/%02d/%s.nc" % (ddir,year,month,variable)
     if not os.path.isfile(vf):
-        raise StandardError("No data file %s" % vf)
+        raise Exception("No data file %s" % vf)
     moose.put("%s/%04d/%02d" % (ddir,year,month),
               ["%s.nc" % variable],
               moose_dir) 

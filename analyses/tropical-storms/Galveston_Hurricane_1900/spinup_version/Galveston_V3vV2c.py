@@ -26,7 +26,7 @@ import IRData.twcr as twcr
 year=1900
 month=9
 day=8
-hour=06
+hour=0o6
 dte=datetime.datetime(year,month,day,hour)
 
 # Landscape page
@@ -74,7 +74,7 @@ if not obs_h.empty:
 prmsl=twcr.load('prmsl',dte,version='4.5.1.spinup')
 
 # Contour spaghetti plot of ensemble members
-prmsl_r=prmsl.extract(iris.Constraint(member=range(0,56)))
+prmsl_r=prmsl.extract(iris.Constraint(member=list(range(0,56))))
 mg.pressure.plot(ax_2c,prmsl_r,scale=0.01,type='spaghetti',
                    resolution=0.25,
                    levels=numpy.arange(870,1050,10),
@@ -113,7 +113,7 @@ prmsl=twcr.load('prmsl',dte,version='4.5.1')
 
 # Contour spaghetti plot of ensemble members
 # Only use 56 members to match v2c
-prmsl_r=prmsl.extract(iris.Constraint(member=range(0,56)))
+prmsl_r=prmsl.extract(iris.Constraint(member=list(range(0,56))))
 mg.pressure.plot(ax_3,prmsl_r,scale=0.01,type='spaghetti',
                    resolution=0.25,
                    levels=numpy.arange(870,1050,10),
