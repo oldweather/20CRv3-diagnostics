@@ -13,15 +13,11 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="search" title="Search" href="../search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
         <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
       </ul>
     </div>
@@ -40,6 +36,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../extreme_months/extreme_months.html">Extreme months</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../north_american_severe_weather/nasw.html">North American severe weather</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../australian_east_coast_lows/aecl.html">Australian east coast lows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cold_surges/cold_surges.html">Cold Surges</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
@@ -110,10 +107,10 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
                     <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
 <span class="n">start_years</span><span class="o">=</span><span class="n">err</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="c1"># Why does hsi put output in stderr?</span>
-<span class="n">start_years</span><span class="o">=</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="s1">&#39;ensda_</span><span class="si">%03d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span> <span class="ow">in</span> <span class="n">x</span><span class="p">,</span> <span class="n">start_years</span><span class="p">)</span>
+<span class="n">start_years</span><span class="o">=</span><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">start_years</span> <span class="k">if</span> <span class="s1">&#39;ensda_</span><span class="si">%03d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
 <span class="n">start_years</span><span class="o">=</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">start_years</span><span class="p">]</span>
 <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">start_years</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
       <span class="s2">&quot;</span><span class="si">%04d</span><span class="s2"> is not as available start year&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">)</span>
 
 <span class="c1"># Get the list of files available for the selected month</span>
@@ -125,10 +122,10 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
                     <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
 <span class="n">file_list</span><span class="o">=</span><span class="n">err</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-<span class="n">tar_files</span><span class="o">=</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%04d%02d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">)</span> <span class="ow">in</span> <span class="n">x</span><span class="p">,</span> <span class="n">file_list</span><span class="p">)</span>
+<span class="n">tar_files</span><span class="o">=</span><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">file_list</span> <span class="k">if</span> <span class="s1">&#39;</span><span class="si">%04d%02d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">)</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tar_files</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">100</span><span class="p">:</span>
-    <span class="nb">print</span> <span class="n">file_list</span>
-    <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Data not available&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data not available&quot;</span><span class="p">)</span>
 
 <span class="c1"># Have the list of files to retrieve - sort them into tape order</span>
 <span class="n">tfile</span><span class="o">=</span><span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -165,13 +162,13 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">tar_files</span><span class="p">:</span>
     <span class="n">fpn</span><span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">working_directory</span><span class="p">,</span><span class="n">file</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fpn</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Missing file </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fpn</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Missing file </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fpn</span><span class="p">)</span>
          
     <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s2">&quot;cd </span><span class="si">%s</span><span class="s2">; tar xf </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
                             <span class="n">working_directory</span><span class="p">,</span><span class="n">file</span><span class="p">),</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Failed to untar </span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Failed to untar </span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
                              <span class="n">working_directory</span><span class="p">,</span><span class="n">file</span><span class="p">))</span>
 
 </pre></div>
@@ -187,9 +184,6 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
         <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
       </ul>
     </div>

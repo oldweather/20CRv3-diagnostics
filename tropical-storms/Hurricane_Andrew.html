@@ -13,7 +13,6 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Super-Typhoon Nancy (1961)" href="Typhoon_Nancy.html" />
     <link rel="prev" title="Tropical Storms" href="tropical_storms.html" /> 
@@ -22,11 +21,8 @@
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
-        <li class="right" >
           <a href="Typhoon_Nancy.html" title="Super-Typhoon Nancy (1961)"
-             accesskey="N">next</a> |</li>
+             accesskey="N">next</a></li>
         <li class="right" >
           <a href="tropical_storms.html" title="Tropical Storms"
              accesskey="P">previous</a> |</li>
@@ -49,6 +45,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Typhoon_Nancy.html">Super-Typhoon Nancy (1961)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Hurricane_Carla.html">Hurricane Carla (1961)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Gold_Coast_Cyclone.html">The Gold Coast Cyclone (1954)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Typhoon_Kathleen.html">Typhoon Kathleen (1947)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Okeechobee_Hurricane.html">Okeechobee Hurricane (1928)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Galveston_Hurricane.html">Galveston Hurricane (1900)</a></li>
 </ul>
@@ -57,6 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../extreme_months/extreme_months.html">Extreme months</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../north_american_severe_weather/nasw.html">North American severe weather</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../australian_east_coast_lows/aecl.html">Australian east coast lows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cold_surges/cold_surges.html">Cold Surges</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
@@ -228,7 +226,7 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
 
 <span class="c1"># Contour spaghetti plot of ensemble members</span>
 <span class="c1"># Only use 56 members to match v2c</span>
-<span class="n">prmsl_r</span><span class="o">=</span><span class="n">prmsl</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">member</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">56</span><span class="p">)))</span>
+<span class="n">prmsl_r</span><span class="o">=</span><span class="n">prmsl</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">member</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">56</span><span class="p">))))</span>
 <span class="n">mg</span><span class="o">.</span><span class="n">pressure</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="n">prmsl_r</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;spaghetti&#39;</span><span class="p">,</span>
                    <span class="n">resolution</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
                    <span class="n">levels</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">870</span><span class="p">,</span><span class="mi">1050</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span>
@@ -273,11 +271,8 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
-        <li class="right" >
           <a href="Typhoon_Nancy.html" title="Super-Typhoon Nancy (1961)"
-             >next</a> |</li>
+             >next</a></li>
         <li class="right" >
           <a href="tropical_storms.html" title="Tropical Storms"
              >previous</a> |</li>

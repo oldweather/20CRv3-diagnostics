@@ -13,15 +13,11 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="search" title="Search" href="../search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
         <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
       </ul>
     </div>
@@ -40,6 +36,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../extreme_months/extreme_months.html">Extreme months</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../north_american_severe_weather/nasw.html">North American severe weather</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../australian_east_coast_lows/aecl.html">Australian east coast lows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cold_surges/cold_surges.html">Cold Surges</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
@@ -203,7 +200,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <span class="c1"># Don&#39;t repeat pre-existing extractions</span>
 <span class="n">fn</span><span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">.nc4&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">final_directory</span><span class="p">,</span><span class="n">opfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s1">&#39;Already done&#39;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Already done&#39;</span><span class="p">)</span>
 
 <span class="c1"># Temporary file for staging extracted data</span>
 <span class="n">tfile</span><span class="o">=</span><span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -218,7 +215,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
                             <span class="n">current_day</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">current_day</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
                             <span class="n">hour</span><span class="p">,</span><span class="n">member</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">an_file_name</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Missing data </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">an_file_name</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Missing data </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">an_file_name</span><span class="p">)</span>
 
             <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
               <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -match &#39;</span><span class="si">%s</span><span class="s2">&#39; -grib </span><span class="si">%s</span><span class="s2">; cat </span><span class="si">%s</span><span class="s2"> &gt;&gt; </span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">.grb2&quot;</span> <span class="o">%</span> <span class="p">(</span>
@@ -230,7 +227,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
         <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Failed to extract </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Failed to extract </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
                                      <span class="n">opfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">height</span><span class="p">),</span>
                                      <span class="n">an_file_name</span><span class="p">))</span>
    
@@ -246,7 +243,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
                         <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Failed to convert </span><span class="si">%s</span><span class="s2"> to netCDF&quot;</span> <span class="o">%</span> 
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Failed to convert </span><span class="si">%s</span><span class="s2"> to netCDF&quot;</span> <span class="o">%</span> 
                          <span class="n">opfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">var</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -261,9 +258,6 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
         <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
       </ul>
     </div>

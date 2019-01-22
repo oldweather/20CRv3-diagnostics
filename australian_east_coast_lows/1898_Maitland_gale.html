@@ -13,20 +13,16 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Validation against observations for January 1872" href="../DWR_validation/January_1872/january_1872.html" />
+    <link rel="next" title="Cold Surges" href="../cold_surges/cold_surges.html" />
     <link rel="prev" title="Sydney to Hobart Yacht Race storm of 1998" href="1998_SH_Yacht_Race_cyclone.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
-        <li class="right" >
-          <a href="../DWR_validation/January_1872/january_1872.html" title="Validation against observations for January 1872"
-             accesskey="N">next</a> |</li>
+          <a href="../cold_surges/cold_surges.html" title="Cold Surges"
+             accesskey="N">next</a></li>
         <li class="right" >
           <a href="1998_SH_Yacht_Race_cyclone.html" title="Sydney to Hobart Yacht Race storm of 1998"
              accesskey="P">previous</a> |</li>
@@ -53,6 +49,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Maitland gale of 1898</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../cold_surges/cold_surges.html">Cold Surges</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
@@ -214,7 +211,7 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
 
 <span class="c1"># Contour spaghetti plot of ensemble members</span>
 <span class="c1"># Only use 56 members to match v2c</span>
-<span class="n">prmsl_r</span><span class="o">=</span><span class="n">prmsl</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">member</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">56</span><span class="p">)))</span>
+<span class="n">prmsl_r</span><span class="o">=</span><span class="n">prmsl</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">member</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">56</span><span class="p">))))</span>
 <span class="n">mg</span><span class="o">.</span><span class="n">pressure</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax_3</span><span class="p">,</span><span class="n">prmsl_r</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;spaghetti&#39;</span><span class="p">,</span>
                    <span class="n">resolution</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
                    <span class="n">levels</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">870</span><span class="p">,</span><span class="mi">1050</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span>
@@ -259,11 +256,8 @@ The thin blue lines are mslp contours from each of 56 ensemble members (all memb
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
-        <li class="right" >
-          <a href="../DWR_validation/January_1872/january_1872.html" title="Validation against observations for January 1872"
-             >next</a> |</li>
+          <a href="../cold_surges/cold_surges.html" title="Cold Surges"
+             >next</a></li>
         <li class="right" >
           <a href="1998_SH_Yacht_Race_cyclone.html" title="Sydney to Hobart Yacht Race storm of 1998"
              >previous</a> |</li>

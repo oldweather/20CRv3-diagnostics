@@ -13,15 +13,11 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="search" title="Search" href="../search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
         <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
       </ul>
     </div>
@@ -40,6 +36,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../extreme_months/extreme_months.html">Extreme months</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../north_american_severe_weather/nasw.html">North American severe weather</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../australian_east_coast_lows/aecl.html">Australian east coast lows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cold_surges/cold_surges.html">Cold Surges</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
@@ -96,7 +93,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
                    <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">),</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span>
                    <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">working_directory</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s1">&#39;No working directory&#39;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;No working directory&#39;</span><span class="p">)</span>
 <span class="c1"># Where to put the final output files for this month</span>
 <span class="n">final_directory</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/20CRv3.final/version_</span><span class="si">%1d</span><span class="s2">.</span><span class="si">%1d</span><span class="s2">.</span><span class="si">%1d</span><span class="s2">/</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
                   <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="o">/</span><span class="mi">100</span><span class="p">),</span>
@@ -118,7 +115,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
         <span class="k">for</span> <span class="n">o_file</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;psobs.txt&#39;</span><span class="p">,</span><span class="s1">&#39;psobs_prior.txt&#39;</span><span class="p">,</span>
                                  <span class="s1">&#39;psobs_posterior.txt&#39;</span><span class="p">):</span>   
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">obs_dir_name</span><span class="p">,</span><span class="n">o_file</span><span class="p">)):</span>
-                <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Missing data </span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Missing data </span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
                                          <span class="n">obs_dir_name</span><span class="p">,</span><span class="n">o_file</span><span class="p">))</span>
             <span class="n">copyfile</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">obs_dir_name</span><span class="p">,</span><span class="n">o_file</span><span class="p">),</span>
                      <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/observations/</span><span class="si">%04d%02d%02d%02d</span><span class="s2">_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
@@ -141,9 +138,6 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
         <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
       </ul>
     </div>
