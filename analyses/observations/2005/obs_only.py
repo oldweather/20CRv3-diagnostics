@@ -19,8 +19,8 @@ import gzip
 import pickle
 
 # Pick a time to plot
-dte=datetime.datetime(1902,8,12,6)
-version='4.5.1'
+dte=datetime.datetime(2005,9,12,6)
+version='4.5.2'
 
 # Define the figure (page size, background color, resolution, ...
 aspect=16/9.0
