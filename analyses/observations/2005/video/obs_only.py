@@ -83,7 +83,7 @@ land_img=ax.background_img(name='GreyT', resolution='low')
 obs=twcr.load_observations_fortime(dte,version=version)
 
 # Plot the observations
-mg.observations.plot(ax,obs,radius=0.75,alpha=1.0)
+mg.observations.plot(ax,obs,radius=0.75,alpha=1.0,edgecolor='grey')
 
 # Add a label showing the date
 label="%04d-%02d-%02d:%02d" % (dte.year,dte.month,dte.day,dte.hour)
