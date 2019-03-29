@@ -72,9 +72,9 @@ sd=sd.regrid(prmsl,iris.analysis.Linear())
 # Plot the ensemble mean - with labels
 prmsl_m=prmsl.collapsed('member', iris.analysis.STD_DEV)
 #prmsl_m=prmsl_m/sd
-mg.pressure.plot(ax,prmsl_m,scale=1,
+mg.pressure.plot(ax,sd,scale=1,
                    resolution=0.25,
-                   levels=numpy.arange(0,600,50),
+                   levels=numpy.arange(0,2000,100),
                    colors='blue',
                    label=True,
                    linewidths=1,
