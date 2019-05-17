@@ -53,7 +53,7 @@ def retrieve_obs(year,month,version,variable):
     (out, err) = proc.communicate()
     if len(err)!=0:
         if variable=='observations':
-            raise StandardError("Obs file not on mass %s/observations.tgz" 
+            raise Exception("Obs file not on mass %s/observations.tgz" 
                                  % moose_dir)
         return
 
@@ -65,8 +65,8 @@ def retrieve_obs(year,month,version,variable):
                                shell=True)
     (out, err) = proc.communicate()
     if len(err)!=0:
-        print err
-        raise StandardError("Failed to retrieve observations from %s" % moose_dir)
+        print(err)
+        raise Exception("Failed to retrieve observations from %s" % moose_dir)
     # Pack the month's obs into a single file
     otarf=("%s/observations/%04d/observations.tgz" % 
                            (ddir,year))
@@ -78,8 +78,8 @@ def retrieve_obs(year,month,version,variable):
                shell=True)
     (out, err) = proc.communicate()
     if len(err)!=0:
-        print err
-        raise StandardError("Failed to untar observations")
+        print(err)
+        raise Exception("Failed to untar observations")
 
     # Clean up
     os.remove(otarf)
@@ -97,8 +97,8 @@ def retrieve_variable(year,month,version,variable):
                              shell=True)
     (out, err) = proc.communicate()
     if len(err) !=0:
-        print err
-        raise StandardError("Failed to retrieve %s/%s.nc" % 
+        print(err)
+        raise Exception("Failed to retrieve %s/%s.nc" % 
                              (moose_dir,variable))
 
 
@@ -109,8 +109,8 @@ if args.variable=='all':
                             shell=True)
     (out, err) = proc.communicate()
     if len(err)!=0: 
-        print err
-        raise StandardError("Can't find any data in %s" % moose_dir)
+        print(err)
+        raise Exception("Can't find any data in %s" % moose_dir)
 
     if len(re.findall('.*\.tgz',out))>0:
         retrieve_obs(args.year,args.month,args.version,args.variable)

@@ -81,7 +81,7 @@ def at_time(ob_time):
     if os.path.isfile(opfile): 
         time.sleep(0.1) # returning too fast breaks multiprocessing
         return # Done already
-    print ob_time
+    print(ob_time)
     try:
         if args.reanalysis=='20cr3':
             prmsl=twcr.load('prmsl',ob_time,version='4.5.1')
@@ -90,10 +90,10 @@ def at_time(ob_time):
         elif args.reanalysis=='cera':
             prmsl=cera20c.load('prmsl',ob_time)
         else:
-            print "Unsupported reanalysis %s" % args.reanalysis
+            print("Unsupported reanalysis %s" % args.reanalysis)
             sys.exit(1)
     except Exception as e:
-        print "Failed to load data for %s" % str(ob_time)
+        print("Failed to load data for %s" % str(ob_time))
         return  
 
     prmsl.data=prmsl.data/100.0 # to hPa

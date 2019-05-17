@@ -38,10 +38,10 @@ proc = subprocess.Popen("hsi ls -l %s" % originals_directory,
                     stderr=subprocess.PIPE, shell=True)
 (out, err) = proc.communicate()
 start_years=err.split() # Why does hsi put output in stderr?
-start_years=filter(lambda x:'ensda_%03d' % args.version in x, start_years)
+start_years=[x for x in start_years if 'ensda_%03d' % args.version in x]
 start_years=[int(x[-4:]) for x in start_years]
 if args.startyear not in start_years:
-    raise StandardError(
+    raise Exception(
       "%04d is not as available start year" % args.startyear)
 
 # Get the list of files available for the selected month
@@ -53,10 +53,10 @@ proc = subprocess.Popen("hsi ls -l %s/ensda_%03d_%04d/%04d%02d*.tar" % (
                     stderr=subprocess.PIPE, shell=True)
 (out, err) = proc.communicate()
 file_list=err.split()
-tar_files=filter(lambda x: '%04d%02d' % (args.year,args.month) in x, file_list)
+tar_files=[x for x in file_list if '%04d%02d' % (args.year,args.month) in x]
 if len(tar_files)<100:
-    print file_list
-    raise StandardError("Data not available")
+    print(file_list)
+    raise Exception("Data not available")
 
 # Have the list of files to retrieve - sort them into tape order
 tfile=tempfile.NamedTemporaryFile(delete=False)
@@ -93,12 +93,12 @@ os.remove(tfile.name)
 for file in tar_files:
     fpn= "%s/%s" % (working_directory,file)
     if not os.path.isfile(fpn):
-        raise StandardError("Missing file %s" % fpn)
+        raise Exception("Missing file %s" % fpn)
          
     proc = subprocess.Popen("cd %s; tar xf %s" % (
                             working_directory,file), shell=True)
     (out, err) = proc.communicate()
     if out is not None or err is not None:
-        raise StandardError("Failed to untar %s/%s" % (
+        raise Exception("Failed to untar %s/%s" % (
                              working_directory,file))
 

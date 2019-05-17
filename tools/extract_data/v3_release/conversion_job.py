@@ -74,7 +74,7 @@ tfile.close()
 proc = subprocess.Popen('sbatch  -q scavenger --time-min=01:30:00 %s' % tfile.name,shell=True)
 (out, err) = proc.communicate()
 if out is not None or err is not None:
-    raise StandardError("Failed to submit %s" % tfile.name)
+    raise Exception("Failed to submit %s" % tfile.name)
 os.remove(tfile.name)
 
 	 

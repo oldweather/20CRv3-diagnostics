@@ -56,14 +56,14 @@ def plot_rotated_scatter(ax,field,obs,dte,**kwargs):
     ax.set_ylim(kwargs.get('y_range'))
     ax.set_ylabel(kwargs.get('y_label'))
 
-    stations=collections.OrderedDict.fromkeys(obs.loc[:,'name']).keys()
+    stations=list(collections.OrderedDict.fromkeys(obs.loc[:,'name']).keys())
     # Get a pressure interpolated to the selected time for each station
     interpolated={}
     for station in stations:
         try:
             interpolated[station]=DWR.at_station_and_time(
                                            obs,station,dte)
-        except StandardError:
+        except Exception:
             interpolated[station]=None
 
     # Get the reanalysis ensemble at the station locations
@@ -135,14 +135,14 @@ def plot_deviation_spread(ax,field,obs,dte,**kwargs):
     ax.set_ylim(kwargs.get('y_range'))
     ax.set_ylabel(kwargs.get('y_label'))
 
-    stations=collections.OrderedDict.fromkeys(obs.loc[:,'name']).keys()
+    stations=list(collections.OrderedDict.fromkeys(obs.loc[:,'name']).keys())
     # Get a pressure interpolated to the selected time for each station
     interpolated={}
     for station in stations:
         try:
             interpolated[station]=DWR.at_station_and_time(
                                            obs,station,dte)
-        except StandardError:
+        except Exception:
             interpolated[station]=None
 
     # Get the reanalysis ensemble at the station locations

@@ -64,8 +64,8 @@ def plot_contour(ax,extent,dte,field,obs_r,dwr_obs,**kwargs):
         kwargs.setdefault('dwr_color','anomaly')
         kwargs.setdefault('dwr_anomaly_range',20.0)
         kwargs.setdefault('dwr_radius',0.25)
-        kwargs.setdefault('stations',collections.OrderedDict.fromkeys(
-                                          dwr_obs.loc[:,'name']).keys())
+        kwargs.setdefault('stations',list(collections.OrderedDict.fromkeys(
+                                          dwr_obs.loc[:,'name']).keys()))
         if 'station_latlon' not in kwargs:
             latlon={}
             for station in kwargs.get('stations'):
@@ -89,7 +89,7 @@ def plot_contour(ax,extent,dte,field,obs_r,dwr_obs,**kwargs):
                 try:
                     interpolated[station]=DWR.at_station_and_time(
                                                       dwr_obs,station,dte)
-                except StandardError:
+                except Exception:
                     interpolated[station]=None
                 ensemble=interpolator([kwargs.get('station_latlon')[station]['latitude'],
                                        kwargs.get('station_latlon')[station]['longitude']])

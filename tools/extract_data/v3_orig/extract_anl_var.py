@@ -132,7 +132,7 @@ wgrib='/global/homes/c/compo/bin/wgrib'
 # Don't repeat pre-existing extractions
 fn= "%s/%s.nc4" % (final_directory,opfile(args.var,args.level,args.height))
 if os.path.isfile(fn):
-    raise StandardError('Already done')
+    raise Exception('Already done')
 
 # Temporary file for staging extracted data
 tfile=tempfile.NamedTemporaryFile(delete=False)
@@ -151,7 +151,7 @@ while current_day.month==args.month:
                             current_day.month,current_day.day,
                             hour,member)
             if not os.path.exists(an_file_name):
-                raise StandardError("Missing data %s" % an_file_name)
+                raise Exception("Missing data %s" % an_file_name)
 
             proc = subprocess.Popen(
               "%s %s | grep '%s' | %s -i -grib %s -o %s; cat %s >> %s/%s.grb" % (
@@ -188,6 +188,6 @@ proc = subprocess.Popen("ncks -C -O -x -v ensemble0_info,initial_time1,initial_t
                         shell=True)
 (out, err) = proc.communicate()
 if out is not None or err is not None:
-    raise StandardError("Failed to strip %s netCDF file" % args.var)
+    raise Exception("Failed to strip %s netCDF file" % args.var)
 os.rename("%s/%s.stripped.nc4" % (final_directory,args.var),
           "%s/%s.nc4" % (final_directory,args.var))

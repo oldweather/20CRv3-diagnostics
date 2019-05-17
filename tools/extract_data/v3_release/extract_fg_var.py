@@ -28,7 +28,7 @@ search_strings={
     'prate'   : 'PRATE'
 }
 if args.var not in search_strings:
-    raise StandardError("Unsupported variable %s" % args.var)  
+    raise Exception("Unsupported variable %s" % args.var)  
 
 # Where to find the grib (and obs) files retrieved from hsi
 working_directory="%s/20CRv3.working/ensda_%04d/%04d/%02d" % (
@@ -52,7 +52,7 @@ wgrib2='/global/homes/c/cmccoll/bin/wgrib2'
 # Don't repeat pre-existing extractions
 fn= "%s/%s.nc4" % (final_directory,args.var)
 if os.path.isfile(fn):
-    raise StandardError('Already done')
+    raise Exception('Already done')
 
 # Temporary file for staging extracted data
 tfile=tempfile.NamedTemporaryFile(delete=False)
@@ -67,14 +67,14 @@ while current_day.month==args.month:
                             current_day.month,current_day.day,
                             hour,member)
             if not os.path.exists(var_file_name):
-                raise StandardError("Missing data %s" % var_file_name)
+                raise Exception("Missing data %s" % var_file_name)
             if hour%6==0:
                 var_file_name= "%s/pgrbfg_%04d%02d%02d%02d_fhr06_mem%03d.grb2" % (
                                 working_directory,current_day.year,
                                 current_day.month,current_day.day,
                                 hour,member)
                 if not os.path.exists(var_file_name):
-                    raise StandardError("Missing data %s" % var_file_name)
+                    raise Exception("Missing data %s" % var_file_name)
 
             proc = subprocess.Popen(
               "%s %s -match '%s' -grib %s; cat %s >> %s/%s.grb2" % (
@@ -85,7 +85,7 @@ while current_day.month==args.month:
                                     shell=True)
             (out, err) = proc.communicate()
             if out is not None or err is not None:
-                raise StandardError("Failed to extract %s from %s" % (
+                raise Exception("Failed to extract %s from %s" % (
                                      args.var,an_file_name))
    
     current_day=current_day+datetime.timedelta(days=1)
@@ -100,4 +100,4 @@ proc = subprocess.Popen(
                         shell=True)
 (out, err) = proc.communicate()
 if out is not None or err is not None:
-    raise StandardError("Failed to convert %s to netCDF" % args.var)
+    raise Exception("Failed to convert %s to netCDF" % args.var)

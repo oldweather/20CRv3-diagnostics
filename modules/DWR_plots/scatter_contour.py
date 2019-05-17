@@ -23,8 +23,8 @@ import cartopy
 import cartopy.crs as ccrs
 import Meteorographica as mg
 
-from scatter import plot_scatter
-from contour import plot_contour
+from .scatter import plot_scatter
+from .contour import plot_contour
 
 def plot_scatter_contour(fig,field,obs_r,dwr_obs,dte,**kwargs):
     """Make a combined contour-plot and scatter plot
@@ -60,10 +60,10 @@ def plot_scatter_contour(fig,field,obs_r,dwr_obs,dte,**kwargs):
     kwargs.setdefault('projection',ccrs.RotatedPole(pole_longitude=177.5,
                                                           pole_latitude=35.5))
     kwargs.setdefault('scale',20.0)
-    kwargs.setdefault('stations',collections.OrderedDict.fromkeys(
-                                 dwr_obs.loc[:,'name']).keys())
-    kwargs.setdefault('stations',collections.OrderedDict.fromkeys(
-                                      dwr_obs.loc[:,'name']).keys())
+    kwargs.setdefault('stations',list(collections.OrderedDict.fromkeys(
+                                 dwr_obs.loc[:,'name']).keys()))
+    kwargs.setdefault('stations',list(collections.OrderedDict.fromkeys(
+                                      dwr_obs.loc[:,'name']).keys()))
     if 'station_latlon' not in kwargs:
         latlon={}
         for station in kwargs.get('stations'):
@@ -76,8 +76,8 @@ def plot_scatter_contour(fig,field,obs_r,dwr_obs,dte,**kwargs):
     extent=[kwargs.get('scale')*-1,kwargs.get('scale'),
             kwargs.get('scale')*-1*aspect,kwargs.get('scale')*aspect]
     if kwargs.get('stations') is None:
-        stations=collections.OrderedDict.fromkeys(
-                     dwr_obs.loc[:,'name']).keys()
+        stations=list(collections.OrderedDict.fromkeys(
+                     dwr_obs.loc[:,'name']).keys())
 
     plot_contour(ax_map,extent,dte,field,obs_r,dwr_obs,**kwargs)
 

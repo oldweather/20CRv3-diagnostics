@@ -148,7 +148,7 @@ wgrib2='/global/homes/c/cmccoll/bin/wgrib2'
 fn= "%s/%s.nc4" % (final_directory,opfile(args.var,args.level,args.height,
                                           args.ilevel))
 if os.path.isfile(fn):
-    raise StandardError('Already done')
+    raise Exception('Already done')
 
 # Temporary file for staging extracted data
 tfile=tempfile.NamedTemporaryFile(delete=False)
@@ -163,7 +163,7 @@ while current_day.month==args.month:
                             current_day.month,current_day.day,
                             hour,member)
             if not os.path.exists(an_file_name):
-                raise StandardError("Missing data %s" % an_file_name)
+                raise Exception("Missing data %s" % an_file_name)
 
             proc = subprocess.Popen(
               "%s %s -match '%s' -grib %s; cat %s >> %s/%s.grb2" % (
