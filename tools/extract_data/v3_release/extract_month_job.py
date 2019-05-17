@@ -23,8 +23,8 @@ ldir=os.path.abspath(os.path.dirname(__file__))
 tfile.write('#!/bin/bash -l\n')
 tfile.write("#SBATCH --output=v3_extraction-%d-%d-%%j.out\n" %
                 (args.year,args.month))
-#tfile.write('#SBATCH -M escori\n')
-#tfile.write('#SBATCH -q xfer\n')
+tfile.write('#SBATCH -M escori\n')
+tfile.write('#SBATCH -q xfer\n')
 tfile.write('#SBATCH -p regular\n')
 tfile.write('#SBATCH -C knl\n')
 tfile.write('#SBATCH -N 1\n')
@@ -35,11 +35,11 @@ tfile.write('module load python\n')
 tfile.write('%s/month_from_tape.py --startyear=%d --year=%d --month=%d --version=%d\n' % 
                                   (ldir,args.startyear,args.year,args.month,args.version))
 # Submit the conversion job
-tfile.write('%s/conversion_job.py --startyear=%d --year=%d --month=%d --version=%d\n' % 
+tfile.write('module unload esslurm; %s/conversion_job.py --startyear=%d --year=%d --month=%d --version=%d\n' % 
                                   (ldir,args.startyear,args.year,args.month,args.version))
 tfile.close()
 
-proc = subprocess.Popen('sbatch %s' % tfile.name,shell=True)
+proc = subprocess.Popen('module load esslurm; sbatch %s' % tfile.name,shell=True)
 (out, err) = proc.communicate()
 if out is not None or err is not None:
     raise StandardError("Failed to submit %s" % tfile.name)

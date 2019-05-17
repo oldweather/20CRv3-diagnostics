@@ -22,14 +22,17 @@ parser.add_argument("--version", help="Month to extract",
 parser.add_argument("--var", help="Variable to extract",
                     type=str, required=True)
 parser.add_argument("--level",help="Pressure level (hPa) to extract at",
-                    type=str,default='None',required=False,
+                    type=str,default=None,required=False,
                     choices=['1000','975','950','925','900','850',
                              '800','750','700','650','600','550',
                              '500','450','400','350','300','250',
                              '200','150','100','70','50','30','20',
                              '10','5','1'])
+parser.add_argument("--ilevel",help="Isentropic level (K) to extract at",
+                    type=str,default=None,required=False,
+                    choices=['300','330','350'])
 parser.add_argument("--height",help="Height (m) to extract at",
-                    type=str,default='None',required=False,
+                    type=str,default=None,required=False,
                     choices=['2','10','12','20','30','50','80',
                              '100','150','200','250','300','500'])
                              
@@ -47,69 +50,82 @@ if args.var=='uwnd.10m':
 if args.var=='vwnd.10m':
     args.level=None
     args.height='10'
-    args.var='VWND'
+    args.var='VGRD'
 
 # Make an output file name
-def opfile(var,level,height):
+def opfile(var,level,height,ilevel):
    var=var.lower()
    if var=='prmsl': return 'prmsl'
    if var=='air.sfc': return 'air.sfc'
+   if var=='air.2m': return 'air.2m'
+   if var=='tmp' and height is not None and height==2:
+      return 'air.2m'
    if var=='uwnd' or var=='ugrd':
       if level is not None:
           return 'uwnd.%dmb' % int(level)
-      if height is not none:
-          return 'uwnd.%dm' % int(level)
+      elif ilevel is not None:
+          return 'uwnd.%dK' % int(ilevel)
+      elif height is not None:
+          return 'uwnd.%dm' % int(height)
       else:
-          raise ValueError('Either height or level must be specified')
+          raise ValueError('Either height, level, or ilevel must be specified')
    if var=='vwnd' or var=='vgrd':
       if level is not None:
           return 'vwnd.%dmb' % int(level)
-      if height is not none:
-          return 'vwnd.%dm' % int(level)
+      elif ilevel is not None:
+          return 'vwnd.%dK' % int(ilevel)
+      elif height is not None:
+          return 'vwnd.%dm' % int(height)
       else:
-          raise ValueError('Either height or level must be specified')
+          raise ValueError('Either height, level, or ilevel must be specified')
    if var=='icec':
       return 'icec'
 
    # Default - specify grib2 var directly
    if level is not None:
       return '%s.%dmb' % (var.lower(),int(level))
-   if height is not none:
-      return '%s.%dm' % (
-                var.lower(),int(level))
+   elif ilevel is not None:
+      return '%s.%dK' % (var.lower(),int(ilevel))
+   elif height is not None:
+      return '%s.%dm' % (var.lower(),int(height))
    else:
-      raise ValueError('Either height or level must be specified')
+      raise ValueError('Either height, level, or ilevel must be specified')
 
 
 # Make a search string
-def search_string(var,level,height):
+def search_string(var,level,height,ilevel):
    if var=='prmsl': return 'PRMSL'
    if var=='air.sfc': return 'TMP:surface'
    if var=='uwnd' or var=='ugrd':
       if level is not None:
           return 'UGRD:%d mb' % int(level)
-      if height is not none:
-          return 'UGRD:%d m above ground' % int(level)
+      elif ilevel is not None:
+          return 'UGRD:%d K' % int(ilevel)
+      elif height is not None:
+          return 'UGRD:%d m above ground' % int(height)
       else:
-          raise ValueError('Either height or level must be specified')
+          raise ValueError('Either height, level, or ilevel must be specified')
    if var=='vwnd' or var=='vgrd':
       if level is not None:
           return 'VGRD:%d mb' % int(level)
-      if height is not none:
-          return 'VGRD:%d m above ground' % int(level)
+      elif ilevel is not None:
+          return 'VGRD:%d K' % int(ilevel)
+      elif height is not None:
+          return 'VGRD:%d m above ground' % int(height)
       else:
-          raise ValueError('Either height or level must be specified')
+          raise ValueError('Either height, level, or ilevel must be specified')
    if var=='icec':
       return 'ICEC'
 
    # Default - specify grib2 var directly
    if level is not None:
       return '%s:%d mb' % (var.upper(),int(level))
-   if height is not none:
-      return '%s:%d m above ground' % (
-                var.upper(),int(level))
+   elif ilevel is not None:
+      return '%s:%d K' % (var.upper(),int(ilevel))
+   elif height is not None:
+      return '%s:%d m above ground' % (var.upper(),int(height))
    else:
-      raise ValueError('Either height or level must be specified')
+      raise ValueError('Either height, level, or ilevel must be specified')
    
 # Where to find the grib (and obs) files retrieved from hsi
 working_directory="%s/20CRv3.working/ensda_%04d/%04d/%02d" % (
@@ -129,7 +145,8 @@ if not os.path.isdir(final_directory):
 wgrib2='/global/homes/c/cmccoll/bin/wgrib2'
 
 # Don't repeat pre-existing extractions
-fn= "%s/%s.nc4" % (final_directory,opfile(args.var,args.level,args.height))
+fn= "%s/%s.nc4" % (final_directory,opfile(args.var,args.level,args.height,
+                                          args.ilevel))
 if os.path.isfile(fn):
     raise StandardError('Already done')
 
@@ -151,15 +168,18 @@ while current_day.month==args.month:
             proc = subprocess.Popen(
               "%s %s -match '%s' -grib %s; cat %s >> %s/%s.grb2" % (
                          wgrib2,an_file_name,
-                         search_string(args.var,args.level,args.height),
+                         search_string(args.var,args.level,args.height,
+                                       args.ilevel),
                          tfile.name,tfile.name,
                          final_directory,
-                         opfile(args.var,args.level,args.height)),
+                         opfile(args.var,args.level,args.height,
+                                args.ilevel)),
         shell=True)
             (out, err) = proc.communicate()
             if out is not None or err is not None:
                 raise StandardError("Failed to extract %s from %s" % (
-                                     opfile(args.var,args.level,args.height),
+                                     opfile(args.var,args.level,args.height,
+                                            args.ilevel),
                                      an_file_name))
    
     current_day=current_day+datetime.timedelta(days=1)
@@ -167,12 +187,14 @@ os.remove(tfile.name)
 
 # Convert to netCDF
 proc = subprocess.Popen(
-  "ncl_convert2nc %s.grb2 -i %s -o %s -nc4c -cl 5" % ( 
-                        opfile(args.var,args.level,args.height),
+  "ncl_convert2nc %s.grb2 -i %s -o %s -L -nc4c -cl 5" % ( 
+                        opfile(args.var,args.level,args.height,
+                               args.ilevel),
                         final_directory,
                         final_directory),
                         shell=True)
 (out, err) = proc.communicate()
 if out is not None or err is not None:
     raise StandardError("Failed to convert %s to netCDF" % 
-                         opfile(args.var,args.level,args.height))
+                         opfile(args.var,args.level,args.height,
+                                args.ilevel))

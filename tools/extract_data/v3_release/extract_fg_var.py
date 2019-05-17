@@ -93,7 +93,7 @@ os.remove(tfile.name)
 
 # Convert to netCDF
 proc = subprocess.Popen(
-  "ncl_convert2nc %s.grb2 -i %s -o %s -nc4c -cl 5" % ( 
+  "ncl_convert2nc %s.grb2 -i %s -o %s -L -nc4c -cl 5" % ( 
                         args.var,
                         final_directory,
                         final_directory),
