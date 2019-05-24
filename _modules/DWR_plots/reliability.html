@@ -13,7 +13,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -129,14 +129,14 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;y_range&#39;</span><span class="p">))</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;y_label&#39;</span><span class="p">))</span>
 
-    <span class="n">stations</span><span class="o">=</span><span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">obs</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;name&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">stations</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">obs</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;name&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="c1"># Get a pressure interpolated to the selected time for each station</span>
     <span class="n">interpolated</span><span class="o">=</span><span class="p">{}</span>
     <span class="k">for</span> <span class="n">station</span> <span class="ow">in</span> <span class="n">stations</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">interpolated</span><span class="p">[</span><span class="n">station</span><span class="p">]</span><span class="o">=</span><span class="n">DWR</span><span class="o">.</span><span class="n">at_station_and_time</span><span class="p">(</span>
                                            <span class="n">obs</span><span class="p">,</span><span class="n">station</span><span class="p">,</span><span class="n">dte</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">StandardError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">interpolated</span><span class="p">[</span><span class="n">station</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
 
     <span class="c1"># Get the reanalysis ensemble at the station locations</span>
@@ -208,14 +208,14 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;y_range&#39;</span><span class="p">))</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;y_label&#39;</span><span class="p">))</span>
 
-    <span class="n">stations</span><span class="o">=</span><span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">obs</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;name&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">stations</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">obs</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;name&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="c1"># Get a pressure interpolated to the selected time for each station</span>
     <span class="n">interpolated</span><span class="o">=</span><span class="p">{}</span>
     <span class="k">for</span> <span class="n">station</span> <span class="ow">in</span> <span class="n">stations</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">interpolated</span><span class="p">[</span><span class="n">station</span><span class="p">]</span><span class="o">=</span><span class="n">DWR</span><span class="o">.</span><span class="n">at_station_and_time</span><span class="p">(</span>
                                            <span class="n">obs</span><span class="p">,</span><span class="n">station</span><span class="p">,</span><span class="n">dte</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">StandardError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">interpolated</span><span class="p">[</span><span class="n">station</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
 
     <span class="c1"># Get the reanalysis ensemble at the station locations</span>
