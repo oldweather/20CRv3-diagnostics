@@ -1,12 +1,7 @@
 20CRv3 Diagnostics
 ==================
 
-This is a set of analyses of the not-yet-released NOAA/CIRES/DOE Twentieth Century Reanalysis version 3 (20CRv3). It compares 20CRv3 to `20CR version 2c <https://www.esrl.noaa.gov/psd/data/20thC_Rean/>`_, to `CERA-20C <https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/cera-20c>`_, and to `newly-digitised observations from around the British Isles <https://oldweather.github.io/DWR/>`_.
-
-.. toctree::
-   :maxdepth: 2
-
-   How to use this<instructions>
+This is a set of analyses of the newly-released NOAA/CIRES/DOE Twentieth Century Reanalysis version 3 (20CRv3). It compares 20CRv3 to `20CR version 2c <https://www.esrl.noaa.gov/psd/data/20thC_Rean/>`_, to `CERA-20C <https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/cera-20c>`_, and to `newly-digitised observations from around the British Isles <https://oldweather.github.io/DWR/>`_.
 
 Comparisons of 20CRv3 with 20CRv2c
 ----------------------------------
@@ -35,6 +30,18 @@ The `new observations rescued from the Daily Weather Reports <https://oldweather
    DWR_validation/February_1953/february_1953.rst
    DWR_validation/comparison
 
+Observations and fog videos
+---------------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   obs_video/obs_video.rst
+   fog_videos/1903
+
+
+Small print
+-----------
 
 .. toctree::
    :maxdepth: 1
