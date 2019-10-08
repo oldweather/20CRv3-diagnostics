@@ -38,6 +38,7 @@ Observations and fog videos
 
    obs_video/obs_video.rst
    fog_videos/1903
+   fog_videos/1931
 
 
 Small print
