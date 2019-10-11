@@ -188,13 +188,13 @@ icec.coord('longitude').coord_system=coord_s
 # Load the climatological prmsl stdev from v2c
 prevt=datetime.datetime(args.year,args.month,args.day,
                         int(args.hour)-int(args.hour)%6)
+nextt=prevt+datetime.timedelta(hours=6)
 if prevt.month==2 and prevt.day==29: prevt -= datetime.timedelta(days=1)
 prevcsd=iris.load_cube('/data/users/hadpb/20CR/version_3.4.1/standard.deviation/prmsl.nc',
                        iris.Constraint(time=iris.time.PartialDateTime(year=1981,
                                                                       month=prevt.month,
                                                                       day=prevt.day,
                                                                       hour=prevt.hour)))
-nextt=prevt+datetime.timedelta(hours=6)
 if nextt.month==2 and nextt.day==29: nextt += datetime.timedelta(days=1)
 nextcsd=iris.load_cube('/data/users/hadpb/20CR/version_3.4.1/standard.deviation/prmsl.nc',
                        iris.Constraint(time=iris.time.PartialDateTime(year=1981,
