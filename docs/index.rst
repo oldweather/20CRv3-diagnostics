@@ -1,7 +1,7 @@
 20CRv3 Diagnostics
 ==================
 
-This is a set of analyses of the newly-released NOAA/CIRES/DOE Twentieth Century Reanalysis version 3 (20CRv3). It compares 20CRv3 to `20CR version 2c <https://www.esrl.noaa.gov/psd/data/20thC_Rean/>`_, to `CERA-20C <https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/cera-20c>`_, and to `newly-digitised observations from around the British Isles <https://oldweather.github.io/DWR/>`_.
+This is a set of analyses of the newly-released `NOAA/CIRES/DOE Twentieth Century Reanalysis <https://www.esrl.noaa.gov/psd/data/20thC_Rean/>`_ version 3 (20CRv3). It compares `20CRv3 <https://www.esrl.noaa.gov/psd/data/gridded/data.20thC_ReanV3.html>`_ to `20CRv2c <https://www.esrl.noaa.gov/psd/data/gridded/data.20thC_ReanV2c.html>`_, to `CERA-20C <https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/cera-20c>`_, and to `newly-digitised observations from around the British Isles <https://oldweather.github.io/DWR/>`_.
 
 Comparisons of 20CRv3 with 20CRv2c
 ----------------------------------
@@ -38,6 +38,8 @@ Observations and fog videos
 
    obs_video/obs_video.rst
    fog_videos/1903
+   fog_videos/1931
+   fog_videos/1880_Arctic
 
 
 Small print
