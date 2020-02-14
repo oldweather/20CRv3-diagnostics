@@ -10,6 +10,7 @@ from iris.experimental.equalise_cubes import equalise_attributes
 import sys
 import pickle
 
+
 def get_sample_cube(start=datetime.datetime(1851,1,1,0,0),
                     end=datetime.datetime(1900,12,31,23,59),
                     climatology=None,
@@ -17,9 +18,10 @@ def get_sample_cube(start=datetime.datetime(1851,1,1,0,0),
                     new_grid=None,rstate=None):
 
     # Get the latitude coordinates for weighting
-    c=iris.load_cube('%s/20CR/version_3/monthly_means/%04d/TMP2m.%04d.mnmean_mem039.nc' % 
+    c=iris.load_cube('%s/20CR/version_3/monthly_means/%04d/PRMSL.%04d.mnmean_mem039.nc' % 
                                 (os.getenv('SCRATCH'),start.year,start.year))
     lat_p=c.coords('latitude')[0].points
+
     # Make the climatology, if not supplied
     if climatology is None:
         climatology=[]
@@ -27,10 +29,9 @@ def get_sample_cube(start=datetime.datetime(1851,1,1,0,0),
         for year in range(1961,1991):
              h = None
              for member in range(1,81):
-                 f=iris.load_cube('%s/20CR/version_3/monthly_means/%04d/TMP2m.%04d.mnmean_mem%03d.nc' % 
+                 f=iris.load_cube('%s/20CR/version_3/monthly_means/%04d/PRMSL.%04d.mnmean_mem%03d.nc' % 
                                                                    (os.getenv('SCRATCH'),year,year,member),
-                                 iris.Constraint(name='air_temperature'))
-                 f=f.collapsed('height', iris.analysis.MEAN)
+                                 iris.Constraint(name='Pressure reduced to MSL'))
                  if h is None:
                      h=f
                  else:
@@ -53,13 +54,11 @@ def get_sample_cube(start=datetime.datetime(1851,1,1,0,0),
         m = []
         for year in range(start.year,end.year+1):
             
-            h=iris.load_cube('%s/20CR/version_3/monthly_means/%04d/TMP2m.%04d.mnmean_mem%03d.nc' % 
+            h=iris.load_cube('%s/20CR/version_3/monthly_means/%04d/PRMSL.%04d.mnmean_mem%03d.nc' % 
                                                                (os.getenv('SCRATCH'),year,year,member),
-                             iris.Constraint(name='air_temperature') &
+                             iris.Constraint(name='Pressure reduced to MSL') &
                              iris.Constraint(time=lambda cell: \
                                              start <= cell.point <=end))
-            h=h.collapsed('height', iris.analysis.MEAN)
-            h.remove_coord('height')
             dty=h.coords('time')[0].units.num2date(h.coords('time')[0].points)
 
             # Anomalise

@@ -1,6 +1,6 @@
 # Get the sample cube for 20CR
-# Sample in the ensemble.
-# Resolved in longitude, average in latitude.
+# Single ensemble member.
+# Resolved in latitude, average in longitude.
 
 import os
 import iris
@@ -16,27 +16,28 @@ def get_sample_cube(start=datetime.datetime(1851,1,1,0,0),
                     climstart=1961,climend=1991,
                     new_grid=None,rstate=None):
 
-    # Get the latitude coordinates for weighting
-    c=iris.load_cube('%s/20CR/version_3/monthly_means/%04d/TMP2m.%04d.mnmean_mem039.nc' % 
-                                (os.getenv('SCRATCH'),start.year,start.year))
-    lat_p=c.coords('latitude')[0].points
+    # Might want the longitude random sampling to be reproducible
+    if rstate is None:
+        r_lon = numpy.random.RandomState(seed=None)
+    else:
+        r_lon = rstate
+
     # Make the climatology, if not supplied
     if climatology is None:
         climatology=[]
         e=[]
         for year in range(1961,1991):
              h = None
-             for member in range(1,81):
-                 f=iris.load_cube('%s/20CR/version_3/monthly_means/%04d/TMP2m.%04d.mnmean_mem%03d.nc' % 
+             for member in range(1,2):
+                 f=iris.load_cube('%s/20CR/version_3/monthly_means/%04d/PRMSL.%04d.mnmean_mem%03d.nc' % 
                                                                    (os.getenv('SCRATCH'),year,year,member),
-                                 iris.Constraint(name='air_temperature'))
-                 f=f.collapsed('height', iris.analysis.MEAN)
+                                 iris.Constraint(name='Pressure reduced to MSL'))
                  if h is None:
                      h=f
                  else:
                      h.data += f.data
                      
-             h.data /= 80
+             h.data /= 1
              h.attributes=None
              e.append(h)
 
@@ -49,17 +50,15 @@ def get_sample_cube(start=datetime.datetime(1851,1,1,0,0),
     # Load the model data
     e=[]
     dts=None
-    for member in range(1,81):
+    for member in range(1,2):
         m = []
         for year in range(start.year,end.year+1):
             
-            h=iris.load_cube('%s/20CR/version_3/monthly_means/%04d/TMP2m.%04d.mnmean_mem%03d.nc' % 
+            h=iris.load_cube('%s/20CR/version_3/monthly_means/%04d/PRMSL.%04d.mnmean_mem%03d.nc' % 
                                                                (os.getenv('SCRATCH'),year,year,member),
-                             iris.Constraint(name='air_temperature') &
+                             iris.Constraint(name='Pressure reduced to MSL') &
                              iris.Constraint(time=lambda cell: \
                                              start <= cell.point <=end))
-            h=h.collapsed('height', iris.analysis.MEAN)
-            h.remove_coord('height')
             dty=h.coords('time')[0].units.num2date(h.coords('time')[0].points)
 
             # Anomalise
@@ -82,20 +81,17 @@ def get_sample_cube(start=datetime.datetime(1851,1,1,0,0),
 
         e.append(iris.cube.CubeList(m).concatenate_cube())
 
-        if member==1:
-            if dts is None:
-                dts=dty
-            else:
-                dts=numpy.concatenate(dts,dty)
+        if dts is None:
+            dts=dty
+        else:
+            dts=numpy.concatenate(dts,dty)
             
-    # Average in Latitude
+    # Average in Longitude
     s=e[0].data.shape
-    ndata=numpy.ma.array(numpy.zeros((s[0],s[2])),mask=True)
-    weights=numpy.cos(numpy.pi*lat_p/180)
+    ndata=numpy.ma.array(numpy.zeros((s[0],s[1])),mask=True)
     for t in range(s[0]):
-        for lon in range(s[2]):
-            m=numpy.random.randint(0,len(e))
-            ndata[t,lon]=numpy.average(e[m].data[t,:,lon],weights=weights)
+        for lat in range(s[1]):
+            ndata[t,lat]=numpy.mean(e[0].data[t,lat,:])
             
     return (ndata,dts)
 
