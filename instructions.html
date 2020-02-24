@@ -1,22 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>How to use this dataset &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Extracting data from 20CRv3" href="extract_data/extract_data.html" />
-    <link rel="prev" title="20CRv3 Diagnostics" href="index.html" /> 
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="search" title="Search" href="search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -24,12 +20,6 @@
         <li class="right" style="margin-right: 10px">
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a></li>
-        <li class="right" >
-          <a href="extract_data/extract_data.html" title="Extracting data from 20CRv3"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="20CRv3 Diagnostics"
-             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">20CRv3</a> &#187;</li> 
       </ul>
     </div>
@@ -39,12 +29,6 @@
               <img class="logo" src="_static/t2t3.png" alt="Logo"/>
             </a></p>
 <h3><a href="index.html">Table Of Contents</a></h3>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">How to use this</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="extract_data/extract_data.html">Extracting data from 20CRv3</a></li>
-</ul>
-</li>
-</ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tropical-storms/tropical_storms.html">Tropical Storms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="european_windstorms/european_windstorms.html">European windstorms</a></li>
@@ -58,6 +42,12 @@
 <li class="toctree-l1"><a class="reference internal" href="DWR_validation/Spring_1903/spring_1903.html">Validation against observations for Spring 1903</a></li>
 <li class="toctree-l1"><a class="reference internal" href="DWR_validation/February_1953/february_1953.html">Validation against observations for February 1953</a></li>
 <li class="toctree-l1"><a class="reference internal" href="DWR_validation/comparison.html">Validation Spread v. Error plot January 1872 + Spring 1903 + February 1953</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="obs_video/obs_video.html">Observations coverage video</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fog_videos/1903.html">Weather and fog in 1903</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fog_videos/1931.html">Weather and fog in 1931</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fog_videos/1880_Arctic.html">Weather and fog in the Arctic in 1880 and 1881</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="credits.html">Authors and acknowledgements</a></li>
@@ -93,9 +83,9 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <p>If you are familiar with GitHub, you already know <a class="reference external" href="https://github.com/oldweather/20CRv3-diagnostics">what to do</a>: If you’d prefer not to bother with that, you can download the whole dataset as <a class="reference external" href="https://github.com/oldweather/20CRv3-diagnostics/archive/master.zip">a zip file</a>.</p>
 <p>To re-run the scripts included, first install three packages this depends on:</p>
 <ul class="simple">
-<li><a class="reference external" href="http://brohan.org/IRData/">IRData</a> which provides access to the reanalysis data used,</li>
-<li><a class="reference external" href="https://brohan.org/Meteorographica/">Meteographica</a> for plotting weather maps,</li>
-<li><a class="reference external" href="https://oldweather.github.io/DWR/">The DWR dataset</a> containing the newly-digitised British Isles observations.</li>
+<li><p><a class="reference external" href="http://brohan.org/IRData/">IRData</a> which provides access to the reanalysis data used,</p></li>
+<li><p><a class="reference external" href="https://brohan.org/Meteorographica/">Meteographica</a> for plotting weather maps,</p></li>
+<li><p><a class="reference external" href="https://oldweather.github.io/DWR/">The DWR dataset</a> containing the newly-digitised British Isles observations.</p></li>
 </ul>
 <p>Then install the libraries included in this package:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python setup.py install --user
@@ -117,12 +107,6 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
         <li class="right" style="margin-right: 10px">
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a></li>
-        <li class="right" >
-          <a href="extract_data/extract_data.html" title="Extracting data from 20CRv3"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="index.html" title="20CRv3 Diagnostics"
-             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">20CRv3</a> &#187;</li> 
       </ul>
     </div>

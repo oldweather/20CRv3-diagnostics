@@ -1,19 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>Reanalysis DWR validation plotting module &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
     <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -32,9 +30,6 @@
             </a></p>
 <h3><a href="../../index.html">Table Of Contents</a></h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../instructions.html">How to use this</a></li>
-</ul>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../european_windstorms/european_windstorms.html">European windstorms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../extreme_months/extreme_months.html">Extreme months</a></li>
@@ -47,6 +42,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../Spring_1903/spring_1903.html">Validation against observations for Spring 1903</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../February_1953/february_1953.html">Validation against observations for February 1953</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../comparison.html">Validation Spread v. Error plot January 1872 + Spring 1903 + February 1953</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../obs_video/obs_video.html">Observations coverage video</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fog_videos/1903.html">Weather and fog in 1903</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fog_videos/1931.html">Weather and fog in 1931</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fog_videos/1880_Arctic.html">Weather and fog in the Arctic in 1880 and 1881</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../credits.html">Authors and acknowledgements</a></li>
@@ -75,23 +76,23 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 |</p>
 <dl class="class">
 <dt id="DWR_plots.Circle">
-<em class="property">class </em><code class="descclassname">DWR_plots.</code><code class="descname">Circle</code><span class="sig-paren">(</span><em>xy</em>, <em>radius=5</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/matplotlib/patches.html#Circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.Circle" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">DWR_plots.</code><code class="sig-name descname">Circle</code><span class="sig-paren">(</span><em class="sig-param">xy</em>, <em class="sig-param">radius=5</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/matplotlib/patches.html#Circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.Circle" title="Permalink to this definition">¶</a></dt>
 <dd><p>A circle patch.</p>
 <dl class="method">
 <dt id="DWR_plots.Circle.get_radius">
-<code class="descname">get_radius</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/matplotlib/patches.html#Circle.get_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.Circle.get_radius" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_radius</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/matplotlib/patches.html#Circle.get_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.Circle.get_radius" title="Permalink to this definition">¶</a></dt>
 <dd><p>return the radius of the circle</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="DWR_plots.Circle.radius">
-<code class="descname">radius</code><a class="headerlink" href="#DWR_plots.Circle.radius" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">radius</code><a class="headerlink" href="#DWR_plots.Circle.radius" title="Permalink to this definition">¶</a></dt>
 <dd><p>return the radius of the circle</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="DWR_plots.Circle.set_radius">
-<code class="descname">set_radius</code><span class="sig-paren">(</span><em>radius</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/matplotlib/patches.html#Circle.set_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.Circle.set_radius" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_radius</code><span class="sig-paren">(</span><em class="sig-param">radius</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/matplotlib/patches.html#Circle.set_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.Circle.set_radius" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the radius of the circle</p>
 <p>ACCEPTS: float</p>
 </dd></dl>
@@ -100,27 +101,22 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 
 <dl class="function">
 <dt id="DWR_plots.plot_contour">
-<code class="descclassname">DWR_plots.</code><code class="descname">plot_contour</code><span class="sig-paren">(</span><em>ax</em>, <em>extent</em>, <em>dte</em>, <em>field</em>, <em>obs_r</em>, <em>dwr_obs</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/DWR_plots/contour.html#plot_contour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.plot_contour" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">DWR_plots.</code><code class="sig-name descname">plot_contour</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">extent</em>, <em class="sig-param">dte</em>, <em class="sig-param">field</em>, <em class="sig-param">obs_r</em>, <em class="sig-param">dwr_obs</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/DWR_plots/contour.html#plot_contour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.plot_contour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a mslp contour plot with DWR observations</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>(</strong> (<em>ax</em>) – <cite>cartopy.axes</cite>): Axes to hold the plot</li>
-<li><strong>extent</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>) Plot extent (lon.min,lon.max,lat.min,lat.max) – </li>
-<li><strong>dte</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Time of plot</li>
-<li><strong>field</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.Cube.cube</span></code>) – Reanalysis mslp ensemble</li>
-<li><strong>obs_r</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – Reanalysis observations.</li>
-<li><strong>dwr_obs</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – DWR observations.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong> (<em>ax</em>) – <cite>cartopy.axes</cite>): Axes to hold the plot</p></li>
+<li><p><strong>extent</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>) Plot extent (lon.min,lon.max,lat.min,lat.max) – </p></li>
+<li><p><strong>dte</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Time of plot</p></li>
+<li><p><strong>field</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.Cube.cube</span></code>) – Reanalysis mslp ensemble</p></li>
+<li><p><strong>obs_r</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – Reanalysis observations.</p></li>
+<li><p><strong>dwr_obs</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – DWR observations.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>Kwargs:</dt>
-<dd>projection (<code class="xref py py-obj docutils literal notranslate"><span class="pre">cartopy.crs</span></code>): Map projection to use, default UKV.
+</dd>
+</dl>
+<dl class="simple">
+<dt>Kwargs:</dt><dd><p>projection (<code class="xref py py-obj docutils literal notranslate"><span class="pre">cartopy.crs</span></code>): Map projection to use, default UKV.
 obs_radius (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Reanalysis obs plot size, default 0.15.
 contour_levels (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): Values to plot contours at, default numpy.arange(870,1050,10).
 contour_width (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Width of member contour lines, default 0.1.
@@ -131,7 +127,8 @@ dwr_color (<a class="reference external" href="https://docs.python.org/2/library
 dwr_anomaly_range (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Anomaly color scale factor, default 20.
 dwr_radius (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): DWR obs plot size, default 0.25.
 stations (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): Names (DWR format) of stations to be included, default is stations in dwr_obs.
-station_latlon (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): Latitiudes and Longitudes of stations to be included, default is taken from dwr_obs.</dd>
+station_latlon (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): Latitiudes and Longitudes of stations to be included, default is taken from dwr_obs.</p>
+</dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -140,31 +137,27 @@ station_latlon (<a class="reference external" href="https://docs.python.org/2/li
 
 <dl class="function">
 <dt id="DWR_plots.plot_deviation_spread">
-<code class="descclassname">DWR_plots.</code><code class="descname">plot_deviation_spread</code><span class="sig-paren">(</span><em>ax</em>, <em>field</em>, <em>obs</em>, <em>dte</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/DWR_plots/reliability.html#plot_deviation_spread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.plot_deviation_spread" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">DWR_plots.</code><code class="sig-name descname">plot_deviation_spread</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">field</em>, <em class="sig-param">obs</em>, <em class="sig-param">dte</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/DWR_plots/reliability.html#plot_deviation_spread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.plot_deviation_spread" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a plot comparing ensemble spread with expectation</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>(</strong> (<em>ax</em>) – <cite>cartopy.axes</cite>): Axes to hold the plot</li>
-<li><strong>field</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.Cube.cube</span></code>) – Reanalysis ensemble</li>
-<li><strong>obs</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – DWR observations.</li>
-<li><strong>dte</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Time of plot</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong> (<em>ax</em>) – <cite>cartopy.axes</cite>): Axes to hold the plot</p></li>
+<li><p><strong>field</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.Cube.cube</span></code>) – Reanalysis ensemble</p></li>
+<li><p><strong>obs</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – DWR observations.</p></li>
+<li><p><strong>dte</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Time of plot</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>Kwargs:</dt>
-<dd>x_range (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): x range in plot, default is (-20,20.0).
+</dd>
+</dl>
+<dl class="simple">
+<dt>Kwargs:</dt><dd><p>x_range (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): x range in plot, default is (-20,20.0).
 x_label (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): x label, default is ‘Observation-ensemble mean (hPa)’.
 y_range (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): y range in scatterplot, default is (0.0,10.0).
 y_label (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): y label, default is ‘Ensemble standard deviation (hPa)’.
 point_size (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Plot plot size, default 10.0.
 point_size (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Plot plot color, default ‘blue’.
-obs_error (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Assumed observation error (hPa), default 2.0.</dd>
+obs_error (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Assumed observation error (hPa), default 2.0.</p>
+</dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -173,29 +166,25 @@ obs_error (<a class="reference external" href="https://docs.python.org/2/library
 
 <dl class="function">
 <dt id="DWR_plots.plot_eve">
-<code class="descclassname">DWR_plots.</code><code class="descname">plot_eve</code><span class="sig-paren">(</span><em>ax</em>, <em>dmonth</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/DWR_plots/error_v_error.html#plot_eve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.plot_eve" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">DWR_plots.</code><code class="sig-name descname">plot_eve</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">dmonth</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/DWR_plots/error_v_error.html#plot_eve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.plot_eve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot obs-reanalysis against reanalysis sd</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ax</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">cartopy.axes</span></code>) – Axes to hold the plot</li>
-<li><strong>dmonth</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>) – Components ‘ensembles’ and ‘observations’ each an array with the ensemble values and observation value at the time and place of each observation.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">cartopy.axes</span></code>) – Axes to hold the plot</p></li>
+<li><p><strong>dmonth</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>) – Components ‘ensembles’ and ‘observations’ each an array with the ensemble values and observation value at the time and place of each observation.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>Kwargs:</dt>
-<dd>range (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): data range in scatterplot, default is (0,6).
+</dd>
+</dl>
+<dl class="simple">
+<dt>Kwargs:</dt><dd><p>range (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): data range in scatterplot, default is (0,6).
 x_label (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): x label, default is ‘Ensemble SD (hPa)’.
 y_label (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): y label, default is ‘Ob-Ensemble mean RMS (hPa)’.
 point_size (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Plot plot size, default 10.0.
 point_size (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Plot plot color, default ‘blue’.
 obs_errors (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): Assumed obs errors to show, default is (0,1,2)
-nbins (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): Resolution of plot - number of points.</dd>
+nbins (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): Resolution of plot - number of points.</p>
+</dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -204,30 +193,26 @@ nbins (<a class="reference external" href="https://docs.python.org/2/library/fun
 
 <dl class="function">
 <dt id="DWR_plots.plot_rotated_scatter">
-<code class="descclassname">DWR_plots.</code><code class="descname">plot_rotated_scatter</code><span class="sig-paren">(</span><em>ax</em>, <em>field</em>, <em>obs</em>, <em>dte</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/DWR_plots/reliability.html#plot_rotated_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.plot_rotated_scatter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">DWR_plots.</code><code class="sig-name descname">plot_rotated_scatter</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">field</em>, <em class="sig-param">obs</em>, <em class="sig-param">dte</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/DWR_plots/reliability.html#plot_rotated_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.plot_rotated_scatter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a scatter plot rotated so 1:1 is horizontal</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>(</strong> (<em>ax</em>) – <cite>cartopy.axes</cite>): Axes to hold the plot</li>
-<li><strong>field</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.Cube.cube</span></code>) – Reanalysis ensemble</li>
-<li><strong>obs</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – DWR observations.</li>
-<li><strong>dte</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Time of plot</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong> (<em>ax</em>) – <cite>cartopy.axes</cite>): Axes to hold the plot</p></li>
+<li><p><strong>field</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.Cube.cube</span></code>) – Reanalysis ensemble</p></li>
+<li><p><strong>obs</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – DWR observations.</p></li>
+<li><p><strong>dte</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Time of plot</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>Kwargs:</dt>
-<dd>x_range (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): x range in scatterplot, default is (945.0,1045.0).
+</dd>
+</dl>
+<dl class="simple">
+<dt>Kwargs:</dt><dd><p>x_range (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): x range in scatterplot, default is (945.0,1045.0).
 x_label (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): x label, default is ‘Observed MSLP (hPa)’.
 y_range (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): y range in scatterplot, default is (-20.0,20.0).
 y_label (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): y label, default is ‘Ensemble-Observed MSLP (hPa)’.
 point_size (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Plot plot size, default 10.0.
-point_size (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Plot plot color, default ‘blue’.</dd>
+point_size (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Plot plot color, default ‘blue’.</p>
+</dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -236,31 +221,27 @@ point_size (<a class="reference external" href="https://docs.python.org/2/librar
 
 <dl class="function">
 <dt id="DWR_plots.plot_scatter">
-<code class="descclassname">DWR_plots.</code><code class="descname">plot_scatter</code><span class="sig-paren">(</span><em>ax</em>, <em>field</em>, <em>dwr_obs</em>, <em>dte</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/DWR_plots/scatter.html#plot_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.plot_scatter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">DWR_plots.</code><code class="sig-name descname">plot_scatter</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">field</em>, <em class="sig-param">dwr_obs</em>, <em class="sig-param">dte</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/DWR_plots/scatter.html#plot_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.plot_scatter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a mslp contour plot with DWR observations</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>(</strong> (<em>ax</em>) – <cite>cartopy.axes</cite>): Axes to hold the plot</li>
-<li><strong>field</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.Cube.cube</span></code>) – Reanalysis mslp ensemble</li>
-<li><strong>dwr_obs</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – DWR observations.</li>
-<li><strong>extent</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>) Plot extent (lon.min,lon.max,lat.min,lat.max) – </li>
-<li><strong>xlabel</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – ‘x-axis title’</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong> (<em>ax</em>) – <cite>cartopy.axes</cite>): Axes to hold the plot</p></li>
+<li><p><strong>field</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.Cube.cube</span></code>) – Reanalysis mslp ensemble</p></li>
+<li><p><strong>dwr_obs</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – DWR observations.</p></li>
+<li><p><strong>extent</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>) Plot extent (lon.min,lon.max,lat.min,lat.max) – </p></li>
+<li><p><strong>xlabel</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – ‘x-axis title’</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>Kwargs:</dt>
-<dd>pressure_range (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): (min,max) pressure for scatterplot, default [945,1045].
+</dd>
+</dl>
+<dl class="simple">
+<dt>Kwargs:</dt><dd><p>pressure_range (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): (min,max) pressure for scatterplot, default [945,1045].
 xlabel (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): x-axis label for scatter plot, default ‘MSLP (hPa)’.
 scatter_point_size (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Size of ensemble dots in scatter plot (pts), default 25.
 scatter_alpha (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Alpha transparency of ensemble dots in scatter plot (pts), default 0.5.
 stations (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): Names (DWR format) of stations to be included, default is stations in dwr_obs.
-station_latlon (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): Latitiudes and Longitudes of stations to be included, default is taken from dwr_obs.</dd>
+station_latlon (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): Latitiudes and Longitudes of stations to be included, default is taken from dwr_obs.</p>
+</dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -269,26 +250,21 @@ station_latlon (<a class="reference external" href="https://docs.python.org/2/li
 
 <dl class="function">
 <dt id="DWR_plots.plot_scatter_contour">
-<code class="descclassname">DWR_plots.</code><code class="descname">plot_scatter_contour</code><span class="sig-paren">(</span><em>fig</em>, <em>field</em>, <em>obs_r</em>, <em>dwr_obs</em>, <em>dte</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/DWR_plots/scatter_contour.html#plot_scatter_contour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.plot_scatter_contour" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">DWR_plots.</code><code class="sig-name descname">plot_scatter_contour</code><span class="sig-paren">(</span><em class="sig-param">fig</em>, <em class="sig-param">field</em>, <em class="sig-param">obs_r</em>, <em class="sig-param">dwr_obs</em>, <em class="sig-param">dte</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/DWR_plots/scatter_contour.html#plot_scatter_contour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.plot_scatter_contour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a combined contour-plot and scatter plot</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>(</strong> (<em>fig</em>) – <cite>matplotlib.figure</cite>): Figure to hold the plot</li>
-<li><strong>field</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.Cube.cube</span></code>) – Reanalysis mslp ensemble</li>
-<li><strong>obs_r</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – Reanalysis observations.</li>
-<li><strong>dwr_obs</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – DWR observations.</li>
-<li><strong>dte</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Time of data to plot</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong> (<em>fig</em>) – <cite>matplotlib.figure</cite>): Figure to hold the plot</p></li>
+<li><p><strong>field</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.Cube.cube</span></code>) – Reanalysis mslp ensemble</p></li>
+<li><p><strong>obs_r</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – Reanalysis observations.</p></li>
+<li><p><strong>dwr_obs</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – DWR observations.</p></li>
+<li><p><strong>dte</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Time of data to plot</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>Kwargs:</dt>
-<dd>projection (<code class="xref py py-obj docutils literal notranslate"><span class="pre">cartopy.crs</span></code>): Map projection to use, default UKV.
+</dd>
+</dl>
+<dl class="simple">
+<dt>Kwargs:</dt><dd><p>projection (<code class="xref py py-obj docutils literal notranslate"><span class="pre">cartopy.crs</span></code>): Map projection to use, default UKV.
 scale (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Map scale - latitude range, default 20.
 pressure_range (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): (min,max) pressure for scatterplot, default [945,1045].
 obs_radius (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Reanalysis obs plot size, default 0.15.
@@ -303,7 +279,8 @@ xlabel (<a class="reference external" href="https://docs.python.org/2/library/fu
 scatter_point_size (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Size of ensemble dots in scatter plot (pts), default 25.
 scatter_alpha (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Alpha transparency of ensemble dots in scatter plot (pts), default 0.5.
 stations (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): Names of DWR stations to plot, if missing, taken from dwr_obs.
-station_latlon (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): Positions of DWR stations to plot (each station entry a dictionary with ‘latitude’ and ‘longitude’), if missing, taken from dwr_obs.</dd>
+station_latlon (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): Positions of DWR stations to plot (each station entry a dictionary with ‘latitude’ and ‘longitude’), if missing, taken from dwr_obs.</p>
+</dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -312,29 +289,25 @@ station_latlon (<a class="reference external" href="https://docs.python.org/2/li
 
 <dl class="function">
 <dt id="DWR_plots.plot_vvv">
-<code class="descclassname">DWR_plots.</code><code class="descname">plot_vvv</code><span class="sig-paren">(</span><em>ax</em>, <em>dmonth</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/DWR_plots/error_v_error.html#plot_vvv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.plot_vvv" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">DWR_plots.</code><code class="sig-name descname">plot_vvv</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">dmonth</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/DWR_plots/error_v_error.html#plot_vvv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#DWR_plots.plot_vvv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot obs-reanalysis against reanalysis variance</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ax</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">cartopy.axes</span></code>) – Axes to hold the plot</li>
-<li><strong>dmonth</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>) – Components ‘ensembles’ and ‘observations’ each an array with the ensemble valuues and observation value at the time and place of each observation.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">cartopy.axes</span></code>) – Axes to hold the plot</p></li>
+<li><p><strong>dmonth</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>) – Components ‘ensembles’ and ‘observations’ each an array with the ensemble valuues and observation value at the time and place of each observation.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>Kwargs:</dt>
-<dd>range (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): data range in scatterplot, default is (0,30).
+</dd>
+</dl>
+<dl class="simple">
+<dt>Kwargs:</dt><dd><p>range (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): data range in scatterplot, default is (0,30).
 x_label (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): x label, default is ‘Ensemble Variance (hPa**2)’.
 y_label (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): y label, default is ‘Ob-Ensemble mean MS (hPa**2)’.
 point_size (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Plot plot size, default 100.0.
 point_size (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Plot plot color, default ‘blue’.
 obs_errors (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code>): Assumed obs errors to show, default is (0,1,2)
-nbins (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): Resolution of plot - number of points.</dd>
+nbins (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): Resolution of plot - number of points.</p>
+</dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>

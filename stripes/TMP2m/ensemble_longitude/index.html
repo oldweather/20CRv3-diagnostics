@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>TMP2m ensemble stripes by longitude &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">20CRv3</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/t2t3.png" alt="Logo"/>
+            </a></p>
+<h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../european_windstorms/european_windstorms.html">European windstorms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../extreme_months/extreme_months.html">Extreme months</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../north_american_severe_weather/nasw.html">North American severe weather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../australian_east_coast_lows/aecl.html">Australian east coast lows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cold_surges/cold_surges.html">Cold Surges</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../DWR_validation/Spring_1903/spring_1903.html">Validation against observations for Spring 1903</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../DWR_validation/February_1953/february_1953.html">Validation against observations for February 1953</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../DWR_validation/comparison.html">Validation Spread v. Error plot January 1872 + Spring 1903 + February 1953</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../obs_video/obs_video.html">Observations coverage video</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fog_videos/1903.html">Weather and fog in 1903</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fog_videos/1931.html">Weather and fog in 1931</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fog_videos/1880_Arctic.html">Weather and fog in the Arctic in 1880 and 1881</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../credits.html">Authors and acknowledgements</a></li>
+</ul>
+<h3><a href="https://github.com/oldweather/20CRv3-diagnostics">Get a copy</a></h3>
+
+<ul>
+<li><a href="https://github.com/oldweather/20CRv3-diagnostics"
+           rel="nofollow">Github repository</a></li>
+</ul>
+
+<h3>Found a bug, or have a suggestion?</h3>
+
+Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">raise an issue</a>.
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="tmp2m-ensemble-stripes-by-longitude">
+<h1>TMP2m ensemble stripes by longitude<a class="headerlink" href="#tmp2m-ensemble-stripes-by-longitude" title="Permalink to this headline">¶</a></h1>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../index.html"><span class="doc">By latitude</span></a></p>
+<p><a class="reference internal" href="../single_member/index.html"><span class="doc">Single member by latitude</span></a></p>
+</div>
+<div class="figure align-center" id="id1" style="width: 95%">
+<a class="reference internal image-reference" href="../../../_images/TMP2m1.png"><img alt="../../../_images/TMP2m1.png" src="../../../_images/TMP2m1.png" style="width: 95%;" /></a>
+<p class="caption"><span class="caption-text">Monthly 2m-temperature anomalies (w.r.t. 1961-90) from the 20CRv3 ensemble. The vertical axis is longitude, and each pixel is an area-weighted latitudinal mean from a randomly selected ensemble member.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>Sampling randomly from the ensemble means that regions where the variance across the ensemble is larger than the ensemble mean appear speckled. This provides an indication of uncertainty.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Script to download the data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot.html">Scripts to make the plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample.html">Function to extract the data sample</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">20CRv3</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    </div>
+  </body>
+</html>

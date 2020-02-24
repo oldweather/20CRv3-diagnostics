@@ -1,22 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>Extracting data from 20CRv3 &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Tropical Storms" href="../tropical-storms/tropical_storms.html" />
-    <link rel="prev" title="How to use this dataset" href="../instructions.html" /> 
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="search" title="Search" href="../search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -24,14 +20,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a></li>
-        <li class="right" >
-          <a href="../tropical-storms/tropical_storms.html" title="Tropical Storms"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="../instructions.html" title="How to use this dataset"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../instructions.html" accesskey="U">How to use this dataset</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -40,12 +29,6 @@
               <img class="logo" src="../_static/t2t3.png" alt="Logo"/>
             </a></p>
 <h3><a href="../index.html">Table Of Contents</a></h3>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../instructions.html">How to use this</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Extracting data from 20CRv3</a></li>
-</ul>
-</li>
-</ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../european_windstorms/european_windstorms.html">European windstorms</a></li>
@@ -59,6 +42,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/Spring_1903/spring_1903.html">Validation against observations for Spring 1903</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/February_1953/february_1953.html">Validation against observations for February 1953</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DWR_validation/comparison.html">Validation Spread v. Error plot January 1872 + Spring 1903 + February 1953</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../obs_video/obs_video.html">Observations coverage video</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fog_videos/1903.html">Weather and fog in 1903</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fog_videos/1931.html">Weather and fog in 1931</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fog_videos/1880_Arctic.html">Weather and fog in the Arctic in 1880 and 1881</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
@@ -99,10 +88,10 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <p>v3 does not exist yet, we identify proto-v3 data by its <em>run number</em>. The two run numbers I’ve looked at so far are 451 and 452. Run numbers in the 400s are from the v3 model and this data extraction method should work for any of them.</p>
 <p>The data extraction process is in four steps:</p>
 <ol class="arabic simple">
-<li>Find the model output files for a month</li>
-<li>Copy them to my own $SCRATCH</li>
-<li>Copy all the output for a single variable to one grib file and convert it to netCDF</li>
-<li>Assemble the observations files</li>
+<li><p>Find the model output files for a month</p></li>
+<li><p>Copy them to my own $SCRATCH</p></li>
+<li><p>Copy all the output for a single variable to one grib file and convert it to netCDF</p></li>
+<li><p>Assemble the observations files</p></li>
 </ol>
 </div>
 <div class="section" id="setup">
@@ -125,17 +114,17 @@ module load nco
 <p>The model output for a single assimilation step (6-hour period) is all put in the same directory, with a name formated as YYYYMMDDHH, so directory 1928031206 contains data for the 6-hour period starting at 6a.m (UTC) on March 12 1928. There are 4 assimilation steps each day (0,6,12,18 hours). The analysis is run in many streams (usually of 5-years duration) - a different stream is started every 5 years. So the model outputs are uniquely identified by their <em>run number</em>, their <em>start year</em>, and their <em>date</em>: directory ‘ensda_451_1899/1903102618’ contains the data for run 451, stream starting in 1899, valid at 6pm UTC on 26 October 1903.</p>
 <p>The freshest model output is in the $SCRATCH directory of whoever is doing the run (Chesley or Gil):</p>
 <ul class="simple">
-<li>/global/cscratch1/sd/cmccoll/gfsenkf_20crV3_cmip5oz_CoriII/</li>
-<li>/global/cscratch1/sd/compo/gfsenkf_20crV3_cmip5oz_CoriII/</li>
+<li><p>/global/cscratch1/sd/cmccoll/gfsenkf_20crV3_cmip5oz_CoriII/</p></li>
+<li><p>/global/cscratch1/sd/compo/gfsenkf_20crV3_cmip5oz_CoriII/</p></li>
 </ul>
 <p>But there is too much output to keep on disc for long, so the output is put into tar files by date, and <a class="reference external" href="http://www.nersc.gov/users/storage-and-file-systems/hpss/storing-and-retrieving-data/clients/hsi-usage/">archived to tape</a> in hsi directory:</p>
 <ul class="simple">
-<li>/home/projects/incite11/ensda_v451_archive_orig</li>
+<li><p>/home/projects/incite11/ensda_v451_archive_orig</p></li>
 </ul>
 <p>where ‘451’ is the run number.</p>
 <p>This data in turn is then cleaned-up, repacked into grib2 format, and copied into another tape archive at</p>
 <ul class="simple">
-<li>/home/projects/incite11/ensda_v451_archive_grb2_monthly</li>
+<li><p>/home/projects/incite11/ensda_v451_archive_grb2_monthly</p></li>
 </ul>
 <p>In practice it’s best to use these in reverse order: If the month you want is in the grib2 tape archive, get it from there; otherwise if it’s in the grib1 tabe archive, get it from there; only look on disc if you must have data that’s currently being run.</p>
 </div>
@@ -207,14 +196,7 @@ module load nco
         <li class="right" style="margin-right: 10px">
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a></li>
-        <li class="right" >
-          <a href="../tropical-storms/tropical_storms.html" title="Tropical Storms"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="../instructions.html" title="How to use this dataset"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../instructions.html" >How to use this dataset</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
