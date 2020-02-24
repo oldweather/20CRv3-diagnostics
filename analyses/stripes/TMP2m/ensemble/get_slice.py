@@ -2,7 +2,7 @@
 
 # 20CRv3 stripes.
 # Monthly, resolved in latitude, averaging in longitude, 
-#  single ensemble member.
+#  sampling the ensemble.
 
 # Get the sample for a specified year
 

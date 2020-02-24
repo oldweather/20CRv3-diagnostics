@@ -6,7 +6,8 @@ import os
 import subprocess
 import tarfile
 
-base_url="https://portal.nersc.gov/archive/home/projects/incite11/www/20C_Reanalysis_version_3/everymember_anal_netcdf/mnmean/TMP2m"
+base_url="https://portal.nersc.gov/archive/home/projects/incite11/www/"+\
+         "20C_Reanalysis_version_3/everymember_anal_netcdf/mnmean/TMP2m"
 
 local_dir="%s/20CR/version_3/monthly_means" % os.getenv('SCRATCH')
 

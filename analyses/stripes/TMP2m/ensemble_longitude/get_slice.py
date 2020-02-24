@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 # 20CRv3 stripes.
-# Monthly, resolved in latitude, averaging in longitude, 
-#  single ensemble member.
+# Monthly, resolved in longitude, averaging in latitude, 
+#  sampling the ensemble.
 
 # Get the sample for a specified year
 
