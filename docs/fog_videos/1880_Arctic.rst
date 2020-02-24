@@ -6,11 +6,9 @@ Weather and fog in the Arctic in 1880 and 1881
     <center>
     <table><tr><td><center>
     <iframe src="https://player.vimeo.com/video/365276568?title=0&byline=0&portrait=0" width="795" height="448" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></center></td></tr>
-    <tr><td><center>Weather and observations in 1931</center></td></tr>
+    <tr><td><center>The effect of observations from USS Jeanette (central black dot) on the 20CRv3 reconstruction in the Arctic in 1880 and 1881.</center></td></tr>
     </table>
     </center>
-
-The effect of observations from USS Jeanette (central black dot) on the 20CRv3 reconstruction in the Arctic in 1880 and 1881.
 
 Near-surface air temperature (2m - colours), 10m wind (vectors), and precipitation (green shading) from Version 3 of the Twentieth Century Reanalysis (first ensemble member). Black dots mark observations assimilated (of surface pressure), and the grey fog masks regions where the reanalysis is very uncertain (where the ensemble spread in sea-level pressure is not much smaller than the climatological variation).
 
