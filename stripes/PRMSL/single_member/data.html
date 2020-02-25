@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Download monthly-mean TMP2m for all ensemble members &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
+    <title>Download monthly-mean PRMSL for all ensemble members &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
     <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -32,6 +32,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../TMP2m/index.html">TMP2m</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../index.html">PRMSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PRATE/index.html">PRATE</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
@@ -74,28 +75,27 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="download-monthly-mean-tmp2m-for-all-ensemble-members">
-<h1>Download monthly-mean TMP2m for all ensemble members<a class="headerlink" href="#download-monthly-mean-tmp2m-for-all-ensemble-members" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="download-monthly-mean-prmsl-for-all-ensemble-members">
+<h1>Download monthly-mean PRMSL for all ensemble members<a class="headerlink" href="#download-monthly-mean-prmsl-for-all-ensemble-members" title="Permalink to this headline">¶</a></h1>
 <p>This data is available on the <a class="reference external" href="https://portal.nersc.gov/project/20C_Reanalysis/">NERSC web portal</a>.</p>
 <p>There is one 3.1Mb file for each of 80 ensemble menbers for each of 206 years (1806-2015). About 50Gb of data in total, and it’s kept on tape at NERSC; so it will take some time to download (several hours at best).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
 
-<span class="c1"># Download the 20CRv3 monthly-mean T2m.</span>
+<span class="c1"># Download the 20CRv3 monthly-mean PRMSL.</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">tarfile</span>
 
-<span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;https://portal.nersc.gov/archive/home/projects/incite11/www/&quot;</span><span class="o">+</span>\
-         <span class="s2">&quot;20C_Reanalysis_version_3/everymember_anal_netcdf/mnmean/TMP2m&quot;</span>
+<span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;https://portal.nersc.gov/archive/home/projects/incite11/www/20C_Reanalysis_version_3/everymember_anal_netcdf/mnmean/PRMSL&quot;</span>
 
 <span class="n">local_dir</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/20CR/version_3/monthly_means&quot;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1806</span><span class="p">,</span><span class="mi">2016</span><span class="p">):</span>
-    <span class="n">tf</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%04d</span><span class="s2">/TMP2m.</span><span class="si">%04d</span><span class="s2">.mnmean_mem039.nc&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">local_dir</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%04d</span><span class="s2">/PRMSL.</span><span class="si">%04d</span><span class="s2">.mnmean_mem039.nc&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">local_dir</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">tf</span><span class="p">):</span> <span class="k">continue</span>
-    <span class="n">remote</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/TMP2m_</span><span class="si">%04d</span><span class="s2">_mnmean.tar&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">base_url</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
-    <span class="n">local</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/TMP2m_</span><span class="si">%04d</span><span class="s2">_mnmean.tar&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">local_dir</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
+    <span class="n">remote</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/PRMSL_</span><span class="si">%04d</span><span class="s2">_mnmean.tar&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">base_url</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
+    <span class="n">local</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/PRMSL_</span><span class="si">%04d</span><span class="s2">_mnmean.tar&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">local_dir</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">local</span><span class="p">)):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">local</span><span class="p">))</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">local</span><span class="p">):</span>
