@@ -1,7 +1,11 @@
 :orphan:
 
-Extracting data from 20CRv3
-===========================
+Extracting data from 20CRv3 scout runs
+======================================
+
+V3 has now been released, so data from the main reanalysis is available from `NOAA PSD <https://www.esrl.noaa.gov/psd/data/gridded/data.20thC_ReanV3.html>`_, `NCAR <https://rda.ucar.edu/datasets/ds131.3/>`_, and `NERSC <https://portal.nersc.gov/project/20C_Reanalysis/>`_. Wherever possible, use the data provided by these portals. 
+
+If the data you need is not avaialable from the main portals - either because you need something obscure, or because you want data from a scout run instead of just the main reanalysis, these scripts may help you. You will need an account at NERSC (ask Gil), a bit of python and unix knowledge, and the willingness to do some hacking to get what you want.
 
 Executive summary
 -----------------
@@ -10,11 +14,11 @@ On `Cori <http://www.nersc.gov/users/computational-systems/cori/>`_, from an acc
 
 .. code-block:: bash
 
-   /global/homes/p/pbrohan/Projects/20CRv3-diagnostics/tools/extract_data/v3_release/extract_month_job.py --startyear=1899 --year=1901 --month=7 --version=451
+   /global/homes/p/pbrohan/Projects/20CRv3-diagnostics/tools/extract_data/v3_release/extract_month_job.py --startyear=1899 --year=1901 --month=7 --version=461
 
 (But change 1899, 1901, 7, and possibly 451, to your preferred values).
 
-This will make a netCDF4 file, for each of the surface weather variables ``prmsl``, ``air.2m``, ``uwnd.10m``, ``vwnd.10m``, ``icec``, and ``prate``, containing the 3-hourly, full ensemble, analysis output for the whole of July 1901, from the experiment 451 run starting in 1899. It will also extract the observations feedback files. It will put the output in ``$SCRATCH/20CRv3.final/``
+This will make a netCDF4 file, for each of the surface weather variables ``prmsl``, ``air.2m``, ``uwnd.10m``, ``vwnd.10m``, ``icec``, and ``prate``, containing the 3-hourly, full ensemble, analysis output for the whole of July 1901, from the scout 461 run starting in 1899. It will also extract the observations feedback files. It will put the output in ``$SCRATCH/20CRv3.final/``
 
 The command will submit an `xfer job <http://www.nersc.gov/users/computational-systems/cori/running-jobs/advanced-running-jobs-options/>`_ to get the data off tape, and when that's done it will submit a regular job to do the data reshaping and conversion. This will take a while - a minimum of all day, and longer if the system is heavily loaded. You can run multiple extractions in parallel - if you submit more than Cori can run at once, they will just queue up.
 
@@ -23,7 +27,7 @@ The details
 
 The 20CRv2c data are `available <http://portal.nersc.gov/project/20C_Reanalysis/>`_ as netCDF files, each containing 3- or 6-hourly data, for a single variable, for all ensemble members, for a year. I have `software that uses data in this format <https://brohan.org/IRData>`_, so I aim to produce v3 data in a similar format. The main difference is that there is much more data from v3 (higher resolution, more ensemble members, always 3-hourly) so I make files for each month, not each year.
 
-v3 does not exist yet, we identify proto-v3 data by its *run number*. The two run numbers I've looked at so far are 451 and 452. Run numbers in the 400s are from the v3 model and this data extraction method should work for any of them.
+Choose the data source by specifying its *run number*. The two run numbers that make up the released V3 are 451 and 452. Current scout runs are numbered 46x, Run numbers in the 400s are from the v3 model and this data extraction method should work for any of them.
 
 The data extraction process is in four steps:
 

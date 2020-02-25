@@ -3,6 +3,25 @@
 
 This is a set of analyses of the newly-released `NOAA/CIRES/DOE Twentieth Century Reanalysis <https://www.esrl.noaa.gov/psd/data/20thC_Rean/>`_ version 3 (20CRv3). It compares `20CRv3 <https://www.esrl.noaa.gov/psd/data/gridded/data.20thC_ReanV3.html>`_ to `20CRv2c <https://www.esrl.noaa.gov/psd/data/gridded/data.20thC_ReanV2c.html>`_, to `CERA-20C <https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/cera-20c>`_, and to `newly-digitised observations from around the British Isles <https://oldweather.github.io/DWR/>`_.
 
+Get the data
+------------
+
+The 20CRv3 data used here is distributed through the `NERSC web portal <https://portal.nersc.gov/project/20C_Reanalysis/>`_. It can be downloaded directly.
+
+Data from scout runs can be obtained (with some effort) by :doc:`following these instructions <extract_data/extract_data>`.
+
+Stripes plots
+-------------
+
+Latitude:time plots of monthly averages.
+
+.. toctree::
+   :maxdepth: 1
+
+   TMP2m <stripes/TMP2m/index> 
+   PRMSL <stripes/PRMSL/index>
+
+
 Comparisons of 20CRv3 with 20CRv2c
 ----------------------------------
 
