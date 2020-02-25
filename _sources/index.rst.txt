@@ -6,7 +6,7 @@ This is a set of analyses of the newly-released `NOAA/CIRES/DOE Twentieth Centur
 Get the data
 ------------
 
-The 20CRv3 data used here is distributed through the `NERSC web portal <https://portal.nersc.gov/archive/home/projects/incite11/www>`_. It can be downloaded directly.
+The 20CRv3 data used here is distributed through the `NERSC web portal <https://portal.nersc.gov/project/20C_Reanalysis/>`_. It can be downloaded directly.
 
 Data from scout runs can be obtained (with some effort) by :doc:`following these instructions <extract_data/extract_data>`.
 
