@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Extract 20CRv3 data for a month - from tape to $SCRATCH
 
@@ -37,7 +37,7 @@ proc = subprocess.Popen("hsi ls -l %s" % originals_directory,
                     stdout=subprocess.PIPE, 
                     stderr=subprocess.PIPE, shell=True)
 (out, err) = proc.communicate()
-start_years=err.split() # Why does hsi put output in stderr?
+start_years=err.decode('utf8').split() # Why does hsi put output in stderr?
 start_years=[x for x in start_years if 'ensda_%03d' % args.version in x]
 start_years=[int(x[-4:]) for x in start_years]
 if args.startyear not in start_years:
@@ -52,7 +52,7 @@ proc = subprocess.Popen("hsi ls -l %s/ensda_%03d_%04d/%04d/%04d%02d_*.tar" % (
                     stdout=subprocess.PIPE, 
                     stderr=subprocess.PIPE, shell=True)
 (out, err) = proc.communicate()
-file_list=err.split()
+file_list=err.decode('utf8').split()
 obs_files=[x for x in file_list if '_psobs' in x]
 if len(obs_files)<1:
     raise Exception("Data not available")
@@ -64,13 +64,13 @@ if len(fg_files)<80:
     raise Exception("Forecast data not complete")
 
 # Have the list of files to retrieve - sort them into tape order
-tfile=tempfile.NamedTemporaryFile(delete=False)
+tfile=tempfile.NamedTemporaryFile(delete=False,mode='w')
 for fn in obs_files+anl_files+fg_files:
     tfile.write("%s/ensda_%03d_%04d/%04d/%s\n" % (
                     originals_directory,args.version,
                     args.startyear,args.year,fn))
 tfile.close()
-sfile=tempfile.NamedTemporaryFile(delete=False)
+sfile=tempfile.NamedTemporaryFile(delete=False,mode='w')
 proc = subprocess.Popen("hpss_file_sorter.script %s > %s" % (
                          tfile.name,sfile.name),
                          stdout=subprocess.PIPE, 

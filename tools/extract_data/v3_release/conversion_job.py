@@ -19,11 +19,11 @@ parser.add_argument("--version", help="Version to extract",
                     type=int,default=451)
 args = parser.parse_args()
 
-tfile=tempfile.NamedTemporaryFile(delete=False)
+tfile=tempfile.NamedTemporaryFile(delete=False,mode='w')
 tfile.write('#!/bin/bash\n')
 tfile.write("#SBATCH --output=v3_conversion-%d-%d-%%j.out\n" %
                 (args.year,args.month))
-tfile.write('#SBATCH -q scavenger\n')
+tfile.write('#SBATCH -q regular\n')
 tfile.write('#SBATCH --time-min=4:00:00\n')
 tfile.write('#SBATCH -C knl\n')
 tfile.write('#SBATCH -N 1\n')
