@@ -1,6 +1,6 @@
 :orphan:
 
-PRMSL ensemble member 1 stripes by latitude
+PRATE ensemble member 1 stripes by latitude
 ===========================================
 
 .. seealso:: 
@@ -10,12 +10,12 @@ PRMSL ensemble member 1 stripes by latitude
 
    :doc:`Whole ensemble by longitude <../ensemble_longitude/index>`
 
-.. figure:: ../../../../analyses/stripes/PRMSL/single_member/PRMSL.png
+.. figure:: ../../../../analyses/stripes/PRATE/single_member/PRATE.png
    :width: 95%
    :align: center
    :figwidth: 95%
 
-   Monthly mean-sea-level pressure anomalies (w.r.t. 1961-90) from the 20CRv3 ensemble. The vertical axis is longitude, and each pixel is an area-weighted latitudinal mean from ensemble member 1.
+   Monthly mean precipitation rate anomalies (w.r.t. 1961-90) from the 20CRv3 ensemble. The vertical axis is longitude, and each pixel is an area-weighted latitudinal mean from ensemble member 1.
 
 .. toctree::
    :titlesonly:

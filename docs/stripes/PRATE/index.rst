@@ -1,19 +1,19 @@
-PRMSL ensemble stripes by latitude
+PRATE ensemble stripes by latitude
 ==================================
 
 .. seealso:: 
-   :doc:`Ensemble mean by latitude <ensemble_mean/index>`
+   :doc:`Full ensemble by longitude <ensemble_longitude/index>`
 
-   :doc:`By longitude <ensemble_longitude/index>`
+   :doc:`Ensemble mean <ensemble_mean/index>`
 
    :doc:`Single ensemble member <single_member/index>`
 
-.. figure:: ../../../analyses/stripes/PRMSL/ensemble/PRMSL.png
+.. figure:: ../../../analyses/stripes/PRATE/ensemble/PRATE.png
    :width: 95%
    :align: center
    :figwidth: 95%
 
-   Monthly mean-sea-level pressure anomalies (w.r.t. 1961-90) from the 20CRv3 ensemble. The vertical axis is latitude, and each pixel is a longitudinal mean from a randomly selected ensemble member.
+   Monthly precipitation rate anomalies (w.r.t. 1961-90) from the 20CRv3 ensemble. The vertical axis is latitude, and each pixel is a longitudinal mean from a randomly selected ensemble member.
 
 Sampling randomly from the ensemble means that regions where the variance across the ensemble is larger than the ensemble mean appear speckled. This provides an indication of uncertainty.
 

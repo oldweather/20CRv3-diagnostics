@@ -20,6 +20,7 @@ Latitude:time plots of monthly averages.
 
    TMP2m <stripes/TMP2m/index> 
    PRMSL <stripes/PRMSL/index>
+   PRATE <stripes/PRATE/index>
 
 
 Comparisons of 20CRv3 with 20CRv2c
