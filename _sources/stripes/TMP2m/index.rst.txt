@@ -4,6 +4,8 @@ TMP2m ensemble stripes by latitude
 .. seealso:: 
    :doc:`By longitude <ensemble_longitude/index>`
 
+   :doc:`Ensemble mean by latitude <ensemble_mean/index>`
+
    :doc:`Single ensemble member <single_member/index>`
 
 .. figure:: ../../../analyses/stripes/TMP2m/ensemble/TMP2m.png
