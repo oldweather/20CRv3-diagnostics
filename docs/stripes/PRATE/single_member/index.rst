@@ -6,6 +6,8 @@ PRATE ensemble member 1 stripes by latitude
 .. seealso:: 
    :doc:`Whole ensemble <../index>`
 
+   :doc:`Ensemble mean <../ensemble_mean/index>`
+
    :doc:`Whole ensemble by longitude <../ensemble_longitude/index>`
 
 .. figure:: ../../../../analyses/stripes/PRATE/single_member/PRATE.png

@@ -4,7 +4,9 @@ PRMSL ensemble stripes by longitude
 ===================================
 
 .. seealso:: 
-   :doc:`By latitude <../index>`
+   :doc:`Full ensemble by latitude <../index>`
+
+   :doc:`Ensemble mean by latitude <../ensemble_mean/index>`
 
    :doc:`Single member by latitude <../single_member/index>`
 

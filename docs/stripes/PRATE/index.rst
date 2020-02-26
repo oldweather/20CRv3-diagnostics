@@ -2,7 +2,9 @@ PRATE ensemble stripes by latitude
 ==================================
 
 .. seealso:: 
-   :doc:`By longitude <ensemble_longitude/index>`
+   :doc:`Full ensemble by longitude <ensemble_longitude/index>`
+
+   :doc:`Ensemble mean <ensemble_mean/index>`
 
    :doc:`Single ensemble member <single_member/index>`
 
