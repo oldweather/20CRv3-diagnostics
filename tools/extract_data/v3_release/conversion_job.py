@@ -19,14 +19,15 @@ parser.add_argument("--version", help="Version to extract",
                     type=int,default=451)
 args = parser.parse_args()
 
-tfile=tempfile.NamedTemporaryFile(delete=False)
+tfile=tempfile.NamedTemporaryFile(delete=False,mode='w')
 tfile.write('#!/bin/bash\n')
 tfile.write("#SBATCH --output=v3_conversion-%d-%d-%%j.out\n" %
                 (args.year,args.month))
-tfile.write('#SBATCH -p regular\n')
+tfile.write('#SBATCH -q regular\n')
+tfile.write('#SBATCH --time-min=4:00:00\n')
 tfile.write('#SBATCH -C knl\n')
 tfile.write('#SBATCH -N 1\n')
-tfile.write('#SBATCH -t 5:30:00\n')
+tfile.write('#SBATCH -t 4:00:00\n')
 tfile.write("#SBATCH -J V3co%04d%02d\n" % (args.year,args.month))
 tfile.write('#SBATCH -L SCRATCH\n\n')
 tfile.write('module load ncl\n')
@@ -52,10 +53,10 @@ tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version
                                                          (ldir,args.startyear,args.year,args.month,args.version))
 #tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=hgt --level=850 &\n' % 
 #                                                         (ldir,args.startyear,args.year,args.month,args.version))
-tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=tmp --level=850 &\n' % 
-                                                         (ldir,args.startyear,args.year,args.month,args.version))
-tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=tmp --level=925 &\n' % 
-                                                         (ldir,args.startyear,args.year,args.month,args.version))
+#tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=tmp --level=850 &\n' % 
+#                                                         (ldir,args.startyear,args.year,args.month,args.version))
+#tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=tmp --level=925 &\n' % 
+#                                                         (ldir,args.startyear,args.year,args.month,args.version))
 #tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=spfh --level=850 &\n' % 
 #                                                         (ldir,args.startyear,args.year,args.month,args.version))
 #tfile.write('%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=uwnd --level=850 &\n' % 
@@ -71,7 +72,7 @@ tfile.write('wait\n')
 #                                                         (ldir,args.startyear,args.year,args.month,args.version))
 tfile.close()
 
-proc = subprocess.Popen('sbatch  -q scavenger --time-min=01:30:00 %s' % tfile.name,shell=True)
+proc = subprocess.Popen('sbatch %s' % tfile.name,shell=True)
 (out, err) = proc.communicate()
 if out is not None or err is not None:
     raise Exception("Failed to submit %s" % tfile.name)
