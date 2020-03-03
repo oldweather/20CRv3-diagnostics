@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 # 20CRv3 stripes.
-# Monthly, resolved in latitude, averaging in longitude, 
-#  single ensemble member.
+# Daily, resolved in latitude, averaging in longitude, 
+#  ensemble sample.
 
 import os
 import iris
@@ -16,23 +16,26 @@ from matplotlib.figure import Figure
 from matplotlib.patches import Rectangle
 from matplotlib.lines import Line2D
 
-start=datetime.datetime(1806,1,1,0,0)
-end=datetime.datetime(2015,12,31,23,59)
-
+start=datetime.date(1926,1,1)
+end=datetime.date(1935,12,31)
 
 dts=[]
 ndata=None
-for year in range(start.year,end.year+1,1):
-    sfile="%s/20CR/version_3/analyses/Stripes/PRMSL/%04d.pkl" % \
-                                           (os.getenv('SCRATCH'),year)
+current=start
+while current<=end:
+    sfile=("%s/20CR/version_3/analyses/Stripes_daily/PRMSL/"+
+         "%04d%02d%02d.pkl") % (os.getenv('SCRATCH'),
+                                current.year,current.month,current.day)
     with open(sfile, "rb") as f:
-       (ndyr,dtyr)  = pickle.load(f)
+       nddy  = pickle.load(f)
 
-    dts.extend(dtyr)
     if ndata is None:
-        ndata = ndyr
+        ndata = nddy[0]
     else:
-        ndata = numpy.ma.concatenate((ndata,ndyr))
+        ndata = numpy.ma.concatenate((ndata,nddy[0]))
+
+    dts.extend([current])
+    current+=datetime.timedelta(days=1)
 
 # Plot the resulting array as a 2d colourmap
 fig=Figure(figsize=(19.2,6),              # Width, Height (inches)
@@ -55,6 +58,7 @@ nd2=numpy.random.rand(s[1],s[0])
 clrs=[]
 for shade in numpy.linspace(.42+.01,.36+.01):
     clrs.append((shade,shade,shade,1))
+
 y = numpy.linspace(0,1,s[1])
 x = numpy.linspace(0,1,s[0])
 img = ax2.pcolormesh(x,y,nd2,
@@ -64,17 +68,15 @@ img = ax2.pcolormesh(x,y,nd2,
                         zorder=10)
 
 # Plot the stripes
+ndata=numpy.transpose(ndata)
+s=ndata.shape
 ax = fig.add_axes([0.02,0.05,0.98,0.95],facecolor='black',
-                  xlim=((start+datetime.timedelta(days=1)).timestamp(),
-                        (end-datetime.timedelta(days=1)).timestamp()),
+                  xlim=(0,1), # pcolorfast can't do dates
                   ylim=(1,0))
 ax.set_axis_off()
 
-ndata=numpy.transpose(ndata)
-s=ndata.shape
 y = numpy.linspace(0,1,s[0]+1)
-x = [(a-datetime.timedelta(days=15)).timestamp() for a in dts]
-x.append((dts[-1]+datetime.timedelta(days=15)).timestamp())
+x = numpy.linspace(0,1,s[1]+1)
 img = ax.pcolorfast(x,y,numpy.cbrt(ndata),
                         cmap='RdYlBu_r',
                         alpha=1.0,
@@ -82,24 +84,20 @@ img = ax.pcolorfast(x,y,numpy.cbrt(ndata),
                         vmax=13,
                         zorder=100)
 
-
 # Add a latitude grid
 axg = fig.add_axes([0.0,0.05,1,0.95],facecolor='green',
-                  xlim=((start+datetime.timedelta(days=1)).timestamp(),
-                        (end-datetime.timedelta(days=1)).timestamp()),
-                  ylim=(0,1))
+                   xlim=(0,1),
+                   ylim=(0,1))
 axg.set_axis_off()
 
 def add_latline(ax,latitude):
     latl = (latitude+90)/180
-    startt=start.timestamp()+(end.timestamp()-start.timestamp())*0.019
-    ax.add_line(Line2D([startt,end.timestamp()], 
+    ax.add_line(Line2D([0.02,1], 
                        [latl,latl], 
                        linewidth=0.75, 
                        color=(0.2,0.2,0.2,1),
                        zorder=200))
-    tx=start.timestamp()+(end.timestamp()-start.timestamp())*0.018
-    ax.text(tx,latl,
+    ax.text(0.018,latl,
          "%d" % latitude,
          horizontalalignment='right',
          verticalalignment='center',
@@ -113,13 +111,12 @@ for lat in (-60,-30,0,30,60):
 
 # Add a date grid
 axg = fig.add_axes([0.02,0,0.98,1],facecolor='green',
-                  xlim=((start+datetime.timedelta(days=1)).timestamp(),
-                        (end-datetime.timedelta(days=1)).timestamp()),
-                  ylim=(0,1))
+                   xlim=(start,end),
+                   ylim=(0,1))
 axg.set_axis_off()
 
 def add_dateline(ax,year):
-    x = datetime.datetime(year,1,1,0,0).timestamp()
+    x = datetime.date(year,1,1)
     ax.add_line(Line2D([x,x], [0.04,1.0], 
                 linewidth=0.75, 
                 color=(0.2,0.2,0.2,1),
@@ -134,7 +131,7 @@ def add_dateline(ax,year):
          zorder=200)
 
 
-for year in range(1810,2020,10):
+for year in range(1927,1936,1):
     add_dateline(axg,year)
 
 fig.savefig('PRMSL.png')
