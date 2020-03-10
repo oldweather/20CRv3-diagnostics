@@ -67,8 +67,8 @@ while current<=end:
         ndata_diff = numpy.ma.concatenate((ndata_diff,nddy[0]))
     current+=datetime.timedelta(days=1)
 
-fig=Figure(figsize=(19.2,13),              # Width, Height (inches)
-           dpi=100,
+fig=Figure(figsize=(16,9),              # Width, Height (inches)
+           dpi=200,
            facecolor=(0.5,0.5,0.5,1),
            edgecolor=None,
            linewidth=0.0,
@@ -238,7 +238,7 @@ def add_dateline(ax,year):
          horizontalalignment='center',
          verticalalignment='center',
          color='black',
-         size=14,
+         size=12,
          clip_on=True,
          zorder=200)
 

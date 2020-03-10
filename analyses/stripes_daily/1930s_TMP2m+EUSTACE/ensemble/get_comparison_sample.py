@@ -67,6 +67,9 @@ def get_sample_cube(year,month,day,
         m2=numpy.random.randint(0,80)
         me=numpy.random.randint(0,10)
         ndata[0,lat]=numpy.mean(h.data[me,lat,:]-h2.data[m2,lat,:])
+        rand_l = numpy.random.randint(0,s[2])
+        if numpy.ma.count_masked(h.data[me,lat,:]) > rand_l:
+               ndata.mask[0,lat]=True
             
     return ndata
 
