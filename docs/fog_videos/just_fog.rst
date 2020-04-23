@@ -13,6 +13,7 @@ Just the fog 1850-2015
 A weather field (near-surface temperature, wind and precipitation) from 20CRv3. Overlain with black dots marking regions with observations assimilated (of surface pressure), and the grey fog masks regions where the reanalysis is very uncertain (where the ensemble spread in sea-level pressure is not much smaller than the climatological variation).
 
 The video shows the time variation of observation and fog coverage, over the years 1850-2015. The weather shown does not change (to show the weather changing the video would need to be **much** longer).
+
 |
 
 Code to make the figure
