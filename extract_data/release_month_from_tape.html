@@ -30,6 +30,11 @@
             </a></p>
 <h3><a href="../index.html">Table Of Contents</a></h3>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../stripes/TMP2m/index.html">TMP2m</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stripes/PRMSL/index.html">PRMSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stripes/PRATE/index.html">PRATE</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../european_windstorms/european_windstorms.html">European windstorms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../extreme_months/extreme_months.html">Extreme months</a></li>
@@ -48,6 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/1903.html">Weather and fog in 1903</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/1931.html">Weather and fog in 1931</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/1880_Arctic.html">Weather and fog in the Arctic in 1880 and 1881</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fog_videos/time_skip.html">Weather and fog 1850-2015</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
@@ -72,7 +78,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
             
   <div class="section" id="month-from-tape-grib2">
 <h1>month_from_tape (grib2)<a class="headerlink" href="#month-from-tape-grib2" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="c1"># Extract 20CRv3 data for a month - from tape to $SCRATCH</span>
 
@@ -111,7 +117,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
                     <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> 
                     <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
-<span class="n">start_years</span><span class="o">=</span><span class="n">err</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="c1"># Why does hsi put output in stderr?</span>
+<span class="n">start_years</span><span class="o">=</span><span class="n">err</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="c1"># Why does hsi put output in stderr?</span>
 <span class="n">start_years</span><span class="o">=</span><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">start_years</span> <span class="k">if</span> <span class="s1">&#39;ensda_</span><span class="si">%03d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
 <span class="n">start_years</span><span class="o">=</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">start_years</span><span class="p">]</span>
 <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">start_years</span><span class="p">:</span>
@@ -126,7 +132,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
                     <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> 
                     <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
-<span class="n">file_list</span><span class="o">=</span><span class="n">err</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="n">file_list</span><span class="o">=</span><span class="n">err</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
 <span class="n">obs_files</span><span class="o">=</span><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">file_list</span> <span class="k">if</span> <span class="s1">&#39;_psobs&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs_files</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data not available&quot;</span><span class="p">)</span>
@@ -138,13 +144,13 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Forecast data not complete&quot;</span><span class="p">)</span>
 
 <span class="c1"># Have the list of files to retrieve - sort them into tape order</span>
-<span class="n">tfile</span><span class="o">=</span><span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">=</span><span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">obs_files</span><span class="o">+</span><span class="n">anl_files</span><span class="o">+</span><span class="n">fg_files</span><span class="p">:</span>
     <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/ensda_</span><span class="si">%03d</span><span class="s2">_</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
                     <span class="n">originals_directory</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
                     <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">fn</span><span class="p">))</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="n">sfile</span><span class="o">=</span><span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sfile</span><span class="o">=</span><span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
 <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s2">&quot;hpss_file_sorter.script </span><span class="si">%s</span><span class="s2"> &gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
                          <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">sfile</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
                          <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> 

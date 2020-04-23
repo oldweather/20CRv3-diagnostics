@@ -60,6 +60,8 @@ Observations and fog videos
    fog_videos/1903
    fog_videos/1931
    fog_videos/1880_Arctic
+   fog_videos/time_skip
+   fog_videos/just_fog
 
 
 Small print

@@ -30,6 +30,11 @@
             </a></p>
 <h3><a href="../index.html">Table Of Contents</a></h3>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../stripes/TMP2m/index.html">TMP2m</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stripes/PRMSL/index.html">PRMSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stripes/PRATE/index.html">PRATE</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../european_windstorms/european_windstorms.html">European windstorms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../extreme_months/extreme_months.html">Extreme months</a></li>
@@ -48,6 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/1903.html">Weather and fog in 1903</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/1931.html">Weather and fog in 1931</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/1880_Arctic.html">Weather and fog in the Arctic in 1880 and 1881</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fog_videos/time_skip.html">Weather and fog 1850-2015</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
@@ -93,14 +99,15 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
                     <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="mi">451</span><span class="p">)</span>
 <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
-<span class="n">tfile</span><span class="o">=</span><span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">=</span><span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/bash</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH --output=v3_conversion-</span><span class="si">%d</span><span class="s2">-</span><span class="si">%d</span><span class="s2">-</span><span class="si">%%</span><span class="s2">j.out</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span>
                 <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -p regular</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -q regular</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --time-min=4:00:00</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -C knl</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -N 1</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -t 5:30:00</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -t 4:00:00</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH -J V3co</span><span class="si">%04d%02d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">))</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -L SCRATCH</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;module load ncl</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -126,10 +133,10 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
                                                          <span class="p">(</span><span class="n">ldir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
 <span class="c1">#tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=hgt --level=850 &amp;\n&#39; % </span>
 <span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/extract_anl_var.py --startyear=</span><span class="si">%d</span><span class="s1"> --year=</span><span class="si">%d</span><span class="s1"> --month=</span><span class="si">%d</span><span class="s1"> --version=</span><span class="si">%d</span><span class="s1"> --var=tmp --level=850 &amp;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> 
-                                                         <span class="p">(</span><span class="n">ldir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/extract_anl_var.py --startyear=</span><span class="si">%d</span><span class="s1"> --year=</span><span class="si">%d</span><span class="s1"> --month=</span><span class="si">%d</span><span class="s1"> --version=</span><span class="si">%d</span><span class="s1"> --var=tmp --level=925 &amp;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> 
-                                                         <span class="p">(</span><span class="n">ldir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="c1">#tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=tmp --level=850 &amp;\n&#39; % </span>
+<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
+<span class="c1">#tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=tmp --level=925 &amp;\n&#39; % </span>
+<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
 <span class="c1">#tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=spfh --level=850 &amp;\n&#39; % </span>
 <span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
 <span class="c1">#tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=uwnd --level=850 &amp;\n&#39; % </span>
@@ -145,7 +152,7 @@ Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">rai
 <span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
 <span class="n">tfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s1">&#39;sbatch  -q scavenger --time-min=01:30:00 </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s1">&#39;sbatch </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Failed to submit </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
