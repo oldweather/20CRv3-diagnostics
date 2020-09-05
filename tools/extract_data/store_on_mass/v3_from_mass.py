@@ -23,13 +23,10 @@ parser.add_argument("--variable",
                     help="Variable name ('prmsl','observations,...)",
                     type=str,required=False,
                     default='all')
-parser.add_argument("--user", help="MASS user name",
-                    type=str,required=False,
-                    default='philip.brohan')
 args = parser.parse_args()
 
 # Base location for storage
-mbase="moose:/adhoc/users/%s/20CRV3/" % args.user
+mbase="moose:/adhoc/projects/20cr/"
 moose_dir=("%s/version_%s/%04d/%02d" %
                 (mbase,args.version,args.year,args.month))
 
@@ -58,8 +55,11 @@ def retrieve_obs(year,month,version,variable):
         return
 
     # Retrieve ob file from MASS
-    proc = subprocess.Popen("moo get %s/observations.tgz %s/observations/%04d" % 
-                                              (moose_dir,ddir,year),
+    ody = "%s/observations/%04d" % (ddir,year)
+    if not os.path.isdir(ody):
+        os.makedirs(ody)
+    proc = subprocess.Popen("moo get %s/observations.tgz %s/observations.tgz" % 
+                                              (moose_dir,ody),
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE,
                                shell=True)
@@ -80,6 +80,11 @@ def retrieve_obs(year,month,version,variable):
     if len(err)!=0:
         print(err)
         raise Exception("Failed to untar observations")
+    # Reset the modification time - 
+    #     otherwise scratch will delete them.
+    members=glob.glob("%s/observations/%04d/*.txt" % year)
+    for member in members:
+        os.utime(member,None)
 
     # Clean up
     os.remove(otarf)
@@ -90,6 +95,8 @@ def retrieve_variable(year,month,version,variable):
     if os.path.isfile(vf):
         return  # already on disc
     
+    if not os.path.isdir(os.path.dirname(vf)):
+        os.makedirs(os.path.dirname(vf))
     proc = subprocess.Popen("moo get %s/%s.nc %s" % 
                              (moose_dir,variable,os.path.dirname(vf)),
                              stdout=subprocess.PIPE,
@@ -112,10 +119,10 @@ if args.variable=='all':
         print(err)
         raise Exception("Can't find any data in %s" % moose_dir)
 
-    if len(re.findall('.*\.tgz',out))>0:
+    if len(re.findall('.*\.tgz',out.decode('utf-8')))>0:
         retrieve_obs(args.year,args.month,args.version,args.variable)
 
-    for var in re.findall('.*\.nc',out):
+    for var in re.findall('.*\.nc',out.decode('utf-8')):
         variable=os.path.splitext(os.path.basename(var))[0]
         retrieve_variable(args.year,args.month,args.version,variable)
 elif args.variable=='observations':
