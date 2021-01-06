@@ -98,7 +98,7 @@ def search_string(var,level,height):
       if level is not None:
           return 'VGRD:%d mb' % int(level)
       if height is not None:
-          return 'VGRD:%d m above ground' % int(height)
+          return 'VGRD:%d m above gnd' % int(height)
       else:
           raise ValueError('Either height or level must be specified')
    if var=='icec':
@@ -108,7 +108,7 @@ def search_string(var,level,height):
    if level is not None:
       return '%s:%d mb' % (var.upper(),int(level))
    if height is not None:
-      return '%s:%d m above ground' % (var.upper(),int(height))
+      return '%s:.*:%d m above gnd' % (var.upper(),int(height))
    else:
       raise ValueError('Either height or level must be specified')
    
