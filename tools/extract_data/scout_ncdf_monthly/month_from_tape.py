@@ -21,9 +21,9 @@ parser.add_argument("--version", help="Scout run number", type=int, default=451)
 args = parser.parse_args()
 
 # Where to put the grib (and obs) files retrieved from hsi
-working_directory = "%s/20CRv3.working.nc/ensda_%04d/%04d/%02d" % (
+working_directory = "%s/20CRv3.working.nc/version_%03d/%04d/%02d" % (
     os.getenv("SCRATCH"),
-    args.startyear,
+    args.version,
     args.year,
     args.month,
 )
