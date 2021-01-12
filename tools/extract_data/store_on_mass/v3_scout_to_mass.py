@@ -106,7 +106,7 @@ def archive_obs(year,month,version):
     tf.close()
 
     # Stow the ob file on MASS
-    moose.put("%s/%04d" % (ddir,year),
+    moose.put("%s/observations/%04d" % (ddir,year),
               ['observations_%04d%02d.tgz' % (year,month)],
               moose_dir)
 
