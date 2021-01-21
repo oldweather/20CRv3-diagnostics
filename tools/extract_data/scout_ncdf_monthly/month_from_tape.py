@@ -1,3 +1,4 @@
+l
 #!/usr/bin/env python3
 
 # Extract 20CRv3 data for a month - from tape to $SCRATCH
@@ -77,7 +78,7 @@ for fn in obs_files:
         % (originals_directory, args.version, args.startyear, args.year, fn)
     )
 var_files = []
-for var in ("PRMSL", "PRATE", "TMP2m", "UGRD10m", "VGRD10m", "TMPS"):
+for var in ("PRMSL", "PRATE", "TMP2m", "UGRD10m", "VGRD10m", "TMPS", "PWAT", "WEASD"):
     var_files.append(
         "%s_%04d%02d_v3_x%03d.tar" % (var, args.year, args.month, args.version)
     )
