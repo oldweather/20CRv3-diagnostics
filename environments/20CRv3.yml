@@ -12,5 +12,5 @@ dependencies:
 # Philip's libraries
   - pip
   - pip:
-    - git+https://github.com/philip-brohan/IRData@bb3664ba91a9cf189dec56633e0f75effa01b95a
-    - git+https://github.com/philip-brohan/Meteorographica@819cae3e6a543b9bff959fea8bcd1572363d9f36
+    - git+ssh://git@github.com/philip-brohan/IRData.git@bb3664ba91a9cf189dec56633e0f75effa01b95a
+    - git+ssh://git@github.com/philip-brohan/Meteorographica.git@819cae3e6a543b9bff959fea8bcd1572363d9f36
