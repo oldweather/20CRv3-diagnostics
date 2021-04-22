@@ -39,7 +39,9 @@ if not os.path.isdir(ddir):
 # Retrieve the observations
 def retrieve_obs(year, month, version, variable):
     # Are they on disc
-    ofiles = glob.glob("%s/observations/%04d/%04d%02d*.txt" % (ddir, year, year, month))
+    ofiles = glob.glob(
+        "%s/observations/%04d/%04d%02d*/*.txt" % (ddir, year, year, month)
+    )
     if len(ofiles) > 100:
         return  # Already on disc
 
@@ -159,7 +161,7 @@ if args.variable == "all":
         retrieve_obs(args.year, args.month, args.version, args.variable)
 
     for var in re.findall(".*\.tar", out.decode("utf-8")):
-        variable = os.path.splitext(os.path.basename(var))[0]
+        variable = os.path.splitext(os.path.basename(var))[0][:-7]
         retrieve_variable(args.year, args.month, args.version, variable)
 elif args.variable == "observations":
     retrieve_obs(args.year, args.month, args.version, args.variable)
