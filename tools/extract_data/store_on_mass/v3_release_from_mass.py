@@ -17,8 +17,7 @@ parser.add_argument(
     "--variable",
     help="Variable name ('prmsl','observations,...)",
     type=str,
-    required=False,
-    default="all",
+    required=True,
 )
 args = parser.parse_args()
 
@@ -87,10 +86,10 @@ def retrieve_obs(year):
 def retrieve_variable(year, variable):
     vf = "%s/%04d/%s.%04d_mem080.nc" % (ddir, year, variable, year)
     if os.path.isfile(vf):
-        return  # already on disc
+        raise Exception ("Already on disc: %s" % vf)
 
-    if not os.path.isdir(os.path.dirname(vf)):
-        os.makedirs(os.path.dirname(vf))
+    if not os.path.isdir("%s/%04d" % (ddir,year)):
+        os.makedirs("%s/%04d" % (ddir,year))
     proc = subprocess.Popen(
         "moo get %s/%s_%04d.tar %s" % (moose_dir, variable, year, ddir),
         stdout=subprocess.PIPE,
@@ -117,12 +116,6 @@ def retrieve_variable(year, variable):
 
     # Clean up
     os.remove(otarf)
-
-
-# Retrieve a variable file
-def retrieve_variable(year, variable):
-    vf = "%s/%04d/%s.%04d_mem080.nc" % (ddir, year, variable, year)
-
 
 if args.variable == "observations":
     retrieve_obs(args.year)
