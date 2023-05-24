@@ -34,7 +34,7 @@ if not os.path.isdir(working_directory):
 # Have the list of files to retrieve - sort them into tape order
 tfile = tempfile.NamedTemporaryFile(delete=False, mode="w")
 var_files = []
-for var in ("PWAT", "WEASD"):
+for var in ("WATRsfc", "SOIL0-10cm"):
     var_files.append(
         "%s_%04d%02d_v3_x%03d.tar" % (var, args.year, args.month, args.version)
     )

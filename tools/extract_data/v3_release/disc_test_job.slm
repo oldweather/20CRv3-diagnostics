@@ -1,0 +1,25 @@
+#!/bin/bash
+#SBATCH -q regular
+#SBATCH -N 1
+#SBATCH -C knl
+#SBATCH -t 5:20:00
+
+export syear=1899
+export gyear=1900
+export gmonth=8
+
+# Make the output directory - otherwise we get race conditions
+mkdir -p $SCRATCH/20CRv3.final/version_4.5.1/$gyear/06
+
+# Each wgrib instance can only have 1/6 the cores
+export OMP_NUM_THREADS=10
+
+./extract_obs.py     --startyear=$syear --year=$gyear --month=$gmonth --version=451 &
+./extract_anl_var.py --startyear=$syear --year=$gyear --month=$gmonth --version=451 --var=prmsl &
+./extract_anl_var.py --startyear=$syear --year=$gyear --month=$gmonth --version=451 --var=air.2m &
+./extract_anl_var.py --startyear=$syear --year=$gyear --month=$gmonth --version=451 --var=uwnd.10m &
+./extract_anl_var.py --startyear=$syear --year=$gyear --month=$gmonth --version=451 --var=vwnd.10m &
+./extract_anl_var.py --startyear=$syear --year=$gyear --month=$gmonth --version=451 --var=icec &
+./extract_fg_var.py  --startyear=$syear --year=$gyear --month=$gmonth --version=451 --var=prate &
+
+wait

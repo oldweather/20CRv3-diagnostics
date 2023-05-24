@@ -3,14 +3,20 @@ channels:
   - default
   - conda-forge
 dependencies:
-  - python=3.7
-  - iris=3.0.1
-  - cartopy=0.18.*
-  - globus-cli=1.14.*
+  - python=3.9
+# Met Office libraries for data analysis and plots
+  - iris=3.6.*
+  - cartopy=0.21.*
+# Tools for converting grib to netCDF
+  - ncl=6.6.* 
+  - nco=5.1.*
+  - wgrib2=3.1.*
+# Optional, fast data transfer
+  - globus-cli=3.13.*  
 # Optional, code formatter
   - black
-# Philip's libraries
+# Philip's libraries 
   - pip
   - pip:
-    - git+ssh://git@github.com/philip-brohan/IRData.git@0d118315b4c57d835f2e452ac463637e7e55ac50
-    - git+ssh://git@github.com/philip-brohan/Meteorographica.git@819cae3e6a543b9bff959fea8bcd1572363d9f36
+    - git+https://github.com/philip-brohan/IRData.git@0d118315b4c57d835f2e452ac463637e7e55ac50
+    - git+https://github.com/philip-brohan/Meteorographica.git@819cae3e6a543b9bff959fea8bcd1572363d9f36

@@ -1,0 +1,20 @@
+#!/bin/bash
+#SBATCH -q debug
+#SBATCH -N 1
+#SBATCH -C knl
+#SBATCH -t 00:20:00
+#DW jobdw capacity=1.5TB access_mode=striped type=scratch
+#DW stage_in source=/global/cscratch1/sd/pbrohan/20CRv3.working/ensda_1899/1903/10 destination=$DW_JOB_STRIPED/20CRv3.working/ensda_1899/1903/01 type=directory
+#DW stage_out source=$DW_JOB_STRIPED/20CRv3.final/version_4.5.1/1903/01 destination=/global/cscratch1/sd/pbrohan/20CRv3.final/version_4.5.1/1903/01 type=directory
+
+# Use the burst buffer instead of SCRATCH
+export SCRATCH=$DW_JOB_STRIPED
+
+./extract_anl_var.py --startyear=1899 --year=1903 --month=1 --version=451 --var=prmsl &
+./extract_anl_var.py --startyear=1899 --year=1903 --month=1 --version=451 --var=air.2m &
+./extract_anl_var.py --startyear=1899 --year=1903 --month=1 --version=451 --var=uwnd.10m &
+./extract_anl_var.py --startyear=1899 --year=1903 --month=1 --version=451 --var=vwnd.10m &
+./extract_anl_var.py --startyear=1899 --year=1903 --month=1 --version=451 --var=icec &
+./extract_fg_var.py --startyear=1899 --year=1903 --month=1 --version=451 --var=prate &
+
+wait

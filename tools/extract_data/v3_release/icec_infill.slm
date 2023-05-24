@@ -1,0 +1,16 @@
+#!/bin/bash
+#SBATCH -q regular
+#SBATCH -N 1
+#SBATCH -C knl
+#SBATCH -t 5:20:00
+
+# Each wgrib instance can only have 1/6 the cores
+export OMP_NUM_THREADS=10
+
+./extract_anl_var.py --startyear=1899 --year=1903 --month=1 --version=451 --var=icec &
+./extract_anl_var.py --startyear=1899 --year=1903 --month=4 --version=451 --var=icec &
+./extract_anl_var.py --startyear=1899 --year=1903 --month=5 --version=451 --var=icec &
+./extract_anl_var.py --startyear=1899 --year=1903 --month=6 --version=451 --var=icec &
+./extract_anl_var.py --startyear=1899 --year=1903 --month=7 --version=451 --var=icec &
+
+wait
