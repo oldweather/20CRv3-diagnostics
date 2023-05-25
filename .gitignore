@@ -12,7 +12,28 @@ docs/_build/
 *.txt
 *.out
 
+
 # Emacs junk
 *\#
 *~
 \#*\#
+
+# Python junk
+build/
+*.egg
+
+
+# Apple junk
+Thumbs.db
+
+# Temporary files
+*.orig
+*.rej
+*.pkl
+tmp 
+
+# Binaries
+*.pptx
+*.key
+*.ppt 
+

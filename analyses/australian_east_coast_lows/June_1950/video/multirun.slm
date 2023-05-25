@@ -1,0 +1,12 @@
+#!/bin/ksh -l
+#SBATCH --output=/scratch/hadpb/slurm_output/J5_frame_1950060200.out
+#SBATCH --qos=normal
+#SBATCH --ntasks=4
+#SBATCH --ntasks-per-core=1
+#SBATCH --mem=40000
+#SBATCH --time=10
+./Jn_V3vV2c.py --year=1950 --month=6 --day=2 --hour=0.000000 &
+./Jn_V3vV2c.py --year=1950 --month=6 --day=2 --hour=0.250000 &
+./Jn_V3vV2c.py --year=1950 --month=6 --day=2 --hour=0.500000 &
+./Jn_V3vV2c.py --year=1950 --month=6 --day=2 --hour=0.750000 &
+wait
