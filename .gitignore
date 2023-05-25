@@ -9,7 +9,7 @@ docs/_build/
 
 # Images and text files
 *.png
-*.txt
+*run*.txt
 *.out
 
 
