@@ -1,3 +1,15 @@
-501
-503
-506
+501 Assimilated winds from OW, err=0.5
+502 Assimilated winds from ICOADS, err=0.5
+503 Assimilated winds from OW+ICOADS, err=0.5
+504 Assimilated winds from OW, err=1.0
+505 Assimilated winds from ICOADS, err=1.0
+506 Assimilated winds from OW+ICOADS, err=1.0
+514 Assimilated winds from OW, err=5.0
+515 Assimilated winds from ICOADS, err=5.0
+516 Assimilated winds from OW+ICOADS, err=5.0
+540 
+546
+556
+566
+576
+586
