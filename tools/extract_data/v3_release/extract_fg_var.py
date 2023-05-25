@@ -97,7 +97,7 @@ while current_day.month == args.month:
             (out, err) = proc.communicate()
             if out is not None or err is not None:
                 raise Exception(
-                    "Failed to extract %s from %s" % (args.var, an_file_name)
+                    "Failed to extract %s from %s" % (args.var, var_file_name)
                 )
 
     current_day = current_day + datetime.timedelta(days=1)
