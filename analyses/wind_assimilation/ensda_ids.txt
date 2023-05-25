@@ -1,3 +1,5 @@
+# https://docs.google.com/spreadsheets/d/1N3jYWlyz9UE5ueuLLlO8TFekOykFmV9oz-HgtUB67AE/edit#gid=0
+
 501 Assimilated winds from OW, err=0.5
 502 Assimilated winds from ICOADS, err=0.5
 503 Assimilated winds from OW+ICOADS, err=0.5
@@ -7,9 +9,9 @@
 514 Assimilated winds from OW, err=5.0
 515 Assimilated winds from ICOADS, err=5.0
 516 Assimilated winds from OW+ICOADS, err=5.0
-540 
-546
-556
-566
-576
-586
+540 Single ob, err=1.0, fixed obs error position,
+546 Assimilated winds from OW+ICOADS, err=1.0, fixed obs error position,
+556 Assimilated winds from OW+ICOADS, err=2.5, fixed obs error position
+566 Assimilated winds from OW+ICOADS, err=5.0, fixed obs error position
+576 Assimilated winds from OW+ICOADS, err=2.5, fixed obs error position, new wind speed ensemble
+586 Assimilated winds from OW+ICOADS, err=5.0, fixed obs error position, new wind speed ensemble
