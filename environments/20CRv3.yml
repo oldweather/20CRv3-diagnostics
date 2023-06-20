@@ -1,6 +1,6 @@
 name: 20CRv3
 channels:
-  - default
+  - defaults
   - conda-forge
 dependencies:
   - python=3.9
