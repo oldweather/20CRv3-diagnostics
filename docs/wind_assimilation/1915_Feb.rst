@@ -1,0 +1,31 @@
+:orphan:
+
+February 1915 with assimilated marine wind directions
+=====================================================
+
+.. seealso:: :doc:`Video version <1915_Feb_video>`
+
+.. figure:: ../../analyses/wind_assimilation/Feb_1915/V3v576_1915022815.png
+   :width: 95%
+   :align: center
+   :figwidth: 95%
+
+   MSLP Contours for v3 (left) and scout 5.7.6 (right)
+
+   A spaghetti-contour-plot of MSLP from the 80 ensemble members of each run. The dots mark pressure observations assimilated while making the field shown. The scout run also assimilated wind directions from some of the marine observations. Yellow highlighting marks areas where the spread in the pressure ensemble is less than in the other run - darker yellows show a larger reduction.
+
+|
+
+We observed, in the pressure-only assimilations, that assimilating isolated observations only constrained analysis pressures very close to the observation - effectively the observation constrained the pressure, but not the local meteorology, many different atmospheric states can produce the same pressure observations. Assimilating wind directions as well as pressures should constrain the meteorology as well as the pressure, allowing an isolated observation to have an effect on the pressure fields much further away from the observation location. This is essentially what we see in these results, the reductions in pressure spread are concentrated in areas close to, but not co-located with, isolated ships.
+
+We chose this month as a test case because of the single ship in the Weddell Sea (`the Endurance, from the Imperial Trans-Antarctic Expedition <https://oldweather.github.io/Expeditions/voyages/Imperial_trans_antarctic.html>`_) which should show this effect clearly. And it does, assimilating the wind direction from that single ship (in addition to its pressure) produces a widespread and substantial reduction in regional analysis ensemble spread.
+
+
+Download the data required:
+
+.. literalinclude:: ../../analyses/wind_assimilation/Feb_1915/get_data.py
+
+Make the figure:
+
+.. literalinclude:: ../../analyses/wind_assimilation/Feb_1915/V3v576.py
+

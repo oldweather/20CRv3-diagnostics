@@ -31,8 +31,8 @@ import scout_load
 # Date to show
 year = 1915
 month = 2
-day = 27
-hour = 6
+day = 28
+hour = 15
 dte = datetime.datetime(year, month, day, hour)
 
 # Landscape page
