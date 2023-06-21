@@ -5,6 +5,7 @@ import datetime
 
 from scout_load import _get_data_file_name
 from scout_load import _get_data_dir
+from scout_load import _observations_file_name
 
 
 def _get_remote_file_name(
@@ -49,17 +50,6 @@ def _observations_remote_file(year, month, version, user="pbrohan"):
         "%s@perlmutter-p1.nersc.gov:/pscratch/sd/p/%s/"
         + "20CRv3.final/version_%s/%04d/%02d/observations/"
     ) % (user, user, version, year, month)
-
-
-def _observations_file_name(year, month, day, hour, version):
-    return "%s/observations/%04d/%04d%02d%02d%02d_psobs_posterior.txt" % (
-        _get_data_dir(version),
-        year,
-        year,
-        month,
-        day,
-        hour,
-    )
 
 
 def fetch_observations(dtime, version="5.7.6", user="pbrohan"):
