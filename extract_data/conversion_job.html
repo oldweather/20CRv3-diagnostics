@@ -1,28 +1,141 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Run a job to extract and convert all the surface variables &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
-    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <link rel="search" title="Search" href="../search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
-        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Run a job to extract and convert all the surface variables</a></li> 
       </ul>
-    </div>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="run-a-job-to-extract-and-convert-all-the-surface-variables">
+<h1>Run a job to extract and convert all the surface variables<a class="headerlink" href="#run-a-job-to-extract-and-convert-all-the-surface-variables" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="c1"># Extract surface variables from a month&#39;s V3 output</span>
+<span class="c1">#  and convert to netCDF</span>
+
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--startyear&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Year run started&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--year&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Year to extract&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--month&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Month to extract&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--version&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Version to extract&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">451</span><span class="p">)</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+<span class="n">tfile</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#!/bin/bash</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH --output=v3_conversion-</span><span class="si">%d</span><span class="s2">-</span><span class="si">%d</span><span class="s2">-</span><span class="si">%%</span><span class="s2">j.out</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">))</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH -q regular</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH --time-min=4:00:00</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH -C knl</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH -N 1</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH -t 6:00:00</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH -J V3co</span><span class="si">%04d%02d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">))</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH -L SCRATCH</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;module load ncl</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;module load nco</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;module load python</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+    <span class="s2">&quot;mkdir -p </span><span class="si">%s</span><span class="s2">/20CRv3.final/version_</span><span class="si">%d</span><span class="s2">.</span><span class="si">%d</span><span class="s2">.</span><span class="si">%d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">/</span><span class="si">%02d</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="o">%</span> <span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;SCRATCH&quot;</span><span class="p">),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">version</span> <span class="o">/</span> <span class="mi">100</span><span class="p">),</span>
+        <span class="nb">int</span><span class="p">((</span><span class="n">args</span><span class="o">.</span><span class="n">version</span> <span class="o">%</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">version</span> <span class="o">%</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;export OMP_NUM_THREADS=5</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">ldir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/extract_anl_var.py --startyear=</span><span class="si">%d</span><span class="s2"> --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2"> --version=</span><span class="si">%d</span><span class="s2"> --var=prmsl &amp;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="o">%</span> <span class="p">(</span><span class="n">ldir</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/extract_anl_var.py --startyear=</span><span class="si">%d</span><span class="s2"> --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2"> --version=</span><span class="si">%d</span><span class="s2"> --var=air.2m &amp;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="o">%</span> <span class="p">(</span><span class="n">ldir</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/extract_anl_var.py --startyear=</span><span class="si">%d</span><span class="s2"> --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2"> --version=</span><span class="si">%d</span><span class="s2"> --var=uwnd.10m &amp;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="o">%</span> <span class="p">(</span><span class="n">ldir</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/extract_anl_var.py --startyear=</span><span class="si">%d</span><span class="s2"> --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2"> --version=</span><span class="si">%d</span><span class="s2"> --var=vwnd.10m &amp;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="o">%</span> <span class="p">(</span><span class="n">ldir</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/extract_anl_var.py --startyear=</span><span class="si">%d</span><span class="s2"> --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2"> --version=</span><span class="si">%d</span><span class="s2"> --var=air.sfc &amp;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="o">%</span> <span class="p">(</span><span class="n">ldir</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/extract_anl_var.py --startyear=</span><span class="si">%d</span><span class="s2"> --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2"> --version=</span><span class="si">%d</span><span class="s2"> --var=icec &amp;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="o">%</span> <span class="p">(</span><span class="n">ldir</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="c1"># tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=hgt --level=850 &amp;\n&#39; %</span>
+<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
+<span class="c1"># tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=tmp --level=850 &amp;\n&#39; %</span>
+<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
+<span class="c1"># tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=tmp --level=925 &amp;\n&#39; %</span>
+<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
+<span class="c1"># tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=spfh --level=850 &amp;\n&#39; %</span>
+<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
+<span class="c1"># tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=uwnd --level=850 &amp;\n&#39; %</span>
+<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
+<span class="c1"># tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=vwnd --level=850 &amp;\n&#39; %</span>
+<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/extract_fg_var.py --startyear=</span><span class="si">%d</span><span class="s2"> --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2"> --version=</span><span class="si">%d</span><span class="s2"> --var=prate &amp;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="o">%</span> <span class="p">(</span><span class="n">ldir</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/extract_obs.py --startyear=</span><span class="si">%d</span><span class="s2"> --year=</span><span class="si">%d</span><span class="s2"> --month=</span><span class="si">%d</span><span class="s2"> --version=</span><span class="si">%d</span><span class="s2"> &amp;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="o">%</span> <span class="p">(</span><span class="n">ldir</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;wait</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># tfile.write(&#39;%s/cleanup.py --startyear=%d --year=%d --month=%d --version=%d\n&#39; %</span>
+<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s2">&quot;sbatch </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Failed to submit </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="../index.html">
@@ -54,6 +167,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/1931.html">Weather and fog in 1931</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/1880_Arctic.html">Weather and fog in the Arctic in 1880 and 1881</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/time_skip.html">Weather and fog 1850-2015</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fog_videos/just_fog.html">Just the fog 1850-2015</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
@@ -70,112 +184,13 @@
 Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">raise an issue</a>.
         </div>
       </div>
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="run-a-job-to-extract-and-convert-all-the-surface-variables">
-<h1>Run a job to extract and convert all the surface variables<a class="headerlink" href="#run-a-job-to-extract-and-convert-all-the-surface-variables" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
-
-<span class="c1"># Extract surface variables from a month&#39;s V3 output</span>
-<span class="c1">#  and convert to netCDF</span>
-
-<span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">os</span>
-
-<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--startyear&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Year run started&quot;</span><span class="p">,</span>
-                    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--year&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Year to extract&quot;</span><span class="p">,</span>
-                    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--month&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Month to extract&quot;</span><span class="p">,</span>
-                    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--version&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Version to extract&quot;</span><span class="p">,</span>
-                    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="mi">451</span><span class="p">)</span>
-<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
-
-<span class="n">tfile</span><span class="o">=</span><span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/bash</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH --output=v3_conversion-</span><span class="si">%d</span><span class="s2">-</span><span class="si">%d</span><span class="s2">-</span><span class="si">%%</span><span class="s2">j.out</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span>
-                <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -q regular</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH --time-min=4:00:00</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -C knl</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -N 1</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -t 4:00:00</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#SBATCH -J V3co</span><span class="si">%04d%02d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#SBATCH -L SCRATCH</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;module load ncl</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;module load nco</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;module load python</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;mkdir -p </span><span class="si">%s</span><span class="s1">/20CRv3.final/version_</span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">/</span><span class="si">%02d</span><span class="s1">/</span><span class="si">%02d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> 
-                                                 <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="o">/</span><span class="mi">100</span><span class="p">),</span>
-                                                  <span class="nb">int</span><span class="p">((</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="o">%</span><span class="mi">100</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="o">%</span><span class="mi">10</span><span class="p">),</span>
-                                                               <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;export OMP_NUM_THREADS=5</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">ldir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/extract_anl_var.py --startyear=</span><span class="si">%d</span><span class="s1"> --year=</span><span class="si">%d</span><span class="s1"> --month=</span><span class="si">%d</span><span class="s1"> --version=</span><span class="si">%d</span><span class="s1"> --var=prmsl &amp;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> 
-                                                         <span class="p">(</span><span class="n">ldir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/extract_anl_var.py --startyear=</span><span class="si">%d</span><span class="s1"> --year=</span><span class="si">%d</span><span class="s1"> --month=</span><span class="si">%d</span><span class="s1"> --version=</span><span class="si">%d</span><span class="s1"> --var=air.2m &amp;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> 
-                                                         <span class="p">(</span><span class="n">ldir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/extract_anl_var.py --startyear=</span><span class="si">%d</span><span class="s1"> --year=</span><span class="si">%d</span><span class="s1"> --month=</span><span class="si">%d</span><span class="s1"> --version=</span><span class="si">%d</span><span class="s1"> --var=uwnd.10m &amp;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> 
-                                                         <span class="p">(</span><span class="n">ldir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/extract_anl_var.py --startyear=</span><span class="si">%d</span><span class="s1"> --year=</span><span class="si">%d</span><span class="s1"> --month=</span><span class="si">%d</span><span class="s1"> --version=</span><span class="si">%d</span><span class="s1"> --var=vwnd.10m &amp;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> 
-                                                         <span class="p">(</span><span class="n">ldir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/extract_anl_var.py --startyear=</span><span class="si">%d</span><span class="s1"> --year=</span><span class="si">%d</span><span class="s1"> --month=</span><span class="si">%d</span><span class="s1"> --version=</span><span class="si">%d</span><span class="s1"> --var=air.sfc &amp;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> 
-                                                         <span class="p">(</span><span class="n">ldir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/extract_anl_var.py --startyear=</span><span class="si">%d</span><span class="s1"> --year=</span><span class="si">%d</span><span class="s1"> --month=</span><span class="si">%d</span><span class="s1"> --version=</span><span class="si">%d</span><span class="s1"> --var=icec &amp;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> 
-                                                         <span class="p">(</span><span class="n">ldir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
-<span class="c1">#tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=hgt --level=850 &amp;\n&#39; % </span>
-<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
-<span class="c1">#tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=tmp --level=850 &amp;\n&#39; % </span>
-<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
-<span class="c1">#tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=tmp --level=925 &amp;\n&#39; % </span>
-<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
-<span class="c1">#tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=spfh --level=850 &amp;\n&#39; % </span>
-<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
-<span class="c1">#tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=uwnd --level=850 &amp;\n&#39; % </span>
-<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
-<span class="c1">#tfile.write(&#39;%s/extract_anl_var.py --startyear=%d --year=%d --month=%d --version=%d --var=vwnd --level=850 &amp;\n&#39; % </span>
-<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/extract_fg_var.py --startyear=</span><span class="si">%d</span><span class="s1"> --year=</span><span class="si">%d</span><span class="s1"> --month=</span><span class="si">%d</span><span class="s1"> --version=</span><span class="si">%d</span><span class="s1"> --var=prate &amp;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> 
-                                                         <span class="p">(</span><span class="n">ldir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/extract_obs.py --startyear=</span><span class="si">%d</span><span class="s1"> --year=</span><span class="si">%d</span><span class="s1"> --month=</span><span class="si">%d</span><span class="s1"> --version=</span><span class="si">%d</span><span class="s1"> &amp;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> 
-                                                         <span class="p">(</span><span class="n">ldir</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;wait</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="c1">#tfile.write(&#39;%s/cleanup.py --startyear=%d --year=%d --month=%d --version=%d\n&#39; % </span>
-<span class="c1">#                                                         (ldir,args.startyear,args.year,args.month,args.version))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s1">&#39;sbatch </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
-<span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Failed to submit </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-
-	 
-</pre></div>
-</div>
-</div>
-
-
-          </div>
-        </div>
-      </div>
       <div class="clearer"></div>
     </div>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
-        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Run a job to extract and convert all the surface variables</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -1,0 +1,384 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>February 1915 with assimilated marine wind directions &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">February 1915 with assimilated marine wind directions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="february-1915-with-assimilated-marine-wind-directions">
+<h1>February 1915 with assimilated marine wind directions<a class="headerlink" href="#february-1915-with-assimilated-marine-wind-directions" title="Permalink to this headline">¶</a></h1>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="1915_Feb_video.html"><span class="doc">Video version</span></a></p>
+</div>
+<figure class="align-center" id="id1" style="width: 95%">
+<a class="reference internal image-reference" href="../_images/V3v576_1915022815.png"><img alt="../_images/V3v576_1915022815.png" src="../_images/V3v576_1915022815.png" style="width: 95%;" /></a>
+<figcaption>
+<p><span class="caption-text">MSLP Contours for v3 (left) and scout 5.7.6 (right)</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<div class="legend">
+<p>A spaghetti-contour-plot of MSLP from the 80 ensemble members of each run. The dots mark pressure observations assimilated while making the field shown. The scout run also assimilated wind directions from some of the marine observations. Yellow highlighting marks areas where the spread in the pressure ensemble is less than in the other run - darker yellows show a larger reduction.</p>
+</div>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>We observed, in the pressure-only assimilations, that assimilating isolated observations only constrained analysis pressures very close to the observation - effectively the observation constrained the pressure, but not the local meteorology, many different atmospheric states can produce the same pressure observations. Assimilating wind directions as well as pressures should constrain the meteorology as well as the pressure, allowing an isolated observation to have an effect on the pressure fields much further away from the observation location. This is essentially what we see in these results, the reductions in pressure spread are concentrated in areas close to, but not co-located with, isolated ships.</p>
+<p>We chose this month as a test case because of the single ship in the Weddell Sea (<a class="reference external" href="https://oldweather.github.io/Expeditions/voyages/Imperial_trans_antarctic.html">the Endurance, from the Imperial Trans-Antarctic Expedition</a>) which should show this effect clearly. And it does, assimilating the wind direction from that single ship (in addition to its pressure) produces a widespread and substantial reduction in regional analysis ensemble spread.</p>
+<p>Download the data required:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">v3_fetch</span>
+<span class="kn">import</span> <span class="nn">scout_fetch</span>
+
+<span class="n">v3_fetch</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;PRMSL&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1915</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">v3_fetch</span><span class="o">.</span><span class="n">fetch_observations</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1915</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+
+<span class="n">scout_fetch</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;prmsl&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1915</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;5.7.6&quot;</span><span class="p">)</span>
+<span class="n">scout_fetch</span><span class="o">.</span><span class="n">fetch_observations</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1915</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;5.7.6&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Make the figure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="c1"># UK region weather plot</span>
+<span class="c1"># Compare pressures from 20CRV3 and Wind assimilation run 5.7.6</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">iris</span>
+<span class="kn">import</span> <span class="nn">iris.analysis</span>
+<span class="kn">import</span> <span class="nn">iris.coord_systems</span>
+<span class="kn">from</span> <span class="nn">iris.analysis.cartography</span> <span class="kn">import</span> <span class="n">rotate_pole</span>
+
+<span class="n">iris</span><span class="o">.</span><span class="n">FUTURE</span><span class="o">.</span><span class="n">datum_support</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">from</span> <span class="nn">matplotlib.backends.backend_agg</span> <span class="kn">import</span> <span class="n">FigureCanvasAgg</span> <span class="k">as</span> <span class="n">FigureCanvas</span>
+<span class="kn">from</span> <span class="nn">matplotlib.figure</span> <span class="kn">import</span> <span class="n">Figure</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LinearSegmentedColormap</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;.*coordinate is contiguous.*&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">v3_load</span>
+<span class="kn">import</span> <span class="nn">scout_load</span>
+
+<span class="c1"># Date to show</span>
+<span class="n">year</span> <span class="o">=</span> <span class="mi">1915</span>
+<span class="n">month</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">day</span> <span class="o">=</span> <span class="mi">28</span>
+<span class="n">hour</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">dte</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">)</span>
+
+<span class="c1"># Landscape page</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">(</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">22</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span>  <span class="c1"># Width, Height (inches)</span>
+    <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.88</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">edgecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">subplotpars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">tight_layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">canvas</span> <span class="o">=</span> <span class="n">FigureCanvas</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+
+<span class="c1"># Plot cube with selected projecion</span>
+<span class="n">coord_plot</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">coord_systems</span><span class="o">.</span><span class="n">RotatedGeogCS</span><span class="p">(</span>
+    <span class="n">grid_north_pole_longitude</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span>
+    <span class="n">grid_north_pole_latitude</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+    <span class="n">north_pole_grid_longitude</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">scale</span> <span class="o">=</span> <span class="mi">90</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">scale</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+<span class="n">resolution</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="n">x_coord</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">DimCoord</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">extent</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">resolution</span><span class="p">),</span>
+    <span class="n">standard_name</span><span class="o">=</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span>
+    <span class="n">units</span><span class="o">=</span><span class="s2">&quot;degrees&quot;</span><span class="p">,</span>
+    <span class="n">coord_system</span><span class="o">=</span><span class="n">coord_plot</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">x_coord</span><span class="o">.</span><span class="n">guess_bounds</span><span class="p">()</span>
+<span class="n">y_coord</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">DimCoord</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">extent</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">resolution</span><span class="p">),</span>
+    <span class="n">standard_name</span><span class="o">=</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+    <span class="n">units</span><span class="o">=</span><span class="s2">&quot;degrees&quot;</span><span class="p">,</span>
+    <span class="n">coord_system</span><span class="o">=</span><span class="n">coord_plot</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">y_coord</span><span class="o">.</span><span class="n">guess_bounds</span><span class="p">()</span>
+<span class="n">dummy_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">y_coord</span><span class="o">.</span><span class="n">points</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_coord</span><span class="o">.</span><span class="n">points</span><span class="p">)))</span>
+<span class="n">sCube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">cube</span><span class="o">.</span><span class="n">Cube</span><span class="p">(</span><span class="n">dummy_data</span><span class="p">,</span> <span class="n">dim_coords_and_dims</span><span class="o">=</span><span class="p">[(</span><span class="n">x_coord</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">y_coord</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+<span class="n">lats</span> <span class="o">=</span> <span class="n">sCube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span>
+<span class="n">lons</span> <span class="o">=</span> <span class="n">sCube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s2">&quot;longitude&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span>
+
+<span class="c1"># Also want a land mask for plotting:</span>
+<span class="n">lm_plot</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span>
+    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/fixed_fields/land_mask/opfc_global_2019.nc&quot;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DATADIR&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">lm_plot</span> <span class="o">=</span> <span class="n">lm_plot</span><span class="o">.</span><span class="n">regrid</span><span class="p">(</span><span class="n">sCube</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">Linear</span><span class="p">())</span>
+
+<span class="c1"># Background</span>
+<span class="n">ax_global</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+
+<span class="c1"># Left axes for v3 plot</span>
+<span class="n">ax_3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.98</span><span class="p">])</span>
+<span class="n">ax_3</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">ax_3</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">extent</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax_3</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">extent</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="c1"># Background and land mask</span>
+<span class="n">land_img</span> <span class="o">=</span> <span class="n">ax_3</span><span class="o">.</span><span class="n">pcolorfast</span><span class="p">(</span>
+    <span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">lm_plot</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span>
+<span class="p">)</span>
+
+<span class="c1"># Pressure observations as points</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">v3_load</span><span class="o">.</span><span class="n">load_observations_fortime</span><span class="p">(</span><span class="n">dte</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;3&quot;</span><span class="p">)</span>
+<span class="n">rp</span> <span class="o">=</span> <span class="n">rotate_pole</span><span class="p">(</span>
+    <span class="n">obs</span><span class="p">[</span><span class="s2">&quot;Longitude&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">obs</span><span class="p">[</span><span class="s2">&quot;Latitude&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">coord_plot</span><span class="o">.</span><span class="n">grid_north_pole_longitude</span><span class="p">,</span>
+    <span class="n">coord_plot</span><span class="o">.</span><span class="n">grid_north_pole_latitude</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">new_longitude</span> <span class="o">=</span> <span class="n">rp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">coord_plot</span><span class="o">.</span><span class="n">north_pole_grid_longitude</span>
+<span class="n">new_longitude</span><span class="p">[</span><span class="n">new_longitude</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">360</span>
+<span class="n">new_latitude</span> <span class="o">=</span> <span class="n">rp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Plot each ob as a circle</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_longitude</span><span class="p">)):</span>
+    <span class="n">ax_3</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span>
+        <span class="n">matplotlib</span><span class="o">.</span><span class="n">patches</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">new_longitude</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">new_latitude</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span>
+            <span class="n">radius</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span>
+            <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
+            <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+            <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="c1"># Spaghetti plot of pressures</span>
+<span class="n">prmsl</span> <span class="o">=</span> <span class="n">v3_load</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;PRMSL&quot;</span><span class="p">,</span> <span class="n">dte</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;3&quot;</span><span class="p">)</span>
+<span class="n">prmsl</span> <span class="o">=</span> <span class="n">prmsl</span><span class="o">.</span><span class="n">regrid</span><span class="p">(</span><span class="n">sCube</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">Linear</span><span class="p">())</span>
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">80</span><span class="p">):</span>
+    <span class="n">CS</span> <span class="o">=</span> <span class="n">ax_3</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span>
+        <span class="n">lons</span><span class="p">,</span>
+        <span class="n">lats</span><span class="p">,</span>
+        <span class="n">prmsl</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">e</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+        <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;solid&quot;</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">levels</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">870</span><span class="p">,</span> <span class="mi">1030</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="n">zorder</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="c1"># Make field of ensemble spread</span>
+<span class="n">v3_spread</span> <span class="o">=</span> <span class="n">prmsl</span><span class="o">.</span><span class="n">collapsed</span><span class="p">(</span><span class="s2">&quot;member&quot;</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">STD_DEV</span><span class="p">)</span>
+
+<span class="c1"># Label</span>
+<span class="n">ax_3</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="n">extent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">scale</span> <span class="o">/</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">extent</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">scale</span> <span class="o">/</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s2">&quot;V3&quot;</span><span class="p">,</span>
+    <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+    <span class="n">verticalalignment</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">facecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.5</span>
+    <span class="p">),</span>
+    <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">zorder</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="c1"># Right axes for scout plot</span>
+<span class="n">ax_scout</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.505</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.98</span><span class="p">])</span>
+<span class="n">ax_scout</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">ax_scout</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">extent</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax_scout</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">extent</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="c1"># Background and land mask</span>
+<span class="n">land_img</span> <span class="o">=</span> <span class="n">ax_scout</span><span class="o">.</span><span class="n">pcolorfast</span><span class="p">(</span>
+    <span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">lm_plot</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span>
+<span class="p">)</span>
+
+<span class="c1"># Pressure observations as points</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">scout_load</span><span class="o">.</span><span class="n">load_observations_fortime</span><span class="p">(</span><span class="n">dte</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;5.7.6&quot;</span><span class="p">)</span>
+<span class="n">rp</span> <span class="o">=</span> <span class="n">rotate_pole</span><span class="p">(</span>
+    <span class="n">obs</span><span class="p">[</span><span class="s2">&quot;Longitude&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">obs</span><span class="p">[</span><span class="s2">&quot;Latitude&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">coord_plot</span><span class="o">.</span><span class="n">grid_north_pole_longitude</span><span class="p">,</span>
+    <span class="n">coord_plot</span><span class="o">.</span><span class="n">grid_north_pole_latitude</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">new_longitude</span> <span class="o">=</span> <span class="n">rp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">coord_plot</span><span class="o">.</span><span class="n">north_pole_grid_longitude</span>
+<span class="n">new_longitude</span><span class="p">[</span><span class="n">new_longitude</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">360</span>
+<span class="n">new_latitude</span> <span class="o">=</span> <span class="n">rp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Plot each ob as a circle</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_longitude</span><span class="p">)):</span>
+    <span class="n">ax_scout</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span>
+        <span class="n">matplotlib</span><span class="o">.</span><span class="n">patches</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">new_longitude</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">new_latitude</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span>
+            <span class="n">radius</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span>
+            <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
+            <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+            <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="n">prmsl</span> <span class="o">=</span> <span class="n">scout_load</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;prmsl&quot;</span><span class="p">,</span> <span class="n">dte</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;5.7.6&quot;</span><span class="p">)</span>
+<span class="n">prmsl</span> <span class="o">=</span> <span class="n">prmsl</span><span class="o">.</span><span class="n">regrid</span><span class="p">(</span><span class="n">sCube</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">Linear</span><span class="p">())</span>
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">80</span><span class="p">):</span>
+    <span class="n">CS</span> <span class="o">=</span> <span class="n">ax_scout</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span>
+        <span class="n">lons</span><span class="p">,</span>
+        <span class="n">lats</span><span class="p">,</span>
+        <span class="n">prmsl</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">e</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+        <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;solid&quot;</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">levels</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">870</span><span class="p">,</span> <span class="mi">1030</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="n">zorder</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="c1"># Make field of ensemble spread</span>
+<span class="n">scout_spread</span> <span class="o">=</span> <span class="n">prmsl</span><span class="o">.</span><span class="n">collapsed</span><span class="p">(</span><span class="s2">&quot;member&quot;</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">STD_DEV</span><span class="p">)</span>
+
+<span class="c1"># Label</span>
+<span class="n">ax_scout</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="n">extent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">scale</span> <span class="o">/</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">extent</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">scale</span> <span class="o">/</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s2">&quot;5.7.6&quot;</span><span class="p">,</span>
+    <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+    <span class="n">verticalalignment</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">facecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.5</span>
+    <span class="p">),</span>
+    <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">zorder</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Make colormap for glow of discovery</span>
+<span class="n">cdict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;red&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]],</span>
+    <span class="s2">&quot;green&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]],</span>
+    <span class="s2">&quot;blue&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]],</span>
+    <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]],</span>
+<span class="p">}</span>
+<span class="n">glow_cmp</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="p">(</span><span class="s2">&quot;glow_cmp&quot;</span><span class="p">,</span> <span class="n">segmentdata</span><span class="o">=</span><span class="n">cdict</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="c1"># Mark areas where v3 is better</span>
+<span class="n">sratio</span> <span class="o">=</span> <span class="n">v3_spread</span> <span class="o">/</span> <span class="n">scout_spread</span>
+<span class="n">glow_img</span> <span class="o">=</span> <span class="n">ax_3</span><span class="o">.</span><span class="n">pcolorfast</span><span class="p">(</span>
+    <span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">sratio</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">glow_cmp</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">50</span>
+<span class="p">)</span>
+<span class="c1"># Mark areas where scout is better</span>
+<span class="n">sratio</span> <span class="o">=</span> <span class="n">scout_spread</span> <span class="o">/</span> <span class="n">v3_spread</span>
+<span class="n">glow_img</span> <span class="o">=</span> <span class="n">ax_scout</span><span class="o">.</span><span class="n">pcolorfast</span><span class="p">(</span>
+    <span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">sratio</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">glow_cmp</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">50</span>
+<span class="p">)</span>
+
+
+<span class="c1"># Output as png</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;V3v576_</span><span class="si">%04d%02d%02d%02d</span><span class="s2">.png&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/t2t3.png" alt="Logo"/>
+            </a></p>
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stripes/TMP2m/index.html">TMP2m</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stripes/PRMSL/index.html">PRMSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stripes/PRATE/index.html">PRATE</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../european_windstorms/european_windstorms.html">European windstorms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extreme_months/extreme_months.html">Extreme months</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../north_american_severe_weather/nasw.html">North American severe weather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../australian_east_coast_lows/aecl.html">Australian east coast lows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cold_surges/cold_surges.html">Cold Surges</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DWR_validation/Spring_1903/spring_1903.html">Validation against observations for Spring 1903</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DWR_validation/February_1953/february_1953.html">Validation against observations for February 1953</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DWR_validation/comparison.html">Validation Spread v. Error plot January 1872 + Spring 1903 + February 1953</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../obs_video/obs_video.html">Observations coverage video</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fog_videos/1903.html">Weather and fog in 1903</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fog_videos/1931.html">Weather and fog in 1931</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fog_videos/1880_Arctic.html">Weather and fog in the Arctic in 1880 and 1881</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fog_videos/time_skip.html">Weather and fog 1850-2015</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fog_videos/just_fog.html">Just the fog 1850-2015</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
+</ul>
+<h3><a href="https://github.com/oldweather/20CRv3-diagnostics">Get a copy</a></h3>
+
+<ul>
+<li><a href="https://github.com/oldweather/20CRv3-diagnostics"
+           rel="nofollow">Github repository</a></li>
+</ul>
+
+<h3>Found a bug, or have a suggestion?</h3>
+
+Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">raise an issue</a>.
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">February 1915 with assimilated marine wind directions</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    </div>
+  </body>
+</html>

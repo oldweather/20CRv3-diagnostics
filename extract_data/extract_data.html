@@ -1,28 +1,154 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Extracting data from 20CRv3 scout runs &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
-    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <link rel="search" title="Search" href="../search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
-        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Extracting data from 20CRv3 scout runs</a></li> 
       </ul>
-    </div>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="extracting-data-from-20crv3-scout-runs">
+<h1>Extracting data from 20CRv3 scout runs<a class="headerlink" href="#extracting-data-from-20crv3-scout-runs" title="Permalink to this headline">¶</a></h1>
+<p>V3 has now been released, so data from the main reanalysis is available from <a class="reference external" href="https://www.esrl.noaa.gov/psd/data/gridded/data.20thC_ReanV3.html">NOAA PSD</a>, <a class="reference external" href="https://rda.ucar.edu/datasets/ds131.3/">NCAR</a>, and <a class="reference external" href="https://portal.nersc.gov/project/20C_Reanalysis/">NERSC</a>. Wherever possible, use the data provided by these portals.</p>
+<p>If the data you need is not avaialable from the main portals - either because you need something obscure, or because you want data from a scout run instead of just the main reanalysis, these scripts may help you. You will need an account at NERSC (ask Gil), a bit of python and unix knowledge, and the willingness to do some hacking to get what you want.</p>
+<section id="executive-summary">
+<h2>Executive summary<a class="headerlink" href="#executive-summary" title="Permalink to this headline">¶</a></h2>
+<p>On <a class="reference external" href="http://www.nersc.gov/users/computational-systems/cori/">Cori</a>, from an account that’s part of the 20CR group, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/global/homes/p/pbrohan/Projects/20CRv3-diagnostics/tools/extract_data/v3_release/extract_month_job.py<span class="w"> </span>--startyear<span class="o">=</span><span class="m">1899</span><span class="w"> </span>--year<span class="o">=</span><span class="m">1901</span><span class="w"> </span>--month<span class="o">=</span><span class="m">7</span><span class="w"> </span>--version<span class="o">=</span><span class="m">461</span>
+</pre></div>
+</div>
+<p>(But change 1899, 1901, 7, and possibly 451, to your preferred values).</p>
+<p>This will make a netCDF4 file, for each of the surface weather variables <code class="docutils literal notranslate"><span class="pre">prmsl</span></code>, <code class="docutils literal notranslate"><span class="pre">air.2m</span></code>, <code class="docutils literal notranslate"><span class="pre">uwnd.10m</span></code>, <code class="docutils literal notranslate"><span class="pre">vwnd.10m</span></code>, <code class="docutils literal notranslate"><span class="pre">icec</span></code>, and <code class="docutils literal notranslate"><span class="pre">prate</span></code>, containing the 3-hourly, full ensemble, analysis output for the whole of July 1901, from the scout 461 run starting in 1899. It will also extract the observations feedback files. It will put the output in <code class="docutils literal notranslate"><span class="pre">$SCRATCH/20CRv3.final/</span></code></p>
+<p>The command will submit an <a class="reference external" href="http://www.nersc.gov/users/computational-systems/cori/running-jobs/advanced-running-jobs-options/">xfer job</a> to get the data off tape, and when that’s done it will submit a regular job to do the data reshaping and conversion. This will take a while - a minimum of all day, and longer if the system is heavily loaded. You can run multiple extractions in parallel - if you submit more than Cori can run at once, they will just queue up.</p>
+</section>
+<section id="the-details">
+<h2>The details<a class="headerlink" href="#the-details" title="Permalink to this headline">¶</a></h2>
+<p>The 20CRv2c data are <a class="reference external" href="http://portal.nersc.gov/project/20C_Reanalysis/">available</a> as netCDF files, each containing 3- or 6-hourly data, for a single variable, for all ensemble members, for a year. I have <a class="reference external" href="https://brohan.org/IRData">software that uses data in this format</a>, so I aim to produce v3 data in a similar format. The main difference is that there is much more data from v3 (higher resolution, more ensemble members, always 3-hourly) so I make files for each month, not each year.</p>
+<p>Choose the data source by specifying its <em>run number</em>. The two run numbers that make up the released V3 are 451 and 452. Current scout runs are numbered 46x, Run numbers in the 400s are from the v3 model and this data extraction method should work for any of them.</p>
+<p>The data extraction process is in four steps:</p>
+<ol class="arabic simple">
+<li><p>Find the model output files for a month</p></li>
+<li><p>Copy them to my own $SCRATCH</p></li>
+<li><p>Copy all the output for a single variable to one grib file and convert it to netCDF</p></li>
+<li><p>Assemble the observations files</p></li>
+</ol>
+</section>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>All the scripts need to be run on <a class="reference external" href="http://www.nersc.gov/users/computational-systems/cori/">Cori</a>, from an account that’s part of the 20CR group.
+The conversion scripts use the NCAR library and the netcdf operators, these need to be loaded as modules:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>module<span class="w"> </span>load<span class="w"> </span>ncar
+module<span class="w"> </span>load<span class="w"> </span>nco
+</pre></div>
+</div>
+<p>The data extraction scripts use <a class="reference external" href="http://www.cpc.ncep.noaa.gov/products/wesley/wgrib2/">wgrib2</a> and by default this will use all the cores on the system it is running on, in an attempt to go faster. If you are using a (shared) login node, this is not what you want (and will get you shouted at by the sysops). Tell it to only use one core:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+<p>(If you are running the scripts in a job, on a dedicated node, you may get a useful speedup by setting this to a larger number).</p>
+<p>Look for the scripts in directory ‘/global/homes/p/pbrohan/Projects/20CRv3-diagnostics/tools/extract_data/’ (or <a class="reference external" href="https://github.com/oldweather/20CRv3-diagnostics">clone this repository</a>).</p>
+</section>
+<section id="find-the-model-output-files">
+<h2>Find the model output files<a class="headerlink" href="#find-the-model-output-files" title="Permalink to this headline">¶</a></h2>
+<p>The model output for a single assimilation step (6-hour period) is all put in the same directory, with a name formated as YYYYMMDDHH, so directory 1928031206 contains data for the 6-hour period starting at 6a.m (UTC) on March 12 1928. There are 4 assimilation steps each day (0,6,12,18 hours). The analysis is run in many streams (usually of 5-years duration) - a different stream is started every 5 years. So the model outputs are uniquely identified by their <em>run number</em>, their <em>start year</em>, and their <em>date</em>: directory ‘ensda_451_1899/1903102618’ contains the data for run 451, stream starting in 1899, valid at 6pm UTC on 26 October 1903.</p>
+<p>The freshest model output is in the $SCRATCH directory of whoever is doing the run (Chesley or Gil):</p>
+<ul class="simple">
+<li><p>/global/cscratch1/sd/cmccoll/gfsenkf_20crV3_cmip5oz_CoriII/</p></li>
+<li><p>/global/cscratch1/sd/compo/gfsenkf_20crV3_cmip5oz_CoriII/</p></li>
+</ul>
+<p>But there is too much output to keep on disc for long, so the output is put into tar files by date, and <a class="reference external" href="http://www.nersc.gov/users/storage-and-file-systems/hpss/storing-and-retrieving-data/clients/hsi-usage/">archived to tape</a> in hsi directory:</p>
+<ul class="simple">
+<li><p>/home/projects/incite11/ensda_v451_archive_orig</p></li>
+</ul>
+<p>where ‘451’ is the run number.</p>
+<p>This data in turn is then cleaned-up, repacked into grib2 format, and copied into another tape archive at</p>
+<ul class="simple">
+<li><p>/home/projects/incite11/ensda_v451_archive_grb2_monthly</p></li>
+</ul>
+<p>In practice it’s best to use these in reverse order: If the month you want is in the grib2 tape archive, get it from there; otherwise if it’s in the grib1 tabe archive, get it from there; only look on disc if you must have data that’s currently being run.</p>
+</section>
+<section id="copy-to-my-own-scratch">
+<h2>Copy to my own $SCRATCH<a class="headerlink" href="#copy-to-my-own-scratch" title="Permalink to this headline">¶</a></h2>
+<p>If the data are in the grib2 tape archive, copy them to ‘$SCRATCH/20CR_working/ensda_1899/1903/10’ (where 1899, 1903, and 10 are replaced by start year, validity year, and validity month). The <a class="reference internal" href="release_month_from_tape.html"><span class="doc">script to do this</span></a> is called as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_release/month_from_tape.py<span class="w"> </span>--startyear<span class="o">=</span><span class="m">1899</span><span class="w"> </span>--year<span class="o">=</span><span class="m">1903</span><span class="w"> </span>--month<span class="o">=</span><span class="m">10</span><span class="w"> </span>--version<span class="o">=</span><span class="m">451</span>
+</pre></div>
+</div>
+<p>If the data are not yet in the grib2 archive, but they are in the hsi grib1 archive, then copy them to ‘$SCRATCH/20CR_working_orig/ensda_1899/1903/10’ (replacing start year, validity year, and validity month, as appropriate). The <a class="reference internal" href="orig_month_from_tape.html"><span class="doc">script to do this</span></a> is called with the same options as above:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_orig/month_from_tape.py<span class="w"> </span>--startyear<span class="o">=</span><span class="m">1899</span><span class="w"> </span>--year<span class="o">=</span><span class="m">1903</span><span class="w"> </span>--month<span class="o">=</span><span class="m">10</span><span class="w"> </span>--version<span class="o">=</span><span class="m">451</span>
+</pre></div>
+</div>
+<p>If the data are not yet on tape, only on disc, then they are in grib1 format - copy them directly (‘cp’ command) into the grib1 working directory: ‘$SCRATCH/20CR_working_orig/ensda_1899/1903/10’ (replacing start year, validity year, and validity month, as appropriate).</p>
+<p>In all cases the data transfer will take several hours.</p>
+<p>A full month’s 20CR output is a <em>lot</em> of data, and if you do this data extraction for more than a couple of months you will exceed your allocation on SCRATCH (and be shouted at by the sysops). Once you’ve done the data extraction (below) it’s a good idea to clean out ‘$SCRATCH/20CR_working’ and ‘$SCRATCH/20CR_working_orig’</p>
+</section>
+<section id="strip-output-for-one-variable-and-convert-to-netcdf">
+<h2>Strip output for one variable and convert to netCDF<a class="headerlink" href="#strip-output-for-one-variable-and-convert-to-netcdf" title="Permalink to this headline">¶</a></h2>
+<p>There are two different sorts of variables in 20CR - analysis variables and forecast variables:</p>
+<p>Analysis variables are obtained from the ‘pgrbanl’ files. For the grib2 data, the <a class="reference internal" href="release_extract_anl_var.html"><span class="doc">script that extracts and converts them</span></a> is called as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_release/extract_anl_var.py<span class="w"> </span>--startyear<span class="o">=</span><span class="m">1899</span><span class="w"> </span>--year<span class="o">=</span><span class="m">1903</span><span class="w"> </span>--month<span class="o">=</span><span class="m">10</span><span class="w"> </span>--version<span class="o">=</span><span class="m">451</span><span class="w"> </span>--var<span class="o">=</span>prmsl
+</pre></div>
+</div>
+<p>–var must be one of ‘prmsl’, ‘air.2m’, ‘uwnd.10m’, ‘vwnd.10m’, ‘air.sfc’, and ‘icec’. If you want anything else you will have to edit the script (please send a <a class="reference external" href="http://oss-watch.ac.uk/resources/pullrequest">pull request</a> with your improved version).</p>
+<p>Forecast variables are obtained from the ‘pgrbanl’ and ‘pgrbfg’ files. For the grib2 data, the <a class="reference internal" href="release_extract_fg_var.html"><span class="doc">script that extracts and converts them</span></a> is called as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_release/extract_fg_var.py<span class="w"> </span>--startyear<span class="o">=</span><span class="m">1899</span><span class="w"> </span>--year<span class="o">=</span><span class="m">1903</span><span class="w"> </span>--month<span class="o">=</span><span class="m">10</span><span class="w"> </span>--version<span class="o">=</span><span class="m">451</span><span class="w"> </span>--var<span class="o">=</span>prate
+</pre></div>
+</div>
+<p>only –var=prate is currently supported.</p>
+<p>For the grib1 data the calls are exactly the same (<a class="reference internal" href="orig_extract_anl_var.html"><span class="doc">analysis</span></a>, <a class="reference internal" href="orig_extract_fg_var.html"><span class="doc">forecast</span></a>), but the scripts are in the ‘v3_orig’ directory.</p>
+<p>Whatever the original format, these scripts will create output files of the form ‘$SCRATCH/20CRv3.final/version_4.5.1/1903/10/prmsl.nc’ which are netCDF files similar to those from v2c.</p>
+<p>These scripts will also take some time to run (at least 2 hours).</p>
+</section>
+<section id="assemble-the-observations-files">
+<h2>Assemble the observations files<a class="headerlink" href="#assemble-the-observations-files" title="Permalink to this headline">¶</a></h2>
+<p>The observations feedback files are text files (though the format is different to v2c), so it’s just a matter of copying them to the output directory. The <a class="reference internal" href="release_extract_obs.html"><span class="doc">script to do that (for the grib2 data)</span></a> is called as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_release/extract_obs.py<span class="w"> </span>--startyear<span class="o">=</span><span class="m">1899</span><span class="w"> </span>--year<span class="o">=</span><span class="m">1903</span><span class="w"> </span>--month<span class="o">=</span><span class="m">10</span><span class="w"> </span>--version<span class="o">=</span><span class="m">451</span>
+</pre></div>
+</div>
+<p>and the <a class="reference internal" href="orig_extract_obs.html"><span class="doc">analagous script for grib1</span></a> is in directory v3_orig. Either of these will copy all the observations files to ‘$SCRATCH/20CRv3.final/version_4.5.1/1903/10/observations’.</p>
+<p>These scripts only take a couple of minutes to run.</p>
+</section>
+<section id="optimisation">
+<h2>Optimisation<a class="headerlink" href="#optimisation" title="Permalink to this headline">¶</a></h2>
+<p>You can run all these scripts in sequence on a login node, and it will work fine, but it’s a hassle, and performance is variable depending on system load. A simpler aproach is to submit jobs to do the work, and this can be much faster as the extractions can be run in parallel.</p>
+<p>First, submit an xfer job to get the data off tape. The <a class="reference internal" href="from_tape_job.html"><span class="doc">script to do that</span></a> is:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>extract_month_job.py<span class="w"> </span>--startyear<span class="o">=</span><span class="m">1899</span><span class="w"> </span>--year<span class="o">=</span><span class="m">1903</span><span class="w"> </span>--month<span class="o">=</span><span class="m">10</span><span class="w"> </span>--version<span class="o">=</span><span class="m">451</span>
+</pre></div>
+</div>
+<p>When that job has completed, it will submit a follow-on regular job to extract and convert the data. The <a class="reference internal" href="conversion_job.html"><span class="doc">script it runs to do that</span></a> is:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conversion_job.py<span class="w"> </span>--startyear<span class="o">=</span><span class="m">1899</span><span class="w"> </span>--year<span class="o">=</span><span class="m">1903</span><span class="w"> </span>--month<span class="o">=</span><span class="m">10</span><span class="w"> </span>--version<span class="o">=</span><span class="m">451</span>
+</pre></div>
+</div>
+<p>which wil extract and convert all the standard surface variables. As it uses so few resources, it will usually start running soon after being submitted, but this depends on the system load and the job queue. When the conversion completes, it will delete all the tape retrievals from SCRATCH.</p>
+<p>These two scripts only work for grib2 data</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="../index.html">
@@ -32,6 +158,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../stripes/TMP2m/index.html">TMP2m</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../stripes/PRMSL/index.html">PRMSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stripes/PRATE/index.html">PRATE</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tropical-storms/tropical_storms.html">Tropical Storms</a></li>
@@ -52,6 +179,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/1903.html">Weather and fog in 1903</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/1931.html">Weather and fog in 1931</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/1880_Arctic.html">Weather and fog in the Arctic in 1880 and 1881</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fog_videos/time_skip.html">Weather and fog 1850-2015</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fog_videos/just_fog.html">Just the fog 1850-2015</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
@@ -68,141 +197,13 @@
 Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">raise an issue</a>.
         </div>
       </div>
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="extracting-data-from-20crv3-scout-runs">
-<h1>Extracting data from 20CRv3 scout runs<a class="headerlink" href="#extracting-data-from-20crv3-scout-runs" title="Permalink to this headline">¶</a></h1>
-<p>V3 has now been released, so data from the main reanalysis is available from <a class="reference external" href="https://www.esrl.noaa.gov/psd/data/gridded/data.20thC_ReanV3.html">NOAA PSD</a>, <a class="reference external" href="https://rda.ucar.edu/datasets/ds131.3/">NCAR</a>, and <a class="reference external" href="https://portal.nersc.gov/project/20C_Reanalysis/">NERSC</a>. Wherever possible, use the data provided by these portals.</p>
-<p>If the data you need is not avaialable from the main portals - either because you need something obscure, or because you want data from a scout run instead of just the main reanalysis, these scripts may help you. You will need an account at NERSC (ask Gil), a bit of python and unix knowledge, and the willingness to do some hacking to get what you want.</p>
-<div class="section" id="executive-summary">
-<h2>Executive summary<a class="headerlink" href="#executive-summary" title="Permalink to this headline">¶</a></h2>
-<p>On <a class="reference external" href="http://www.nersc.gov/users/computational-systems/cori/">Cori</a>, from an account that’s part of the 20CR group, run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/global/homes/p/pbrohan/Projects/20CRv3-diagnostics/tools/extract_data/v3_release/extract_month_job.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1901</span> --month<span class="o">=</span><span class="m">7</span> --version<span class="o">=</span><span class="m">461</span>
-</pre></div>
-</div>
-<p>(But change 1899, 1901, 7, and possibly 451, to your preferred values).</p>
-<p>This will make a netCDF4 file, for each of the surface weather variables <code class="docutils literal notranslate"><span class="pre">prmsl</span></code>, <code class="docutils literal notranslate"><span class="pre">air.2m</span></code>, <code class="docutils literal notranslate"><span class="pre">uwnd.10m</span></code>, <code class="docutils literal notranslate"><span class="pre">vwnd.10m</span></code>, <code class="docutils literal notranslate"><span class="pre">icec</span></code>, and <code class="docutils literal notranslate"><span class="pre">prate</span></code>, containing the 3-hourly, full ensemble, analysis output for the whole of July 1901, from the scout 461 run starting in 1899. It will also extract the observations feedback files. It will put the output in <code class="docutils literal notranslate"><span class="pre">$SCRATCH/20CRv3.final/</span></code></p>
-<p>The command will submit an <a class="reference external" href="http://www.nersc.gov/users/computational-systems/cori/running-jobs/advanced-running-jobs-options/">xfer job</a> to get the data off tape, and when that’s done it will submit a regular job to do the data reshaping and conversion. This will take a while - a minimum of all day, and longer if the system is heavily loaded. You can run multiple extractions in parallel - if you submit more than Cori can run at once, they will just queue up.</p>
-</div>
-<div class="section" id="the-details">
-<h2>The details<a class="headerlink" href="#the-details" title="Permalink to this headline">¶</a></h2>
-<p>The 20CRv2c data are <a class="reference external" href="http://portal.nersc.gov/project/20C_Reanalysis/">available</a> as netCDF files, each containing 3- or 6-hourly data, for a single variable, for all ensemble members, for a year. I have <a class="reference external" href="https://brohan.org/IRData">software that uses data in this format</a>, so I aim to produce v3 data in a similar format. The main difference is that there is much more data from v3 (higher resolution, more ensemble members, always 3-hourly) so I make files for each month, not each year.</p>
-<p>Choose the data source by specifying its <em>run number</em>. The two run numbers that make up the released V3 are 451 and 452. Current scout runs are numbered 46x, Run numbers in the 400s are from the v3 model and this data extraction method should work for any of them.</p>
-<p>The data extraction process is in four steps:</p>
-<ol class="arabic simple">
-<li><p>Find the model output files for a month</p></li>
-<li><p>Copy them to my own $SCRATCH</p></li>
-<li><p>Copy all the output for a single variable to one grib file and convert it to netCDF</p></li>
-<li><p>Assemble the observations files</p></li>
-</ol>
-</div>
-<div class="section" id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
-<p>All the scripts need to be run on <a class="reference external" href="http://www.nersc.gov/users/computational-systems/cori/">Cori</a>, from an account that’s part of the 20CR group.
-The conversion scripts use the NCAR library and the netcdf operators, these need to be loaded as modules:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>module load ncar
-module load nco
-</pre></div>
-</div>
-<p>The data extraction scripts use <a class="reference external" href="http://www.cpc.ncep.noaa.gov/products/wesley/wgrib2/">wgrib2</a> and by default this will use all the cores on the system it is running on, in an attempt to go faster. If you are using a (shared) login node, this is not what you want (and will get you shouted at by the sysops). Tell it to only use one core:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">1</span>
-</pre></div>
-</div>
-<p>(If you are running the scripts in a job, on a dedicated node, you may get a useful speedup by setting this to a larger number).</p>
-<p>Look for the scripts in directory ‘/global/homes/p/pbrohan/Projects/20CRv3-diagnostics/tools/extract_data/’ (or <a class="reference external" href="https://github.com/oldweather/20CRv3-diagnostics">clone this repository</a>).</p>
-</div>
-<div class="section" id="find-the-model-output-files">
-<h2>Find the model output files<a class="headerlink" href="#find-the-model-output-files" title="Permalink to this headline">¶</a></h2>
-<p>The model output for a single assimilation step (6-hour period) is all put in the same directory, with a name formated as YYYYMMDDHH, so directory 1928031206 contains data for the 6-hour period starting at 6a.m (UTC) on March 12 1928. There are 4 assimilation steps each day (0,6,12,18 hours). The analysis is run in many streams (usually of 5-years duration) - a different stream is started every 5 years. So the model outputs are uniquely identified by their <em>run number</em>, their <em>start year</em>, and their <em>date</em>: directory ‘ensda_451_1899/1903102618’ contains the data for run 451, stream starting in 1899, valid at 6pm UTC on 26 October 1903.</p>
-<p>The freshest model output is in the $SCRATCH directory of whoever is doing the run (Chesley or Gil):</p>
-<ul class="simple">
-<li><p>/global/cscratch1/sd/cmccoll/gfsenkf_20crV3_cmip5oz_CoriII/</p></li>
-<li><p>/global/cscratch1/sd/compo/gfsenkf_20crV3_cmip5oz_CoriII/</p></li>
-</ul>
-<p>But there is too much output to keep on disc for long, so the output is put into tar files by date, and <a class="reference external" href="http://www.nersc.gov/users/storage-and-file-systems/hpss/storing-and-retrieving-data/clients/hsi-usage/">archived to tape</a> in hsi directory:</p>
-<ul class="simple">
-<li><p>/home/projects/incite11/ensda_v451_archive_orig</p></li>
-</ul>
-<p>where ‘451’ is the run number.</p>
-<p>This data in turn is then cleaned-up, repacked into grib2 format, and copied into another tape archive at</p>
-<ul class="simple">
-<li><p>/home/projects/incite11/ensda_v451_archive_grb2_monthly</p></li>
-</ul>
-<p>In practice it’s best to use these in reverse order: If the month you want is in the grib2 tape archive, get it from there; otherwise if it’s in the grib1 tabe archive, get it from there; only look on disc if you must have data that’s currently being run.</p>
-</div>
-<div class="section" id="copy-to-my-own-scratch">
-<h2>Copy to my own $SCRATCH<a class="headerlink" href="#copy-to-my-own-scratch" title="Permalink to this headline">¶</a></h2>
-<p>If the data are in the grib2 tape archive, copy them to ‘$SCRATCH/20CR_working/ensda_1899/1903/10’ (where 1899, 1903, and 10 are replaced by start year, validity year, and validity month). The <a class="reference internal" href="release_month_from_tape.html"><span class="doc">script to do this</span></a> is called as:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_release/month_from_tape.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span><span class="m">451</span>
-</pre></div>
-</div>
-<p>If the data are not yet in the grib2 archive, but they are in the hsi grib1 archive, then copy them to ‘$SCRATCH/20CR_working_orig/ensda_1899/1903/10’ (replacing start year, validity year, and validity month, as appropriate). The <a class="reference internal" href="orig_month_from_tape.html"><span class="doc">script to do this</span></a> is called with the same options as above:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_orig/month_from_tape.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span><span class="m">451</span>
-</pre></div>
-</div>
-<p>If the data are not yet on tape, only on disc, then they are in grib1 format - copy them directly (‘cp’ command) into the grib1 working directory: ‘$SCRATCH/20CR_working_orig/ensda_1899/1903/10’ (replacing start year, validity year, and validity month, as appropriate).</p>
-<p>In all cases the data transfer will take several hours.</p>
-<p>A full month’s 20CR output is a <em>lot</em> of data, and if you do this data extraction for more than a couple of months you will exceed your allocation on SCRATCH (and be shouted at by the sysops). Once you’ve done the data extraction (below) it’s a good idea to clean out ‘$SCRATCH/20CR_working’ and ‘$SCRATCH/20CR_working_orig’</p>
-</div>
-<div class="section" id="strip-output-for-one-variable-and-convert-to-netcdf">
-<h2>Strip output for one variable and convert to netCDF<a class="headerlink" href="#strip-output-for-one-variable-and-convert-to-netcdf" title="Permalink to this headline">¶</a></h2>
-<p>There are two different sorts of variables in 20CR - analysis variables and forecast variables:</p>
-<p>Analysis variables are obtained from the ‘pgrbanl’ files. For the grib2 data, the <a class="reference internal" href="release_extract_anl_var.html"><span class="doc">script that extracts and converts them</span></a> is called as:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_release/extract_anl_var.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span><span class="m">451</span> --var<span class="o">=</span>prmsl
-</pre></div>
-</div>
-<p>–var must be one of ‘prmsl’, ‘air.2m’, ‘uwnd.10m’, ‘vwnd.10m’, ‘air.sfc’, and ‘icec’. If you want anything else you will have to edit the script (please send a <a class="reference external" href="http://oss-watch.ac.uk/resources/pullrequest">pull request</a> with your improved version).</p>
-<p>Forecast variables are obtained from the ‘pgrbanl’ and ‘pgrbfg’ files. For the grib2 data, the <a class="reference internal" href="release_extract_fg_var.html"><span class="doc">script that extracts and converts them</span></a> is called as:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_release/extract_fg_var.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span><span class="m">451</span> --var<span class="o">=</span>prate
-</pre></div>
-</div>
-<p>only –var=prate is currently supported.</p>
-<p>For the grib1 data the calls are exactly the same (<a class="reference internal" href="orig_extract_anl_var.html"><span class="doc">analysis</span></a>, <a class="reference internal" href="orig_extract_fg_var.html"><span class="doc">forecast</span></a>), but the scripts are in the ‘v3_orig’ directory.</p>
-<p>Whatever the original format, these scripts will create output files of the form ‘$SCRATCH/20CRv3.final/version_4.5.1/1903/10/prmsl.nc’ which are netCDF files similar to those from v2c.</p>
-<p>These scripts will also take some time to run (at least 2 hours).</p>
-</div>
-<div class="section" id="assemble-the-observations-files">
-<h2>Assemble the observations files<a class="headerlink" href="#assemble-the-observations-files" title="Permalink to this headline">¶</a></h2>
-<p>The observations feedback files are text files (though the format is different to v2c), so it’s just a matter of copying them to the output directory. The <a class="reference internal" href="release_extract_obs.html"><span class="doc">script to do that (for the grib2 data)</span></a> is called as:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>v3_release/extract_obs.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span><span class="m">451</span>
-</pre></div>
-</div>
-<p>and the <a class="reference internal" href="orig_extract_obs.html"><span class="doc">analagous script for grib1</span></a> is in directory v3_orig. Either of these will copy all the observations files to ‘$SCRATCH/20CRv3.final/version_4.5.1/1903/10/observations’.</p>
-<p>These scripts only take a couple of minutes to run.</p>
-</div>
-<div class="section" id="optimisation">
-<h2>Optimisation<a class="headerlink" href="#optimisation" title="Permalink to this headline">¶</a></h2>
-<p>You can run all these scripts in sequence on a login node, and it will work fine, but it’s a hassle, and performance is variable depending on system load. A simpler aproach is to submit jobs to do the work, and this can be much faster as the extractions can be run in parallel.</p>
-<p>First, submit an xfer job to get the data off tape. The <a class="reference internal" href="from_tape_job.html"><span class="doc">script to do that</span></a> is:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>extract_month_job.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span><span class="m">451</span>
-</pre></div>
-</div>
-<p>When that job has completed, it will submit a follow-on regular job to extract and convert the data. The <a class="reference internal" href="conversion_job.html"><span class="doc">script it runs to do that</span></a> is:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conversion_job.py --startyear<span class="o">=</span><span class="m">1899</span> --year<span class="o">=</span><span class="m">1903</span> --month<span class="o">=</span><span class="m">10</span> --version<span class="o">=</span><span class="m">451</span>
-</pre></div>
-</div>
-<p>which wil extract and convert all the standard surface variables. As it uses so few resources, it will usually start running soon after being submitted, but this depends on the system load and the job queue. When the conversion completes, it will delete all the tape retrievals from SCRATCH.</p>
-<p>These two scripts only work for grib2 data</p>
-</div>
-</div>
-
-
-          </div>
-        </div>
-      </div>
       <div class="clearer"></div>
     </div>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
-        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Extracting data from 20CRv3 scout runs</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

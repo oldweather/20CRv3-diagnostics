@@ -1,28 +1,171 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>month_from_tape (grib2) &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
-    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <link rel="search" title="Search" href="../search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
-        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">month_from_tape (grib2)</a></li> 
       </ul>
-    </div>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="month-from-tape-grib2">
+<h1>month_from_tape (grib2)<a class="headerlink" href="#month-from-tape-grib2" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="c1"># Extract 20CRv3 data for a month - from tape to $SCRATCH</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">copyfile</span>
+
+<span class="c1"># Version and month</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--startyear&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Year run started&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--year&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Year to extract&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--month&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Month to extract&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--version&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Month to extract&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">451</span><span class="p">)</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+<span class="c1"># Location of Output files (on hsi)</span>
+<span class="n">originals_directory</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;/home/projects/incite11/ensda_&quot;</span> <span class="o">+</span> <span class="s2">&quot;v</span><span class="si">%03d</span><span class="s2">_archive_grb2_monthly&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span>
+<span class="p">)</span>
+<span class="c1"># Where to put the grib (and obs) files retrieved from hsi</span>
+<span class="n">working_directory</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/20CRv3.working/ensda_</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;SCRATCH&quot;</span><span class="p">),</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">working_directory</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">working_directory</span><span class="p">)</span>
+
+<span class="c1"># Get the list of start years</span>
+<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
+    <span class="s2">&quot;hsi ls -l </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">originals_directory</span><span class="p">,</span>
+    <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+    <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+    <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+<span class="n">start_years</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>  <span class="c1"># Why does hsi put output in stderr?</span>
+<span class="n">start_years</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">start_years</span> <span class="k">if</span> <span class="s2">&quot;ensda_</span><span class="si">%03d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+<span class="n">start_years</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">start_years</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">start_years</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%04d</span><span class="s2"> is not as available start year&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">)</span>
+
+<span class="c1"># Get the list of files available for the selected month</span>
+<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
+    <span class="s2">&quot;hsi ls -l </span><span class="si">%s</span><span class="s2">/ensda_</span><span class="si">%03d</span><span class="s2">_</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%04d%02d</span><span class="s2">_*.tar&quot;</span>
+    <span class="o">%</span> <span class="p">(</span>
+        <span class="n">originals_directory</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+    <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+    <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+
+<span class="n">file_list</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="n">obs_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">file_list</span> <span class="k">if</span> <span class="s2">&quot;_psobs&quot;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs_files</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data not available&quot;</span><span class="p">)</span>
+<span class="n">anl_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">file_list</span> <span class="k">if</span> <span class="s2">&quot;_pgrbanl_&quot;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">anl_files</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Analysis data not complete&quot;</span><span class="p">)</span>
+<span class="n">fg_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">file_list</span> <span class="k">if</span> <span class="s2">&quot;_pgrbfg_&quot;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fg_files</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Forecast data not complete&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># Have the list of files to retrieve - sort them into tape order</span>
+<span class="n">tfile</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">obs_files</span> <span class="o">+</span> <span class="n">anl_files</span> <span class="o">+</span> <span class="n">fg_files</span><span class="p">:</span>
+    <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/ensda_</span><span class="si">%03d</span><span class="s2">_</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="o">%</span> <span class="p">(</span><span class="n">originals_directory</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">sfile</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;generate_sorted_list_for_hpss.py -i </span><span class="si">%s</span><span class="s2"> |&quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;grep -v &#39;Generating sorted list from input file&#39; &gt; </span><span class="si">%s</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="o">%</span> <span class="p">(</span><span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">sfile</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+    <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+    <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+    <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+
+<span class="c1"># Doesn&#39;t work - for now, assume success.</span>
+<span class="c1"># if out is not None or err is not None:</span>
+<span class="c1"># raise StandardError(&quot;Problem with hsi tape ordering&quot;)</span>
+
+<span class="c1"># Run the retrieval - may take a long time</span>
+<span class="n">sfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">sfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">sfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">tfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;lcd </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">working_directory</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">sfile</span><span class="p">:</span>
+    <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;cget </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">line</span><span class="p">)</span>
+<span class="n">sfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">tfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">sfile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s2">&quot;hsi &lt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="c1"># Check that the files retrieved, and untar</span>
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">obs_files</span> <span class="o">+</span> <span class="n">anl_files</span> <span class="o">+</span> <span class="n">fg_files</span><span class="p">:</span>
+    <span class="n">fpn</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">working_directory</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fpn</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Missing file </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fpn</span><span class="p">)</span>
+
+    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s2">&quot;cd </span><span class="si">%s</span><span class="s2">; tar xf </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">working_directory</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Failed to untar </span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">working_directory</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="../index.html">
@@ -54,6 +197,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/1931.html">Weather and fog in 1931</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/1880_Arctic.html">Weather and fog in the Arctic in 1880 and 1881</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fog_videos/time_skip.html">Weather and fog 1850-2015</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fog_videos/just_fog.html">Just the fog 1850-2015</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
@@ -70,140 +214,13 @@
 Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">raise an issue</a>.
         </div>
       </div>
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="month-from-tape-grib2">
-<h1>month_from_tape (grib2)<a class="headerlink" href="#month-from-tape-grib2" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
-
-<span class="c1"># Extract 20CRv3 data for a month - from tape to $SCRATCH</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">copyfile</span>
-
-<span class="c1"># Version and month</span>
-<span class="kn">import</span> <span class="nn">argparse</span>
-<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--startyear&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Year run started&quot;</span><span class="p">,</span>
-                    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--year&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Year to extract&quot;</span><span class="p">,</span>
-                    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--month&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Month to extract&quot;</span><span class="p">,</span>
-                    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--version&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Month to extract&quot;</span><span class="p">,</span>
-                    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="mi">451</span><span class="p">)</span>
-<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
-
-<span class="c1"># Location of Output files (on hsi)</span>
-<span class="n">originals_directory</span><span class="o">=</span><span class="s2">&quot;/home/projects/incite11/ensda_&quot;</span><span class="o">+</span>\
-                    <span class="s2">&quot;v</span><span class="si">%03d</span><span class="s2">_archive_grb2_monthly&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span>
-<span class="c1"># Where to put the grib (and obs) files retrieved from hsi</span>
-<span class="n">working_directory</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/20CRv3.working/ensda_</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                   <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">),</span><span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span>
-                   <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">working_directory</span><span class="p">):</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">working_directory</span><span class="p">)</span>
-
-<span class="c1"># Get the list of start years</span>
-<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s2">&quot;hsi ls -l </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">originals_directory</span><span class="p">,</span>
-                    <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> 
-                    <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
-<span class="n">start_years</span><span class="o">=</span><span class="n">err</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="c1"># Why does hsi put output in stderr?</span>
-<span class="n">start_years</span><span class="o">=</span><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">start_years</span> <span class="k">if</span> <span class="s1">&#39;ensda_</span><span class="si">%03d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">version</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-<span class="n">start_years</span><span class="o">=</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">start_years</span><span class="p">]</span>
-<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">start_years</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-      <span class="s2">&quot;</span><span class="si">%04d</span><span class="s2"> is not as available start year&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">)</span>
-
-<span class="c1"># Get the list of files available for the selected month</span>
-<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s2">&quot;hsi ls -l </span><span class="si">%s</span><span class="s2">/ensda_</span><span class="si">%03d</span><span class="s2">_</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%04d%02d</span><span class="s2">_*.tar&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                    <span class="n">originals_directory</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
-                    <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
-                    <span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">month</span><span class="p">),</span>
-                    <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> 
-                    <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
-<span class="n">file_list</span><span class="o">=</span><span class="n">err</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-<span class="n">obs_files</span><span class="o">=</span><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">file_list</span> <span class="k">if</span> <span class="s1">&#39;_psobs&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs_files</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data not available&quot;</span><span class="p">)</span>
-<span class="n">anl_files</span><span class="o">=</span><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">file_list</span> <span class="k">if</span> <span class="s1">&#39;_pgrbanl_&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">anl_files</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">80</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Analysis data not complete&quot;</span><span class="p">)</span>
-<span class="n">fg_files</span><span class="o">=</span><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">file_list</span> <span class="k">if</span> <span class="s1">&#39;_pgrbfg_&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fg_files</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">80</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Forecast data not complete&quot;</span><span class="p">)</span>
-
-<span class="c1"># Have the list of files to retrieve - sort them into tape order</span>
-<span class="n">tfile</span><span class="o">=</span><span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">obs_files</span><span class="o">+</span><span class="n">anl_files</span><span class="o">+</span><span class="n">fg_files</span><span class="p">:</span>
-    <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/ensda_</span><span class="si">%03d</span><span class="s2">_</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%04d</span><span class="s2">/</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                    <span class="n">originals_directory</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
-                    <span class="n">args</span><span class="o">.</span><span class="n">startyear</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">fn</span><span class="p">))</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="n">sfile</span><span class="o">=</span><span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
-<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s2">&quot;hpss_file_sorter.script </span><span class="si">%s</span><span class="s2"> &gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                         <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">sfile</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
-                         <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> 
-                         <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
-<span class="c1"># Doesn&#39;t work - for now, assume success.</span>
-<span class="c1">#if out is not None or err is not None:</span>
-    <span class="c1">#raise StandardError(&quot;Problem with hsi tape ordering&quot;)</span>
-
-<span class="c1"># Run the retrieval - may take a long time</span>
-<span class="n">sfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="n">sfile</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">sfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;lcd </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">working_directory</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">sfile</span><span class="p">:</span>
-    <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;cget </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">line</span><span class="p">)</span>
-<span class="n">sfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="n">tfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">sfile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s2">&quot;hsi &lt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
-<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tfile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-
-<span class="c1"># Check that the files retrieved, and untar</span>
-<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">obs_files</span><span class="o">+</span><span class="n">anl_files</span><span class="o">+</span><span class="n">fg_files</span><span class="p">:</span>
-    <span class="n">fpn</span><span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">working_directory</span><span class="p">,</span><span class="n">file</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fpn</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Missing file </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fpn</span><span class="p">)</span>
-         
-    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s2">&quot;cd </span><span class="si">%s</span><span class="s2">; tar xf </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                            <span class="n">working_directory</span><span class="p">,</span><span class="n">file</span><span class="p">),</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Failed to untar </span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                             <span class="n">working_directory</span><span class="p">,</span><span class="n">file</span><span class="p">))</span>
-
-</pre></div>
-</div>
-</div>
-
-
-          </div>
-        </div>
-      </div>
       <div class="clearer"></div>
     </div>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a></li>
-        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">20CRv3</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">month_from_tape (grib2)</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

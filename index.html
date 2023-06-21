@@ -1,17 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>20CRv3 Diagnostics &#8212; Tests and analyses of version 3 of the Twentieth Century Reanalysis</title>
-    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="TMP2m ensemble stripes by latitude" href="stripes/TMP2m/index.html" /> 
   </head><body>
@@ -19,14 +20,126 @@
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a></li>
-        <li class="right" >
           <a href="stripes/TMP2m/index.html" title="TMP2m ensemble stripes by latitude"
-             accesskey="N">next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">20CRv3</a> &#187;</li> 
+             accesskey="N">next</a></li>
+        <li class="nav-item nav-item-0"><a href="#">20CRv3</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">20CRv3 Diagnostics</a></li> 
       </ul>
-    </div>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="crv3-diagnostics">
+<h1>20CRv3 Diagnostics<a class="headerlink" href="#crv3-diagnostics" title="Permalink to this headline">¶</a></h1>
+<p>This is a set of analyses of the newly-released <a class="reference external" href="https://www.esrl.noaa.gov/psd/data/20thC_Rean/">NOAA/CIRES/DOE Twentieth Century Reanalysis</a> version 3 (20CRv3). It compares <a class="reference external" href="https://www.esrl.noaa.gov/psd/data/gridded/data.20thC_ReanV3.html">20CRv3</a> to <a class="reference external" href="https://www.esrl.noaa.gov/psd/data/gridded/data.20thC_ReanV2c.html">20CRv2c</a>, to <a class="reference external" href="https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/cera-20c">CERA-20C</a>, and to <a class="reference external" href="https://oldweather.github.io/DWR/">newly-digitised observations from around the British Isles</a>.</p>
+<section id="get-the-data">
+<h2>Get the data<a class="headerlink" href="#get-the-data" title="Permalink to this headline">¶</a></h2>
+<p>The 20CRv3 data used here is distributed through the <a class="reference external" href="https://portal.nersc.gov/project/20C_Reanalysis/">NERSC web portal</a>. It can be downloaded directly.</p>
+<p>Data from scout runs can be obtained (with some effort) by <a class="reference internal" href="extract_data/extract_data.html"><span class="doc">following these instructions</span></a>.</p>
+</section>
+<section id="stripes-plots">
+<h2>Stripes plots<a class="headerlink" href="#stripes-plots" title="Permalink to this headline">¶</a></h2>
+<p>Latitude:time plots of monthly averages.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="stripes/TMP2m/index.html">TMP2m</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stripes/PRMSL/index.html">PRMSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stripes/PRATE/index.html">PRATE</a></li>
+</ul>
+</div>
+</section>
+<section id="comparisons-of-20crv3-with-20crv2c">
+<h2>Comparisons of 20CRv3 with 20CRv2c<a class="headerlink" href="#comparisons-of-20crv3-with-20crv2c" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tropical-storms/tropical_storms.html">Tropical Storms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tropical-storms/Hurricane_Andrew.html">Hurricane Andrew (1992)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tropical-storms/Typhoon_Nancy.html">Super-Typhoon Nancy (1961)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tropical-storms/Hurricane_Carla.html">Hurricane Carla (1961)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tropical-storms/Gold_Coast_Cyclone.html">The Gold Coast Cyclone (1954)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tropical-storms/Typhoon_Kathleen.html">Typhoon Kathleen (1947)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tropical-storms/Okeechobee_Hurricane.html">Okeechobee Hurricane (1928)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tropical-storms/Galveston_Hurricane.html">Galveston Hurricane (1900)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="european_windstorms/european_windstorms.html">European windstorms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1999_Lothar_storm.html">Lothar storm of 1999</a></li>
+<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1990_Daria_storm.html">Burn’s Day (Daria) storm of 1990</a></li>
+<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1953_north_sea_flood.html">North Sea flood of 1953</a></li>
+<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1903_Ulysses_storm.html">Ulysses storm of 1903</a></li>
+<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1894_North_German_Express.html">North German Express of 1894</a></li>
+<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1884_Darias_sister.html">Daria’s sister storm of 1884</a></li>
+<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1876_Lothars_brother.html">Lothar’s brother (Marzorkan) of 1876</a></li>
+<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1872_UK_storm.html">UK storm of 1872</a></li>
+<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1859_Royal_Charter.html">Royal Charter Storm of 1859</a></li>
+<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1843_Irish_Gale.html">Irish Gale of 1843</a></li>
+<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1811_Xmas_storm.html">Christmas Storm of 1811</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extreme_months/extreme_months.html">Extreme months</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extreme_months/British_Isles_in_Oct_1903.html">British Isles in October 1903</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="north_american_severe_weather/nasw.html">North American severe weather</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="north_american_severe_weather/Sitka_Hurricane.html">Sitka Hurricane (1880)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="australian_east_coast_lows/aecl.html">Australian east coast lows</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="australian_east_coast_lows/1998_SH_Yacht_Race_cyclone.html">Sydney to Hobart Yacht Race storm of 1998</a></li>
+<li class="toctree-l2"><a class="reference internal" href="australian_east_coast_lows/1898_Maitland_gale.html">Maitland gale of 1898</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cold_surges/cold_surges.html">Cold Surges</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cold_surges/SA_2005.html">South American cold surge of 2005</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="validation-against-observations">
+<h2>Validation against observations<a class="headerlink" href="#validation-against-observations" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="https://oldweather.github.io/DWR/">new observations rescued from the Daily Weather Reports</a> have not yet been used by any reanalysis, so they are ideal for validation. Doing the comparison for several different times during the period covered by the new observations shows the effect of varying reanalysis and observation quality.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DWR_validation/Spring_1903/spring_1903.html">Validation against observations for Spring 1903</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DWR_validation/February_1953/february_1953.html">Validation against observations for February 1953</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DWR_validation/comparison.html">Validation Spread v. Error plot January 1872 + Spring 1903 + February 1953</a></li>
+</ul>
+</div>
+</section>
+<section id="observations-and-fog-videos">
+<h2>Observations and fog videos<a class="headerlink" href="#observations-and-fog-videos" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="obs_video/obs_video.html">Observations coverage video</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fog_videos/1903.html">Weather and fog in 1903</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fog_videos/1931.html">Weather and fog in 1931</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fog_videos/1880_Arctic.html">Weather and fog in the Arctic in 1880 and 1881</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fog_videos/time_skip.html">Weather and fog 1850-2015</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fog_videos/just_fog.html">Just the fog 1850-2015</a></li>
+</ul>
+</div>
+</section>
+<section id="small-print">
+<h2>Small print<a class="headerlink" href="#small-print" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="credits.html">Authors and acknowledgements</a></li>
+</ul>
+</div>
+<p>This document and the data associated with it, are crown copyright (2018) and distributed under the terms of the <a class="reference external" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/">Open Government Licence</a>. All code included is licensed under the terms of the <a class="reference external" href="https://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public License</a>.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="#">
@@ -75,131 +188,16 @@
 Please <a href="https://github.com/oldweather/20CRv3-diagnostics/issues/new">raise an issue</a>.
         </div>
       </div>
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="crv3-diagnostics">
-<h1>20CRv3 Diagnostics<a class="headerlink" href="#crv3-diagnostics" title="Permalink to this headline">¶</a></h1>
-<p>This is a set of analyses of the newly-released <a class="reference external" href="https://www.esrl.noaa.gov/psd/data/20thC_Rean/">NOAA/CIRES/DOE Twentieth Century Reanalysis</a> version 3 (20CRv3). It compares <a class="reference external" href="https://www.esrl.noaa.gov/psd/data/gridded/data.20thC_ReanV3.html">20CRv3</a> to <a class="reference external" href="https://www.esrl.noaa.gov/psd/data/gridded/data.20thC_ReanV2c.html">20CRv2c</a>, to <a class="reference external" href="https://www.ecmwf.int/en/forecasts/datasets/archive-datasets/reanalysis-datasets/cera-20c">CERA-20C</a>, and to <a class="reference external" href="https://oldweather.github.io/DWR/">newly-digitised observations from around the British Isles</a>.</p>
-<div class="section" id="get-the-data">
-<h2>Get the data<a class="headerlink" href="#get-the-data" title="Permalink to this headline">¶</a></h2>
-<p>The 20CRv3 data used here is distributed through the <a class="reference external" href="https://portal.nersc.gov/project/20C_Reanalysis/">NERSC web portal</a>. It can be downloaded directly.</p>
-<p>Data from scout runs can be obtained (with some effort) by <a class="reference internal" href="extract_data/extract_data.html"><span class="doc">following these instructions</span></a>.</p>
-</div>
-<div class="section" id="stripes-plots">
-<h2>Stripes plots<a class="headerlink" href="#stripes-plots" title="Permalink to this headline">¶</a></h2>
-<p>Latitude:time plots of monthly averages.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="stripes/TMP2m/index.html">TMP2m</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stripes/PRMSL/index.html">PRMSL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="stripes/PRATE/index.html">PRATE</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="comparisons-of-20crv3-with-20crv2c">
-<h2>Comparisons of 20CRv3 with 20CRv2c<a class="headerlink" href="#comparisons-of-20crv3-with-20crv2c" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="tropical-storms/tropical_storms.html">Tropical Storms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tropical-storms/Hurricane_Andrew.html">Hurricane Andrew (1992)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tropical-storms/Typhoon_Nancy.html">Super-Typhoon Nancy (1961)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tropical-storms/Hurricane_Carla.html">Hurricane Carla (1961)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tropical-storms/Gold_Coast_Cyclone.html">The Gold Coast Cyclone (1954)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tropical-storms/Typhoon_Kathleen.html">Typhoon Kathleen (1947)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tropical-storms/Okeechobee_Hurricane.html">Okeechobee Hurricane (1928)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tropical-storms/Galveston_Hurricane.html">Galveston Hurricane (1900)</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="european_windstorms/european_windstorms.html">European windstorms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1999_Lothar_storm.html">Lothar storm of 1999</a></li>
-<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1990_Daria_storm.html">Burn’s Day (Daria) storm of 1990</a></li>
-<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1953_north_sea_flood.html">North Sea flood of 1953</a></li>
-<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1903_Ulysses_storm.html">Ulysses storm of 1903</a></li>
-<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1894_North_German_Express.html">North German Express of 1894</a></li>
-<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1884_Darias_sister.html">Daria’s sister storm of 1884</a></li>
-<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1876_Lothars_brother.html">Lothar’s brother (Marzorkan) of 1876</a></li>
-<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1872_UK_storm.html">UK storm of 1872</a></li>
-<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1859_Royal_Charter.html">Royal Charter Storm of 1859</a></li>
-<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1843_Irish_Gale.html">Irish Gale of 1843</a></li>
-<li class="toctree-l2"><a class="reference internal" href="european_windstorms/1811_Xmas_storm.html">Christmas Storm of 1811</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="extreme_months/extreme_months.html">Extreme months</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="extreme_months/British_Isles_in_Oct_1903.html">British Isles in October 1903</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="north_american_severe_weather/nasw.html">North American severe weather</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="north_american_severe_weather/Sitka_Hurricane.html">Sitka Hurricane (1880)</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="australian_east_coast_lows/aecl.html">Australian east coast lows</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="australian_east_coast_lows/1998_SH_Yacht_Race_cyclone.html">Sydney to Hobart Yacht Race storm of 1998</a></li>
-<li class="toctree-l2"><a class="reference internal" href="australian_east_coast_lows/1898_Maitland_gale.html">Maitland gale of 1898</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="cold_surges/cold_surges.html">Cold Surges</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cold_surges/SA_2005.html">South American cold surge of 2005</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div class="section" id="validation-against-observations">
-<h2>Validation against observations<a class="headerlink" href="#validation-against-observations" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference external" href="https://oldweather.github.io/DWR/">new observations rescued from the Daily Weather Reports</a> have not yet been used by any reanalysis, so they are ideal for validation. Doing the comparison for several different times during the period covered by the new observations shows the effect of varying reanalysis and observation quality.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="DWR_validation/January_1872/january_1872.html">Validation against observations for January 1872</a></li>
-<li class="toctree-l1"><a class="reference internal" href="DWR_validation/Spring_1903/spring_1903.html">Validation against observations for Spring 1903</a></li>
-<li class="toctree-l1"><a class="reference internal" href="DWR_validation/February_1953/february_1953.html">Validation against observations for February 1953</a></li>
-<li class="toctree-l1"><a class="reference internal" href="DWR_validation/comparison.html">Validation Spread v. Error plot January 1872 + Spring 1903 + February 1953</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="observations-and-fog-videos">
-<h2>Observations and fog videos<a class="headerlink" href="#observations-and-fog-videos" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="obs_video/obs_video.html">Observations coverage video</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fog_videos/1903.html">Weather and fog in 1903</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fog_videos/1931.html">Weather and fog in 1931</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fog_videos/1880_Arctic.html">Weather and fog in the Arctic in 1880 and 1881</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fog_videos/time_skip.html">Weather and fog 1850-2015</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fog_videos/just_fog.html">Just the fog 1850-2015</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="small-print">
-<h2>Small print<a class="headerlink" href="#small-print" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="credits.html">Authors and acknowledgements</a></li>
-</ul>
-</div>
-<p>This document and the data associated with it, are crown copyright (2018) and distributed under the terms of the <a class="reference external" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/">Open Government Licence</a>. All code included is licensed under the terms of the <a class="reference external" href="https://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public License</a>.</p>
-</div>
-</div>
-
-
-          </div>
-        </div>
-      </div>
       <div class="clearer"></div>
     </div>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a></li>
-        <li class="right" >
           <a href="stripes/TMP2m/index.html" title="TMP2m ensemble stripes by latitude"
-             >next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">20CRv3</a> &#187;</li> 
+             >next</a></li>
+        <li class="nav-item nav-item-0"><a href="#">20CRv3</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">20CRv3 Diagnostics</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
